@@ -27,6 +27,7 @@ export default function PINAuthenticationCard({
   const [roomCodeInput, setRoomCodeInput] = useState('');
   const [pinInput, setPinInput] = useState('');
   const [error, setError] = useState('');
+  const isSessionActive = Boolean(activeRoomCode);
 
   const handleRoomCodeChange = (value: string) => {
     // Only allow 4 digits
@@ -95,6 +96,19 @@ export default function PINAuthenticationCard({
         </div>
 
         <div className="border-t pt-4">
+          {/* Session status notification */}
+          {!isSessionActive && (
+            <div className="bg-orange-50 border border-orange-200 p-3 rounded-lg mb-4 flex gap-2">
+              <Clock size={16} weight="regular" className="text-orange-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-xs font-semibold text-orange-900 mb-1">Session Not Active</p>
+                <p className="text-xs text-orange-800">
+                  The teacher has not yet activated the exam session. Please wait for the teacher to generate a room code before entering your PIN.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Info box about time validation */}
           <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-4 flex gap-2">
             <Clock size={16} weight="regular" className="text-blue-600 mt-0.5 flex-shrink-0" />
@@ -122,6 +136,7 @@ export default function PINAuthenticationCard({
                 onChange={(e) => handleRoomCodeChange(e.target.value)}
                 maxLength={4}
                 className="font-mono text-2xl text-center tracking-wider"
+                disabled={!isSessionActive}
                 required
               />
               <p className="text-xs text-muted-foreground">
@@ -143,6 +158,7 @@ export default function PINAuthenticationCard({
                 onChange={(e) => handlePINChange(e.target.value)}
                 maxLength={9}
                 className="font-mono text-2xl text-center tracking-wider"
+                disabled={!isSessionActive}
                 required
               />
               {error && (
@@ -153,9 +169,9 @@ export default function PINAuthenticationCard({
               </p>
             </div>
 
-            <Button type="submit" className="w-full gap-2" size="lg">
+            <Button type="submit" className="w-full gap-2" size="lg" disabled={!isSessionActive}>
               <LockOpen size={18} weight="bold" />
-              Start Exam
+              {isSessionActive ? 'Start Exam' : 'Waiting for Teacher to Activate Session'}
             </Button>
           </form>
         </div>

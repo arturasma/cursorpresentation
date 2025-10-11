@@ -169,6 +169,11 @@ export const studentRegistration = {
       
       if (studentIndex === -1) return false;
       
+      // Don't set awaiting verification if already verified
+      if (exam.registeredStudents[studentIndex].teacherVerified) {
+        return true; // Return true since student is already verified
+      }
+      
       exam.registeredStudents[studentIndex].awaitingVerification = true;
       examStorage.update(examId, { registeredStudents: exam.registeredStudents });
       
@@ -227,14 +232,14 @@ export const studentRegistration = {
     return registration?.awaitingVerification === true;
   },
 
-  // Get students awaiting verification for an exam
+  // Get students awaiting verification for an exam (not yet verified)
   getPendingVerifications(examId: string): StudentRegistration[] {
     const exams = examStorage.getAll();
     const exam = exams.find(e => e.id === examId);
     
     if (!exam) return [];
     
-    return exam.registeredStudents.filter(s => s.awaitingVerification === true);
+    return exam.registeredStudents.filter(s => s.awaitingVerification === true && s.teacherVerified !== true);
   },
 
   // Get all verified students for an exam

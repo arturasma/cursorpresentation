@@ -6,6 +6,7 @@ import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
 import ExamConcept from '@/components/features/exam/ExamConcept';
 import ExamSessionControl from '@/components/features/teacher/ExamSessionControl';
+import StudentStatusPanel from '@/components/features/teacher/StudentStatusPanel';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Button } from '@/components/ui/button';
 import { useExam } from '@/context/ExamContext';
@@ -60,16 +61,16 @@ export default function ExamPage() {
         const completed = studentRegistration.isCompleted(id, mockedStudent.idCode);
         setIsCompleted(completed);
 
-        // Check if awaiting verification
-        const awaiting = studentRegistration.isAwaitingVerification(id, mockedStudent.idCode);
-        setIsAwaitingVerification(awaiting);
-
-        // Check if verified
+        // Check if verified (if verified, student can access exam directly)
         const verified = studentRegistration.isVerified(id, mockedStudent.idCode);
-        if (verified && awaiting) {
-          // Student was verified, can now access exam
+        if (verified) {
+          // Student was already verified, grant exam access immediately
           setIsAwaitingVerification(false);
           setIsAuthenticated(true);
+        } else {
+          // Check if currently awaiting verification
+          const awaiting = studentRegistration.isAwaitingVerification(id, mockedStudent.idCode);
+          setIsAwaitingVerification(awaiting);
         }
       }
 
@@ -163,7 +164,13 @@ export default function ExamPage() {
   };
 
   const handleRequestExit = () => {
-    // Clear any pending action when manually exiting
+    // If exam is completed, navigate directly without confirmation
+    if (isCompleted) {
+      setIsInExam(false);
+      navigate('/student');
+      return;
+    }
+    // Otherwise, show exit confirmation
     setPendingAction({ type: 'none' });
     setShowExitConfirmation(true);
   };
@@ -181,11 +188,7 @@ export default function ExamPage() {
     if (exam && studentRegistration.completeExam(exam.id, mockedStudent.idCode)) {
       setShowCompleteConfirmation(false);
       setIsCompleted(true);
-      // Show completion message before redirecting
-      setTimeout(() => {
-        setIsInExam(false);
-        navigate('/student');
-      }, 1500);
+      // User can now manually click "Back to Exams" button
     }
   };
 
@@ -219,19 +222,23 @@ export default function ExamPage() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <ExamDetails exam={exam} />
-              <ExamSessionControl
-                examId={exam.id}
-                examName={exam.name}
-                activeSession={exam.activeSession || null}
-                pendingStudents={pendingVerifications}
-                verifiedStudents={verifiedStudents}
-                teacherName={mockedTeacher.name}
-                onActivateSession={handleActivateSession}
-                onDeactivateSession={handleDeactivateSession}
-                onVerifyStudent={handleVerifyStudent}
-              />
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <ExamDetails exam={exam} />
+                <ExamSessionControl
+                  examId={exam.id}
+                  examName={exam.name}
+                  activeSession={exam.activeSession || null}
+                  pendingStudents={pendingVerifications}
+                  verifiedStudents={verifiedStudents}
+                  teacherName={mockedTeacher.name}
+                  onActivateSession={handleActivateSession}
+                  onDeactivateSession={handleDeactivateSession}
+                  onVerifyStudent={handleVerifyStudent}
+                />
+              </div>
+              
+              <StudentStatusPanel registeredStudents={exam.registeredStudents} />
             </div>
           </div>
         </main>
@@ -253,12 +260,12 @@ export default function ExamPage() {
                   {exam.subject.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} - {exam.gradeLevel?.replace('grade-', '') + 'th Grade'}
                 </p>
               </div>
-              {!isAuthenticated && !isAwaitingVerification && (
+              {(!isAuthenticated && !isAwaitingVerification) || isCompleted ? (
                 <Button variant="outline" onClick={handleRequestExit} className="gap-2">
                   <ArrowLeft size={16} weight="bold" />
                   Back to Exams
                 </Button>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -308,9 +315,20 @@ export default function ExamPage() {
                 <>
                   <CheckCircle size={64} weight="fill" className="mx-auto mb-4 text-green-600" />
                   <h2 className="text-3xl font-bold mb-4 text-green-600">Exam Completed!</h2>
-                  <p className="text-muted-foreground mb-8">
-                    Your exam has been successfully submitted. Redirecting you back to the exam list...
+                  <p className="text-muted-foreground mb-4">
+                    Your exam has been successfully submitted.
                   </p>
+                  <Button 
+                    onClick={() => {
+                      setIsInExam(false);
+                      navigate('/student');
+                    }}
+                    className="gap-2"
+                    size="lg"
+                  >
+                    <ArrowLeft size={16} weight="bold" />
+                    Back to Exams
+                  </Button>
                 </>
               ) : (
                 <>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MapPin, Clock, Users, Key, LockSimple, CheckCircle } from 'phosphor-react';
+import { Calendar, MapPin, Clock, Key, LockSimple, CheckCircle } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PINRevealModal from './PINRevealModal';
@@ -54,7 +54,6 @@ export default function StudentExamCard({
   };
 
   const isFull = exam.registeredStudents.length >= exam.studentCount;
-  const spotsLeft = exam.studentCount - exam.registeredStudents.length;
 
   // Get completion timestamp if completed
   const completionInfo = isCompleted && exam.registeredStudents.find(
@@ -116,11 +115,7 @@ export default function StudentExamCard({
               </div>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users size={16} weight="regular" />
-                <span>{exam.registeredStudents.length}/{exam.studentCount} registered</span>
-              </div>
-              <div className="text-muted-foreground text-xs">
+              <div className="text-muted-foreground text-sm">
                 Teacher: {exam.teacherName}
               </div>
             </div>
@@ -209,7 +204,7 @@ export default function StudentExamCard({
                 className="flex-1"
                 disabled={isFull}
               >
-                {isFull ? 'Exam Full' : `Register (${spotsLeft} spots left)`}
+                {isFull ? 'Exam Full' : 'Register for Exam'}
               </Button>
             )}
           </div>
