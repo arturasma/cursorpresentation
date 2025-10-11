@@ -195,7 +195,7 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
 
   return (
     <Dialog open={open} onOpenChange={(newOpen) => !newOpen && handleClose()}>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[900px]">
         <DialogHeader>
           <div className="flex items-start justify-between">
             <div className="flex-1">
