@@ -35,7 +35,7 @@ export default function Homepage() {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h2 className="text-2xl font-semibold text-foreground mb-4">How to Use This Demo</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">Step-by-Step Guide</h2>
               <ol className="list-decimal list-inside space-y-3 text-foreground/90">
                 <li className="pl-2">
                   <strong>Choose Teacher Role</strong> - Select "Teacher" to access the exam management dashboard
@@ -62,6 +62,53 @@ export default function Homepage() {
                   <strong>Complete Exam (Student)</strong> - After verification, student can access and complete the exam
                 </li>
               </ol>
+              <h3 className="text-2xl font-semibold text-foreground mb-4">Process Flow</h3>
+              
+              <div className="bg-white dark:bg-slate-900 p-4 rounded-md mb-4 font-mono text-xs sm:text-sm overflow-x-auto">
+                <pre className="text-foreground/90 leading-relaxed">
+{`    👨‍🏫 TEACHER                    ⚙️  SYSTEM                     👨‍🎓 STUDENT
+         │                            │                            │
+         │                            │                            │
+    ┌────▼─────┐                      │                            │
+    │ Create   │──────────────────────▼                            │
+    │ Exam     │              Store Exam Details                   │
+    └──────────┘                      │                            │
+         │                            │                       ┌────▼──────┐
+         │                            │◄──────────────────────│ Register  │
+         │                            │                       │ for Exam  │
+         │                      Generate Hash                 └───────────┘
+         │                   (Student + Exam Data)                 │
+         │                            │                            │
+         │                      Generate PIN ─────────────────────►│
+         │                            │                       Reveal PIN
+         │                            │                            │
+    ┌────▼─────┐                      │                            │
+    │ Activate │──────────────────────▼                            │
+    │ Session  │              Generate Room Code                   │
+    └──────────┘                      │                            │
+         │                            │                       ┌────▼──────┐
+         │                            │                       │ Take Exam │
+         │                            │◄──────────────────────│ Enter:    │
+         │                            │                       │ Room+PIN  │
+         │                      Validate Codes                └───────────┘
+         │                            │                            │
+         │                            │                       Await Verify
+    ┌────▼─────┐                      │                            │
+    │ Verify   │──────────────────────▼                            │
+    │ Student  │              Mark as Verified                     │
+    │ (in person)                     │                            │
+    └──────────┘                      │                            │
+         │                            │                            │
+         │                      Grant Access ─────────────────────►│
+         │                            │                       Complete Exam
+         │                            │                            │
+         │                      Delete Hashes                      │
+         │                            │                            │
+         ▼                            ▼                            ▼`}
+                </pre>
+              </div>
+
+              
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
