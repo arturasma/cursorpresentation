@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Warning } from 'phosphor-react';
 
 export default function AboutPage() {
   return (
@@ -38,11 +39,11 @@ export default function AboutPage() {
                     <div>
                       <h3 className="font-semibold text-lg mb-3">Technical Constraints</h3>
                       <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                        <li>Mandatory computer login before each exam</li>
-                        <li>Only ID cards accepted for authentication</li>
-                        <li>No Face ID, Smart ID, or mobile options available</li>
-                        <li>Automatic logout when leaving the classroom</li>
-                        <li>Re-login required after breaks</li>
+                        <li>Physical ID cards are the ONLY authentication method for high-stakes tests</li>
+                        <li>No biometrics, Smart ID, or Mobile ID (phones are confiscated before exams)</li>
+                        <li>Aging examination platform makes experimentation with existing codebase extremely difficult</li>
+                        <li>Computer issues arise, but schools rarely have IT staff on call due to budget constraints</li>
+                        <li>Schools sometimes lack basic technical knowledge (e.g., "How many outlets do we need?")</li>
                       </ul>
                     </div>
                     <div>
@@ -53,12 +54,12 @@ export default function AboutPage() {
                           <p className="text-sm text-muted-foreground">Students per class</p>
                         </div>
                         <div className="bg-primary/10 p-4 rounded-lg">
-                          <p className="text-3xl font-bold text-primary">15,000</p>
-                          <p className="text-sm text-muted-foreground">Total students taking exams</p>
+                          <p className="text-3xl font-bold text-primary">15k</p>
+                          <p className="text-sm text-muted-foreground">Governmental exams simultaneously</p>
                         </div>
                         <div className="bg-primary/10 p-4 rounded-lg">
-                          <p className="text-3xl font-bold text-primary">0</p>
-                          <p className="text-sm text-muted-foreground">IT support available</p>
+                          <p className="text-3xl font-bold text-primary">50k</p>
+                          <p className="text-sm text-muted-foreground">Students using system for mid-high stakes exams</p>
                         </div>
                       </div>
                     </div>
@@ -67,9 +68,10 @@ export default function AboutPage() {
                   <div className="bg-destructive/10 border border-destructive/30 p-4 rounded-lg mt-4">
                     <p className="font-semibold text-destructive mb-2">Impact</p>
                     <p className="text-sm text-foreground/90">
-                      With 30 students per class and no IT support, login issues cause significant delays, 
-                      stress, and reduced exam time for students. The rigid ID card requirement creates 
-                      additional barriers for students who may have forgotten or lost their cards.
+                      The aged authentication system clashes with modern expectations, creating friction at the worst possible time. 
+                      Students are already under immense pressure—high-stakes exams can determine whether they graduate at all. 
+                      Login issues, forgotten ID cards, searching for pin codes before exam, and computer problems compound this stress, with minimal IT support available 
+                      to resolve issues quickly across 30+ students per room.
                     </p>
                   </div>
                 </CardContent>
@@ -165,30 +167,67 @@ export default function AboutPage() {
                           <span>Project Manager</span>
                         </li>
                       </ul>
+                      <div className="mt-4 pt-3 border-t border-border">
+                        <p className="text-xs text-muted-foreground">
+                          <strong>Hourly Rate:</strong> 40-80€ per working hour
+                        </p>
+                      </div>
                     </div>
 
                     <div className="border border-border rounded-lg p-4">
-                      <h4 className="font-semibold mb-3">Infrastructure</h4>
+                      <h4 className="font-semibold mb-3">Infrastructure & Tech Stack</h4>
                       <ul className="space-y-2 text-sm">
                         <li className="flex items-center gap-2">
                           <span className="text-primary">•</span>
-                          <span>PostgreSQL Database</span>
+                          <span>Kubernetes & Docker containerization</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <span className="text-primary">•</span>
-                          <span>Redis Cache</span>
+                          <span>CI/CD pipelines</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <span className="text-primary">•</span>
-                          <span>Frontend Applications</span>
+                          <span>Load balancers: HAProxy, Nginx</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <span className="text-primary">•</span>
-                          <span>Development Branches</span>
+                          <span>Own server infrastructure (sometimes)</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <span className="text-primary">•</span>
-                          <span>Test Environments</span>
+                          <span>PostgreSQL database, Redis cache</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Message queues: RabbitMQ, Kafka</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Frontend: Angular, React frameworks</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Backend: Java, C, Python</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Monitoring: Prometheus, Zabbix</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Error tracking: Sentry</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>X-Road (Estonian data exchange layer)</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>e-Identity/Digital ID integration</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Development & test environments</span>
                         </li>
                       </ul>
                     </div>
@@ -198,11 +237,27 @@ export default function AboutPage() {
                     <p className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
                       The Cost Factor
                     </p>
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
                       Everything is cost. Every sprint, every team member, every hour spent on development 
                       that might not be used represents public money. In Estonian public sector, careful 
                       resource allocation is critical.
                     </p>
+                    <div className="space-y-2 text-sm text-yellow-800 dark:text-yellow-200">
+                      <p>
+                        <strong>Getting even a simple prototype is expensive:</strong> Requires Jira tickets, 
+                        Confluence documentation, potentially Figma flow diagrams—all adding to the cost before 
+                        a single line of code is written.
+                      </p>
+                      <p>
+                        <strong>Internal resources are slim:</strong> Teams must balance new development with 
+                        ongoing bug fixes and operations, leaving little capacity for experimentation.
+                      </p>
+                      <p>
+                        <strong>Opportunity cost is real:</strong> Every hour spent on an unvalidated prototype 
+                        means other features in the pipeline—features with waiting, potentially unhappy end users—get 
+                        delayed.
+                      </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -273,7 +328,7 @@ export default function AboutPage() {
                         <div className="bg-primary text-primary-foreground rounded w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
                           3
                         </div>
-                        <p className="text-sm">Student receives PIN (e.g., birthday + month combination)</p>
+                        <p className="text-sm">Student receives PIN via SMS before exam start and can view it in the portal (after validating with national ID). Teacher can also see the PIN.</p>
                       </div>
                       <div className="flex items-start gap-3">
                         <div className="bg-primary text-primary-foreground rounded w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
@@ -297,7 +352,7 @@ export default function AboutPage() {
                         <div className="bg-primary text-primary-foreground rounded w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
                           7
                         </div>
-                        <p className="text-sm">After exam completion, hashes are deleted for privacy</p>
+                        <p className="text-sm">Data handling is done on the approval of lawyers in accordance with European and national laws</p>
                       </div>
                     </div>
                   </div>
@@ -341,40 +396,55 @@ export default function AboutPage() {
                       <ol className="space-y-3 text-sm">
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">1.</span>
-                          <span>Request Proof of Concept from developers</span>
+                          <span>PM identifies flow isn't working for modern day, needs stakeholder buy-in</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">2.</span>
-                          <span>Involve architects, developers, analysts</span>
+                          <span>Write Confluence page with proposal</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">3.</span>
-                          <span>Dedicate at least one sprint (2 weeks)</span>
+                          <span>Create Jira tickets for agency review</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">4.</span>
-                          <span>Set up development branch</span>
+                          <span>Analyst reviews and validates requirements</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">5.</span>
-                          <span>Configure test environment</span>
+                          <span>UI/UX specialist designs, conducts Teams calls for validation</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">6.</span>
-                          <span>Legal review</span>
+                          <span className="flex items-center gap-1">
+                            <Warning size={16} weight="fill" className="text-red-600 dark:text-red-400 flex-shrink-0" />
+                            Communication chain grows: PM → Agency PM → Analyst → UI/UX → Real beneficiaries
+                          </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">7.</span>
-                          <span>Teacher validation</span>
+                          <span>Figma and Jira delivered, closed, paid for</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">8.</span>
-                          <span>Create Jira ticket</span>
+                          <span>Create new Jira tickets for developers based on analyst/UI-UX work</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-600 dark:text-red-400 font-bold">9.</span>
+                          <span>Developers find time, analyze requirements before starting</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-600 dark:text-red-400 font-bold">10.</span>
+                          <span>Development, testing, deployment to test environment</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-600 dark:text-red-400 font-bold">11.</span>
+                          <span>PM searches for buy-in from actual users</span>
                         </li>
                       </ol>
                       <div className="mt-4 p-3 bg-red-100 dark:bg-red-900/30 rounded">
                         <p className="text-xs font-semibold text-red-900 dark:text-red-100">
-                          Problem: Significant man-hours and costs incurred BEFORE knowing if solution works
+                          Timeline: 2-4 weeks minimum (1-2 sprints). Significant costs and man-hours BEFORE knowing if real users will accept it.
                         </p>
                       </div>
                     </div>
@@ -383,77 +453,87 @@ export default function AboutPage() {
                       <h3 className="font-semibold text-lg mb-4 text-green-900 dark:text-green-100">
                         Click Proto Approach
                       </h3>
+                      <div className="mb-3 p-2 bg-green-100 dark:bg-green-900/40 rounded text-xs">
+                        <strong>Stack:</strong> React + TypeScript + Vite SPA hosted on Cloudflare Pages
+                      </div>
                       <ol className="space-y-3 text-sm">
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">1.</span>
-                          <span>Scaffold project in Cursor</span>
+                          <span>PM prepares PRD in Confluence</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">2.</span>
-                          <span>Detail Product Requirements Document</span>
+                          <span>Scaffold project in Cursor on personal computer</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">3.</span>
-                          <span>Generate vanilla HTML/JS/CSS prototype</span>
+                          <span>Create SPA using Confluence PRD as guide</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">4.</span>
-                          <span>Present to select group of teachers</span>
+                          <span>Publish to Cloudflare Pages for teachers to test</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">5.</span>
-                          <span>Gather feedback and refine</span>
+                          <span>Gather feedback from teachers and refine</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">6.</span>
-                          <span>Present to legal with data insights</span>
+                          <span>Present validated solution to legal</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-green-600 dark:text-green-400 font-bold">7.</span>
-                          <span>Create Jira with documented specs</span>
+                          <span>If buy-in: Go straight to development (skip analyst, skip Figma—systems have established design frameworks)</span>
                         </li>
                       </ol>
                       <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 rounded">
                         <p className="text-xs font-semibold text-green-900 dark:text-green-100">
-                          Result: Validate concept FIRST, then commit resources
+                          Timeline: 8 hours (one full workday for PM). Validate concept FIRST, then commit resources.
                         </p>
                       </div>
                     </div>
                   </div>
 
                   <div className="bg-primary/10 border border-primary/30 p-6 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-3">Why Vanilla HTML/JS/CSS?</h3>
+                    <h3 className="font-semibold text-lg mb-3">What to consider</h3>
                     <p className="text-sm text-foreground/90 mb-4">
-                      A strategic choice driven by practical constraints in government IT environments:
+                      Gornmental strict PC policy:
                     </p>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start gap-2">
                         <span className="text-primary font-bold">•</span>
                         <span>
-                          <strong>No IDE Required:</strong> HTML files can be launched directly on government computers
+                          <strong>Fast Development:</strong>Strict cybersecurity policies with VPN access requirements
+                       
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary font-bold">•</span>
                         <span>
-                          <strong>No Installation:</strong> No need for additional software or dependencies
+                          <strong>Type Safety:</strong>Heavy PC proccesses monitoring for cybersecurity
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary font-bold">•</span>
                         <span>
-                          <strong>Universal Compatibility:</strong> Works on any computer with a web browser
+                          <strong>Instant Deployment:</strong>No software installation permitted (including Cursor, IDEs, development tools)
+                       </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary font-bold">•</span>
+                        <span>
+                          <strong>Only HTML pages and basic web browsers accessible</strong>
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary font-bold">•</span>
                         <span>
-                          <strong>Easy Sharing:</strong> Can be shared via email or file system
+                          <strong>Strong security lockdown tackles the effective approach from product manager</strong>
                         </span>
                       </li>
                     </ul>
                   </div>
-
+                
                   <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg">
                     <h3 className="font-semibold text-lg mb-3">Validation Process</h3>
                     <div className="space-y-4">
