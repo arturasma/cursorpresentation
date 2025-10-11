@@ -274,17 +274,47 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Registered Students</CardTitle>
+                    <CardTitle className="text-lg">
+                      Registered Students ({exam.registeredStudents.length}/{exam.studentCount})
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-center py-8">
-                      <p className="text-muted-foreground">
-                        No students have registered yet.
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Students will appear here once they register for the exam using their PIN.
-                      </p>
-                    </div>
+                    {exam.registeredStudents.length === 0 ? (
+                      <div className="text-center py-8">
+                        <p className="text-muted-foreground">
+                          No students have registered yet.
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Students will appear here once they register for the exam.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {exam.registeredStudents.map((student) => (
+                          <div
+                            key={student.studentId}
+                            className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30"
+                          >
+                            <div>
+                              <p className="font-medium">{student.studentName}</p>
+                              <p className="text-xs text-muted-foreground">
+                                Registered: {new Date(student.registeredAt).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-xs text-muted-foreground mb-1">PIN</p>
+                              <p className="font-mono font-semibold">{student.pin}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>

@@ -1,5 +1,5 @@
-import { House } from 'phosphor-react';
-import { useNavigate } from 'react-router-dom';
+import { House, CaretDown, UserSwitch, SignOut } from 'phosphor-react';
+import { useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,11 +9,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useUser } from '@/context/UserContext';
 
 export default function Header() {
   const { userRole, isDialogOpen, setIsDialogOpen, handleRoleSelect, handleLogout } = useUser();
-  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isHomepage = location.pathname === '/';
 
   return (
     <header className="border-b border-border bg-background">
@@ -21,7 +31,7 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate('/')}
+          onClick={handleLogout}
           aria-label="Home"
         >
           <House size={32} weight="regular" />
@@ -29,18 +39,46 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           {userRole ? (
-            <>
-              <span className="text-sm font-medium capitalize">
-                Role: {userRole}
-              </span>
-              <Button onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <span className="capitalize">{userRole}</span>
+                  <CaretDown size={16} weight="bold" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel>Current Role</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleRoleSelect('teacher')}
+                  disabled={userRole === 'teacher'}
+                  className="gap-2"
+                >
+                  <UserSwitch size={16} weight="regular" />
+                  Switch to Teacher
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleRoleSelect('student')}
+                  disabled={userRole === 'student'}
+                  className="gap-2"
+                >
+                  <UserSwitch size={16} weight="regular" />
+                  Switch to Student
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="gap-2 text-destructive focus:text-destructive"
+                >
+                  <SignOut size={16} weight="regular" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button>Login</Button>
+                <Button>{isHomepage ? 'Select Role' : 'Login'}</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>

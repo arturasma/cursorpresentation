@@ -6,7 +6,12 @@ export const examStorage = {
   getAll(): Exam[] {
     try {
       const exams = localStorage.getItem(EXAMS_STORAGE_KEY);
-      return exams ? JSON.parse(exams) : [];
+      const parsed = exams ? JSON.parse(exams) : [];
+      // Ensure all exams have registeredStudents array (migration for old data)
+      return parsed.map((exam: Exam) => ({
+        ...exam,
+        registeredStudents: exam.registeredStudents || []
+      }));
     } catch (error) {
       console.error('Error reading exams from localStorage:', error);
       return [];
@@ -21,6 +26,7 @@ export const examStorage = {
       status: 'scheduled',
       studentCount: 30, // Default student count per class
       createdAt: new Date().toISOString(),
+      registeredStudents: [],
     };
     
     exams.push(newExam);

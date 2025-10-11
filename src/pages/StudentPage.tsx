@@ -1,48 +1,82 @@
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
+import StudentExamList from '@/components/features/student/StudentExamList';
+import { examStorage } from '@/utils/examStorage';
+import { studentRegistration } from '@/utils/studentRegistration';
+import type { Exam } from '@/types/exam';
 
 export default function StudentPage() {
+  // Use a default student ID from localStorage or generate one
+  const [studentName] = useState<string>(() => {
+    let name = localStorage.getItem('studentIdentity');
+    if (!name) {
+      name = `Student-${Math.random().toString(36).substring(2, 9)}`;
+      localStorage.setItem('studentIdentity', name);
+    }
+    return name;
+  });
+  
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [registeredExamIds, setRegisteredExamIds] = useState<Set<string>>(new Set());
+  const [studentPINs, setStudentPINs] = useState<Map<string, string>>(new Map());
+
+  const loadExams = () => {
+    const allExams = examStorage.getAll();
+    setExams(allExams);
+
+    const registered = new Set<string>();
+    const pins = new Map<string, string>();
+
+    allExams.forEach(exam => {
+      const registration = studentRegistration.getRegistration(exam.id, studentName);
+      if (registration) {
+        registered.add(exam.id);
+        pins.set(exam.id, registration.pin);
+      }
+    });
+
+    setRegisteredExamIds(registered);
+    setStudentPINs(pins);
+  };
+
+  useEffect(() => {
+    loadExams();
+  }, [studentName]);
+
+  const handleRegister = (examId: string) => {
+    if (studentRegistration.register(examId, studentName)) {
+      loadExams();
+    } else {
+      alert('Unable to register for this exam. It may be full or you are already registered.');
+    }
+  };
+
+  const handleUnregister = (examId: string) => {
+    if (window.confirm('Are you sure you want to unregister from this exam?')) {
+      if (studentRegistration.unregister(examId, studentName)) {
+        loadExams();
+      }
+    }
+  };
+
   return (
     <>
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-6">Student Dashboard</h1>
-          
-          <div className="space-y-6">
-            <div className="bg-card p-6 rounded-lg border border-border">
-              <h2 className="text-2xl font-semibold mb-4">Welcome, Student!</h2>
-              <p className="text-muted-foreground mb-4">
-                Access your exam information and login credentials here.
-              </p>
-            </div>
-
-            <div className="bg-primary/5 p-6 rounded-lg border border-primary/20">
-              <h3 className="text-xl font-semibold mb-3">Your Exam PIN</h3>
-              <p className="text-muted-foreground mb-4">
-                Use your unique PIN to login at the exam location. Your PIN is generated 
-                from your birthday and registration information.
-              </p>
-              <div className="bg-background p-4 rounded border border-border">
-                <p className="text-sm text-muted-foreground mb-2">Your PIN:</p>
-                <p className="text-3xl font-bold font-mono">****-****</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <h4 className="font-semibold mb-2">Upcoming Exams</h4>
-                <p className="text-sm text-muted-foreground">
-                  View your scheduled exams and locations
-                </p>
-              </div>
-              <div className="bg-card p-4 rounded-lg border border-border">
-                <h4 className="font-semibold mb-2">Exam History</h4>
-                <p className="text-sm text-muted-foreground">
-                  Review your past exam sessions
-                </p>
-              </div>
-            </div>
+      <main className="flex-1 container mx-auto px-6 py-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold">Available Exams</h1>
+            <p className="text-muted-foreground mt-1">Browse and register for exams</p>
           </div>
+
+          <StudentExamList
+            exams={exams}
+            studentName={studentName}
+            registeredExamIds={registeredExamIds}
+            studentPINs={studentPINs}
+            onRegister={handleRegister}
+            onUnregister={handleUnregister}
+          />
         </div>
       </main>
     </>
