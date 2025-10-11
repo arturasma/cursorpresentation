@@ -37,6 +37,7 @@ export default function Header() {
   
   const isHomepage = location.pathname === '/';
   const isAboutPage = location.pathname === '/about';
+  const isFeedbackPage = location.pathname === '/feedback';
   const isOnExamPage = location.pathname.startsWith('/exam/');
 
   const handleHomeClick = () => {
@@ -104,6 +105,12 @@ export default function Header() {
           >
             About
           </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/feedback')}
+          >
+            Feedback
+          </Button>
           
           {userRole ? (
             <DropdownMenu>
@@ -145,7 +152,7 @@ export default function Header() {
           ) : (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button>{isHomepage || isAboutPage ? 'Select Role' : 'Login'}</Button>
+                <Button>{isHomepage || isAboutPage || isFeedbackPage ? 'Select Role' : 'Login'}</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -198,6 +205,16 @@ export default function Header() {
                 >
                   About
                 </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    navigate('/feedback');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full justify-start"
+                >
+                  Feedback
+                </Button>
 
                 {userRole ? (
                   <>
@@ -246,7 +263,7 @@ export default function Header() {
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                       <Button className="w-full" onClick={() => setMobileMenuOpen(false)}>
-                        {isHomepage || isAboutPage ? 'Select Role' : 'Login'}
+                        {isHomepage || isAboutPage || isFeedbackPage ? 'Select Role' : 'Login'}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
