@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { House } from 'phosphor-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,22 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-
-type UserRole = 'teacher' | 'student' | null;
+import { useUser } from '@/context/UserContext';
 
 export default function Header() {
-  const [userRole, setUserRole] = useState<UserRole>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleRoleSelect = (role: 'teacher' | 'student') => {
-    setUserRole(role);
-    setIsDialogOpen(false);
-  };
-
-  const handleLogout = () => {
-    setUserRole(null);
-    window.location.href = '/';
-  };
+  const { userRole, isDialogOpen, setIsDialogOpen, handleRoleSelect, handleLogout } = useUser();
+  const navigate = useNavigate();
 
   return (
     <header className="border-b border-border bg-background">
@@ -32,7 +21,7 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => window.location.href = '/'}
+          onClick={() => navigate('/')}
           aria-label="Home"
         >
           <House size={32} weight="regular" />

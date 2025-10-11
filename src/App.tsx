@@ -1,11 +1,14 @@
 import MainLayout from '@/layout/MainLayout';
-import Homepage from '@/pages/Homepage';
+import MainRoutes from '@/routes/MainRoutes';
+import { UserProvider } from '@/context/UserContext';
 
 function App() {
   return (
-    <MainLayout>
-      <Homepage />
-    </MainLayout>
+    <UserProvider>
+      <MainLayout>
+        <MainRoutes />
+      </MainLayout>
+    </UserProvider>
   );
 }
 
