@@ -56,7 +56,7 @@ export default function StudentExamCard({
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
               <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground capitalize">{exam.examType?.replace('-', ' ')}</span>
+              <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
               {isRegistered && (
                 <>
                   <span className="text-sm text-muted-foreground">•</span>

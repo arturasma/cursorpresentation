@@ -67,6 +67,8 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                   </span>
                   <span className="text-sm text-muted-foreground">•</span>
                   <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
+                  <span className="text-sm text-muted-foreground">•</span>
+                  <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
                 </div>
               </div>
               <Button

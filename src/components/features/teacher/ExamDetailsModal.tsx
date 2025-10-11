@@ -54,6 +54,21 @@ const EXAM_TYPES = [
   { value: 'practice-exam', label: 'Practice Exam' },
 ];
 
+const GRADE_LEVELS = [
+  { value: 'grade-1', label: '1st Grade' },
+  { value: 'grade-2', label: '2nd Grade' },
+  { value: 'grade-3', label: '3rd Grade' },
+  { value: 'grade-4', label: '4th Grade' },
+  { value: 'grade-5', label: '5th Grade' },
+  { value: 'grade-6', label: '6th Grade' },
+  { value: 'grade-7', label: '7th Grade' },
+  { value: 'grade-8', label: '8th Grade' },
+  { value: 'grade-9', label: '9th Grade' },
+  { value: 'grade-10', label: '10th Grade' },
+  { value: 'grade-11', label: '11th Grade' },
+  { value: 'grade-12', label: '12th Grade' },
+];
+
 interface ExamDetailsModalProps {
   exam: Exam;
   open: boolean;
@@ -72,6 +87,7 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
     name: exam.name,
     subject: exam.subject,
     examType: exam.examType,
+    gradeLevel: exam.gradeLevel,
     school: exam.school,
     location: exam.location,
     scheduledDate: exam.scheduledDate,
@@ -83,6 +99,7 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
       name: exam.name,
       subject: exam.subject,
       examType: exam.examType,
+      gradeLevel: exam.gradeLevel,
       school: exam.school,
       location: exam.location,
       scheduledDate: exam.scheduledDate,
@@ -126,6 +143,7 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
       name: exam.name,
       subject: exam.subject,
       examType: exam.examType,
+      gradeLevel: exam.gradeLevel,
       school: exam.school,
       location: exam.location,
       scheduledDate: exam.scheduledDate,
@@ -263,23 +281,44 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="edit-school">School</Label>
-                  <Select
-                    value={formData.school}
-                    onValueChange={(value) => handleChange('school', value)}
-                  >
-                    <SelectTrigger id="edit-school">
-                      <SelectValue placeholder="Select school" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ESTONIAN_SCHOOLS.map((school) => (
-                        <SelectItem key={school.value} value={school.value}>
-                          {school.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-gradeLevel">Grade Level</Label>
+                    <Select
+                      value={formData.gradeLevel}
+                      onValueChange={(value) => handleChange('gradeLevel', value)}
+                    >
+                      <SelectTrigger id="edit-gradeLevel">
+                        <SelectValue placeholder="Select grade" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GRADE_LEVELS.map((grade) => (
+                          <SelectItem key={grade.value} value={grade.value}>
+                            {grade.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-school">School</Label>
+                    <Select
+                      value={formData.school}
+                      onValueChange={(value) => handleChange('school', value)}
+                    >
+                      <SelectTrigger id="edit-school">
+                        <SelectValue placeholder="Select school" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ESTONIAN_SCHOOLS.map((school) => (
+                          <SelectItem key={school.value} value={school.value}>
+                            {school.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -355,6 +394,12 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                       <p className="text-sm text-muted-foreground mb-1">Type</p>
                       <p className="font-medium capitalize">
                         {EXAM_TYPES.find(t => t.value === exam.examType)?.label || exam.examType}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Grade Level</p>
+                      <p className="font-medium">
+                        {GRADE_LEVELS.find(g => g.value === exam.gradeLevel)?.label || exam.gradeLevel}
                       </p>
                     </div>
                     <div>

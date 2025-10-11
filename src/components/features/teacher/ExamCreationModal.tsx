@@ -54,6 +54,21 @@ const EXAM_TYPES = [
   { value: 'practice-exam', label: 'Practice Exam' },
 ];
 
+const GRADE_LEVELS = [
+  { value: 'grade-1', label: '1st Grade' },
+  { value: 'grade-2', label: '2nd Grade' },
+  { value: 'grade-3', label: '3rd Grade' },
+  { value: 'grade-4', label: '4th Grade' },
+  { value: 'grade-5', label: '5th Grade' },
+  { value: 'grade-6', label: '6th Grade' },
+  { value: 'grade-7', label: '7th Grade' },
+  { value: 'grade-8', label: '8th Grade' },
+  { value: 'grade-9', label: '9th Grade' },
+  { value: 'grade-10', label: '10th Grade' },
+  { value: 'grade-11', label: '11th Grade' },
+  { value: 'grade-12', label: '12th Grade' },
+];
+
 interface ExamCreationModalProps {
   teacherName: string;
   onExamCreated: () => void;
@@ -68,6 +83,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
     name: '',
     subject: '',
     examType: '',
+    gradeLevel: '',
     school: '',
     location: '',
     scheduledDate: '',
@@ -88,6 +104,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
       name: '',
       subject: '',
       examType: '',
+      gradeLevel: '',
       school: '',
       location: '',
       scheduledDate: '',
@@ -206,24 +223,46 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="school">School</Label>
-            <Select
-              value={formData.school}
-              onValueChange={(value) => handleChange('school', value)}
-              required
-            >
-              <SelectTrigger id="school">
-                <SelectValue placeholder="Select school" />
-              </SelectTrigger>
-              <SelectContent>
-                {ESTONIAN_SCHOOLS.map((school) => (
-                  <SelectItem key={school.value} value={school.value}>
-                    {school.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="gradeLevel">Grade Level</Label>
+              <Select
+                value={formData.gradeLevel}
+                onValueChange={(value) => handleChange('gradeLevel', value)}
+                required
+              >
+                <SelectTrigger id="gradeLevel">
+                  <SelectValue placeholder="Select grade" />
+                </SelectTrigger>
+                <SelectContent>
+                  {GRADE_LEVELS.map((grade) => (
+                    <SelectItem key={grade.value} value={grade.value}>
+                      {grade.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="school">School</Label>
+              <Select
+                value={formData.school}
+                onValueChange={(value) => handleChange('school', value)}
+                required
+              >
+                <SelectTrigger id="school">
+                  <SelectValue placeholder="Select school" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ESTONIAN_SCHOOLS.map((school) => (
+                    <SelectItem key={school.value} value={school.value}>
+                      {school.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-2">

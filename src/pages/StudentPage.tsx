@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import StudentExamList from '@/components/features/student/StudentExamList';
 import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
+import RegistrationSuccessDialog from '@/components/features/student/RegistrationSuccessDialog';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { examStorage } from '@/utils/examStorage';
@@ -21,6 +22,7 @@ export default function StudentPage() {
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [examToUnregister, setExamToUnregister] = useState<string | null>(null);
+  const [registrationSuccess, setRegistrationSuccess] = useState<{ examName: string; pin: string } | null>(null);
 
   const loadExams = () => {
     const allExams = examStorage.getAll();
@@ -59,6 +61,15 @@ export default function StudentPage() {
       mockedStudent.idCode,
       idCardLastDigits
     )) {
+      // Get the newly created PIN
+      const registration = studentRegistration.getRegistration(selectedExam.id, mockedStudent.idCode);
+      if (registration) {
+        setRegistrationSuccess({
+          examName: selectedExam.name,
+          pin: registration.pin,
+        });
+      }
+      
       loadExams();
       setIsRegistrationOpen(false);
       setSelectedExam(null);
@@ -145,6 +156,15 @@ export default function StudentPage() {
         onConfirm={confirmUnregister}
         variant="destructive"
       />
+
+      {registrationSuccess && (
+        <RegistrationSuccessDialog
+          open={registrationSuccess !== null}
+          onOpenChange={(open) => !open && setRegistrationSuccess(null)}
+          examName={registrationSuccess.examName}
+          pin={registrationSuccess.pin}
+        />
+      )}
     </>
   );
 }

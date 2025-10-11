@@ -12,6 +12,7 @@ export interface Exam {
   name: string;
   subject: string;
   examType: string;
+  gradeLevel: string;
   school: string;
   location: string;
   scheduledDate: string;
@@ -27,6 +28,7 @@ export interface ExamFormData {
   name: string;
   subject: string;
   examType: string;
+  gradeLevel: string;
   school: string;
   location: string;
   scheduledDate: string;

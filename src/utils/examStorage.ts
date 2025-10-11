@@ -11,6 +11,7 @@ export const examStorage = {
       return parsed.map((exam: Exam) => ({
         ...exam,
         subject: exam.subject || 'mathematics',
+        gradeLevel: exam.gradeLevel || 'grade-9',
         school: exam.school || 'tallinna-kesklinna-gumnaasium',
         teacherName: exam.teacherName || 'Unknown Teacher',
         registeredStudents: exam.registeredStudents || []

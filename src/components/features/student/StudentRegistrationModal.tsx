@@ -102,6 +102,10 @@ export default function StudentRegistrationModal({
                 <span className="font-medium capitalize">{exam.examType?.replace('-', ' ')}</span>
               </div>
               <div className="flex justify-between">
+                <span className="text-muted-foreground">Grade Level:</span>
+                <span className="font-medium">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-muted-foreground">School:</span>
                 <span className="font-medium">{exam.school?.replace('-', ' ')}</span>
               </div>
