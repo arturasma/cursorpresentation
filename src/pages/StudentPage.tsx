@@ -18,6 +18,7 @@ export default function StudentPage() {
   
   const [exams, setExams] = useState<Exam[]>([]);
   const [registeredExamIds, setRegisteredExamIds] = useState<Set<string>>(new Set());
+  const [completedExamIds, setCompletedExamIds] = useState<Set<string>>(new Set());
   const [studentPINs, setStudentPINs] = useState<Map<string, string>>(new Map());
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
@@ -29,6 +30,7 @@ export default function StudentPage() {
     setExams(allExams);
 
     const registered = new Set<string>();
+    const completed = new Set<string>();
     const pins = new Map<string, string>();
 
     allExams.forEach(exam => {
@@ -36,10 +38,16 @@ export default function StudentPage() {
       if (registration) {
         registered.add(exam.id);
         pins.set(exam.id, registration.pin);
+        
+        // Check if completed
+        if (registration.completedAt) {
+          completed.add(exam.id);
+        }
       }
     });
 
     setRegisteredExamIds(registered);
+    setCompletedExamIds(completed);
     setStudentPINs(pins);
   };
 
@@ -89,8 +97,9 @@ export default function StudentPage() {
     }
   };
 
-  // Separate exams by registration status
-  const registeredExams = exams.filter(exam => registeredExamIds.has(exam.id));
+  // Separate exams by registration and completion status
+  const completedExams = exams.filter(exam => completedExamIds.has(exam.id));
+  const registeredExams = exams.filter(exam => registeredExamIds.has(exam.id) && !completedExamIds.has(exam.id));
   const availableExams = exams.filter(exam => !registeredExamIds.has(exam.id));
 
   return (
@@ -104,18 +113,22 @@ export default function StudentPage() {
           </div>
 
           <Tabs defaultValue="available" className="w-full">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsList className="grid w-full max-w-2xl grid-cols-3">
               <TabsTrigger value="available">
-                Available Exams ({availableExams.length})
+                Available ({availableExams.length})
               </TabsTrigger>
               <TabsTrigger value="registered">
-                My Exams ({registeredExams.length})
+                Registered ({registeredExams.length})
+              </TabsTrigger>
+              <TabsTrigger value="completed">
+                Completed ({completedExams.length})
               </TabsTrigger>
             </TabsList>
             <TabsContent value="available" className="mt-6">
               <StudentExamList
                 exams={availableExams}
                 registeredExamIds={registeredExamIds}
+                completedExamIds={completedExamIds}
                 studentPINs={studentPINs}
                 onOpenRegistration={handleOpenRegistration}
                 onUnregister={handleUnregister}
@@ -125,6 +138,17 @@ export default function StudentPage() {
               <StudentExamList
                 exams={registeredExams}
                 registeredExamIds={registeredExamIds}
+                completedExamIds={completedExamIds}
+                studentPINs={studentPINs}
+                onOpenRegistration={handleOpenRegistration}
+                onUnregister={handleUnregister}
+              />
+            </TabsContent>
+            <TabsContent value="completed" className="mt-6">
+              <StudentExamList
+                exams={completedExams}
+                registeredExamIds={registeredExamIds}
+                completedExamIds={completedExamIds}
                 studentPINs={studentPINs}
                 onOpenRegistration={handleOpenRegistration}
                 onUnregister={handleUnregister}

@@ -5,6 +5,7 @@ export interface StudentRegistration {
   idCardLastDigits: string; // Last 3 digits of ID card document number
   registeredAt: string;
   pin: string;
+  completedAt?: string; // Timestamp when student completed the exam
 }
 
 export interface Exam {

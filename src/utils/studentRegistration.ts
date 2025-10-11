@@ -99,6 +99,60 @@ export const studentRegistration = {
     return exams.filter(exam => 
       exam.registeredStudents.some(s => s.idCode === idCode)
     );
+  },
+
+  // Mark exam as completed for a student
+  completeExam(examId: string, idCode: string): boolean {
+    try {
+      const exams = examStorage.getAll();
+      const exam = exams.find(e => e.id === examId);
+      
+      if (!exam) return false;
+      
+      const studentIndex = exam.registeredStudents.findIndex(s => s.idCode === idCode);
+      
+      if (studentIndex === -1) return false;
+      
+      // Only mark as completed if not already completed
+      if (!exam.registeredStudents[studentIndex].completedAt) {
+        exam.registeredStudents[studentIndex].completedAt = new Date().toISOString();
+        examStorage.update(examId, { registeredStudents: exam.registeredStudents });
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Error completing exam:', error);
+      return false;
+    }
+  },
+
+  // Check if student has completed an exam
+  isCompleted(examId: string, idCode: string): boolean {
+    const exams = examStorage.getAll();
+    const exam = exams.find(e => e.id === examId);
+    
+    if (!exam) return false;
+    
+    const registration = exam.registeredStudents.find(s => s.idCode === idCode);
+    return registration?.completedAt !== undefined;
+  },
+
+  // Get completed exams for a student
+  getCompletedExams(idCode: string): Exam[] {
+    const exams = examStorage.getAll();
+    return exams.filter(exam => {
+      const registration = exam.registeredStudents.find(s => s.idCode === idCode);
+      return registration?.completedAt !== undefined;
+    });
+  },
+
+  // Get pending (registered but not completed) exams for a student
+  getPendingExams(idCode: string): Exam[] {
+    const exams = examStorage.getAll();
+    return exams.filter(exam => {
+      const registration = exam.registeredStudents.find(s => s.idCode === idCode);
+      return registration && !registration.completedAt;
+    });
   }
 };
 

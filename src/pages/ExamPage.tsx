@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, SignOut } from 'phosphor-react';
+import { ArrowLeft, SignOut, CheckCircle } from 'phosphor-react';
 import Header from '@/components/Header';
 import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
@@ -18,6 +18,8 @@ export default function ExamPage() {
   const { setIsInExam, showExitConfirmation, setShowExitConfirmation } = useExam();
   const [exam, setExam] = useState<Exam | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showCompleteConfirmation, setShowCompleteConfirmation] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Mocked student data
   const mockedStudent = {
@@ -41,6 +43,10 @@ export default function ExamPage() {
         return;
       }
 
+      // Check if already completed
+      const completed = studentRegistration.isCompleted(id, mockedStudent.idCode);
+      setIsCompleted(completed);
+
       setExam(foundExam);
       setIsInExam(true);
     }
@@ -63,6 +69,22 @@ export default function ExamPage() {
 
   const handleRequestExit = () => {
     setShowExitConfirmation(true);
+  };
+
+  const handleCompleteExam = () => {
+    setShowCompleteConfirmation(true);
+  };
+
+  const confirmCompleteExam = () => {
+    if (exam && studentRegistration.completeExam(exam.id, mockedStudent.idCode)) {
+      setShowCompleteConfirmation(false);
+      setIsCompleted(true);
+      // Show completion message before redirecting
+      setTimeout(() => {
+        setIsInExam(false);
+        navigate('/student');
+      }, 1500);
+    }
   };
 
   if (!exam) {
@@ -119,21 +141,39 @@ export default function ExamPage() {
             </>
           ) : (
             <div className="text-center py-16">
-              <h2 className="text-3xl font-bold mb-4">Exam Started Successfully!</h2>
-              <p className="text-muted-foreground mb-8">
-                The exam interface would load here. This is where students would complete their exam.
-              </p>
-              <div className="bg-muted/50 p-6 rounded-lg border border-border max-w-2xl mx-auto mb-8">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Prototype Note:</strong> This area would display the actual exam questions, 
-                  answer inputs, timer, and submission controls. The student would complete their exam 
-                  here with full access to the questions and the ability to submit their answers.
-                </p>
-              </div>
-              <Button variant="outline" onClick={handleRequestExit} className="gap-2">
-                <SignOut size={16} weight="bold" />
-                Exit Exam
-              </Button>
+              {isCompleted ? (
+                <>
+                  <CheckCircle size={64} weight="fill" className="mx-auto mb-4 text-green-600" />
+                  <h2 className="text-3xl font-bold mb-4 text-green-600">Exam Completed!</h2>
+                  <p className="text-muted-foreground mb-8">
+                    Your exam has been successfully submitted. Redirecting you back to the exam list...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-3xl font-bold mb-4">Exam Started Successfully!</h2>
+                  <p className="text-muted-foreground mb-8">
+                    The exam interface would load here. This is where students would complete their exam.
+                  </p>
+                  <div className="bg-muted/50 p-6 rounded-lg border border-border max-w-2xl mx-auto mb-8">
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Prototype Note:</strong> This area would display the actual exam questions, 
+                      answer inputs, timer, and submission controls. The student would complete their exam 
+                      here with full access to the questions and the ability to submit their answers.
+                    </p>
+                  </div>
+                  <div className="flex gap-3 justify-center">
+                    <Button onClick={handleCompleteExam} className="gap-2">
+                      <CheckCircle size={16} weight="bold" />
+                      Complete Exam
+                    </Button>
+                    <Button variant="outline" onClick={handleRequestExit} className="gap-2">
+                      <SignOut size={16} weight="bold" />
+                      Exit Without Completing
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -148,6 +188,16 @@ export default function ExamPage() {
         cancelText="Stay"
         onConfirm={handleExitExam}
         variant="destructive"
+      />
+
+      <ConfirmDialog
+        open={showCompleteConfirmation}
+        onOpenChange={setShowCompleteConfirmation}
+        title="Complete Exam?"
+        description="Are you sure you want to submit your exam? You won't be able to make any changes after submission."
+        confirmText="Submit Exam"
+        cancelText="Continue Working"
+        onConfirm={confirmCompleteExam}
       />
     </>
   );

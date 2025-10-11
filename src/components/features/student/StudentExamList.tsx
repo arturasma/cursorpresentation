@@ -6,6 +6,7 @@ import type { Exam } from '@/types/exam';
 interface StudentExamListProps {
   exams: Exam[];
   registeredExamIds: Set<string>;
+  completedExamIds: Set<string>;
   studentPINs: Map<string, string>;
   onOpenRegistration: (exam: Exam) => void;
   onUnregister: (examId: string) => void;
@@ -14,6 +15,7 @@ interface StudentExamListProps {
 export default function StudentExamList({
   exams,
   registeredExamIds,
+  completedExamIds,
   studentPINs,
   onOpenRegistration,
   onUnregister,
@@ -47,6 +49,7 @@ export default function StudentExamList({
                 key={exam.id}
                 exam={exam}
                 isRegistered={true}
+                isCompleted={completedExamIds.has(exam.id)}
                 studentPIN={studentPINs.get(exam.id)}
                 onOpenRegistration={onOpenRegistration}
                 onUnregister={onUnregister}
@@ -65,6 +68,7 @@ export default function StudentExamList({
                 key={exam.id}
                 exam={exam}
                 isRegistered={false}
+                isCompleted={false}
                 onOpenRegistration={onOpenRegistration}
                 onUnregister={onUnregister}
               />

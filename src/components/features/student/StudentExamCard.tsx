@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MapPin, Clock, Users, Key, LockSimple } from 'phosphor-react';
+import { Calendar, MapPin, Clock, Users, Key, LockSimple, CheckCircle } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PINRevealModal from './PINRevealModal';
@@ -9,6 +9,7 @@ import type { Exam } from '@/types/exam';
 interface StudentExamCardProps {
   exam: Exam;
   isRegistered: boolean;
+  isCompleted: boolean;
   studentPIN?: string;
   onOpenRegistration: (exam: Exam) => void;
   onUnregister: (examId: string) => void;
@@ -17,6 +18,7 @@ interface StudentExamCardProps {
 export default function StudentExamCard({
   exam,
   isRegistered,
+  isCompleted,
   studentPIN,
   onOpenRegistration,
   onUnregister,
@@ -54,8 +56,13 @@ export default function StudentExamCard({
   const isFull = exam.registeredStudents.length >= exam.studentCount;
   const spotsLeft = exam.studentCount - exam.registeredStudents.length;
 
+  // Get completion timestamp if completed
+  const completionInfo = isCompleted && exam.registeredStudents.find(
+    s => s.idCode && s.completedAt
+  );
+
   return (
-    <Card className={isRegistered ? 'border-primary' : ''}>
+    <Card className={isCompleted ? 'border-green-500' : isRegistered ? 'border-primary' : ''}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -68,7 +75,15 @@ export default function StudentExamCard({
               <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
-              {isRegistered && (
+              {isCompleted ? (
+                <>
+                  <span className="text-sm text-muted-foreground">•</span>
+                  <span className="text-xs font-medium text-green-600 flex items-center gap-1">
+                    <CheckCircle size={14} weight="fill" />
+                    Completed
+                  </span>
+                </>
+              ) : isRegistered && (
                 <>
                   <span className="text-sm text-muted-foreground">•</span>
                   <span className="text-xs font-medium text-primary">Registered</span>
@@ -111,7 +126,26 @@ export default function StudentExamCard({
             </div>
           </div>
 
-          {isRegistered && studentPIN && (
+          {isCompleted && completionInfo && (
+            <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle size={20} weight="fill" className="text-green-600" />
+                <span className="text-sm font-semibold text-green-700">Exam Completed</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Submitted on {new Date(completionInfo.completedAt!).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
+            </div>
+          )}
+
+          {isRegistered && !isCompleted && studentPIN && (
             <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -149,7 +183,11 @@ export default function StudentExamCard({
           )}
 
           <div className="flex gap-2 pt-2">
-            {isRegistered ? (
+            {isCompleted ? (
+              <div className="flex-1 text-center py-2 px-4 rounded-md bg-green-100 text-green-700 font-medium text-sm">
+                Exam Submitted
+              </div>
+            ) : isRegistered ? (
               <>
                 <Button
                   variant="outline"

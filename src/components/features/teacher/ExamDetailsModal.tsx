@@ -450,30 +450,92 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                         </p>
                       </div>
                     ) : (
-                      <div className="space-y-2">
-                        {exam.registeredStudents.map((student) => (
-                          <div
-                            key={student.studentId}
-                            className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30"
-                          >
-                            <div>
-                              <p className="font-medium">{student.studentName}</p>
-                              <p className="text-xs text-muted-foreground">
-                                Registered: {new Date(student.registeredAt).toLocaleDateString('en-US', {
-                                  month: 'short',
-                                  day: 'numeric',
-                                  year: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                })}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-xs text-muted-foreground mb-1">PIN</p>
-                              <p className="font-mono font-semibold">{student.pin}</p>
+                      <div className="space-y-4">
+                        {/* Completed Students Section */}
+                        {exam.registeredStudents.filter(s => s.completedAt).length > 0 && (
+                          <div>
+                            <h3 className="text-sm font-semibold text-green-700 mb-2 flex items-center gap-2">
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-100 text-green-700 text-xs">
+                                {exam.registeredStudents.filter(s => s.completedAt).length}
+                              </span>
+                              Completed
+                            </h3>
+                            <div className="space-y-2">
+                              {exam.registeredStudents
+                                .filter(s => s.completedAt)
+                                .sort((a, b) => new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime())
+                                .map((student) => (
+                                  <div
+                                    key={student.studentId}
+                                    className="flex items-center justify-between p-3 rounded-lg border border-green-200 bg-green-50/50"
+                                  >
+                                    <div>
+                                      <p className="font-medium">{student.studentName}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        Registered: {new Date(student.registeredAt).toLocaleDateString('en-US', {
+                                          month: 'short',
+                                          day: 'numeric',
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                        })}
+                                      </p>
+                                      <p className="text-xs text-green-700 font-medium mt-1">
+                                        ✓ Completed: {new Date(student.completedAt!).toLocaleDateString('en-US', {
+                                          month: 'short',
+                                          day: 'numeric',
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                        })}
+                                      </p>
+                                    </div>
+                                    <div className="text-right">
+                                      <p className="text-xs text-muted-foreground mb-1">PIN</p>
+                                      <p className="font-mono font-semibold">{student.pin}</p>
+                                    </div>
+                                  </div>
+                                ))}
                             </div>
                           </div>
-                        ))}
+                        )}
+
+                        {/* Pending Students Section */}
+                        {exam.registeredStudents.filter(s => !s.completedAt).length > 0 && (
+                          <div>
+                            <h3 className="text-sm font-semibold text-blue-700 mb-2 flex items-center gap-2">
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs">
+                                {exam.registeredStudents.filter(s => !s.completedAt).length}
+                              </span>
+                              Pending
+                            </h3>
+                            <div className="space-y-2">
+                              {exam.registeredStudents
+                                .filter(s => !s.completedAt)
+                                .sort((a, b) => new Date(b.registeredAt).getTime() - new Date(a.registeredAt).getTime())
+                                .map((student) => (
+                                  <div
+                                    key={student.studentId}
+                                    className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30"
+                                  >
+                                    <div>
+                                      <p className="font-medium">{student.studentName}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        Registered: {new Date(student.registeredAt).toLocaleDateString('en-US', {
+                                          month: 'short',
+                                          day: 'numeric',
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                        })}
+                                      </p>
+                                    </div>
+                                    <div className="text-right">
+                                      <p className="text-xs text-muted-foreground mb-1">PIN</p>
+                                      <p className="font-mono font-semibold">{student.pin}</p>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </CardContent>
