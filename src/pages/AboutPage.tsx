@@ -1,9 +1,15 @@
 import Header from '@/components/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Warning } from 'phosphor-react';
+import { Button } from '@/components/ui/button';
+import { Warning, CaretRight } from 'phosphor-react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/context/UserContext';
 
 export default function AboutPage() {
+  const navigate = useNavigate();
+  const { handleLogout } = useUser();
+
   return (
     <>
       <Header />
@@ -560,7 +566,42 @@ export default function AboutPage() {
                           technical specifications, eliminating the need for further discovery phases.
                         </p>
                       </div>
+                      <div>
+                        <p className="font-semibold text-sm mb-2">Easy mobile testing</p>
+                        <p className="text-sm text-muted-foreground">
+                          The prototype's responsive design allowed easy testing across many screen sizes as well asmobile devices, helping identify 
+                          and address cross-platform issues early in the validation process rather than discovering them 
+                          during development.
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm mb-2">Public feedback and voting system</p>
+                        <p className="text-sm text-muted-foreground">
+                          The prototype included an easy-to-use feedback form where teachers and students could leave comments 
+                          and vote on others' feedback. This helped surface the most valuable insights and prioritize 
+                          improvements based on actual user needs during the prototyping phase.
+                        </p>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/40 p-6 rounded-lg">
+                    <h3 className="font-semibold text-lg mb-3">Try It Yourself</h3>
+                    <p className="text-sm text-foreground/90 mb-4">
+                      Test the prototype yourself and experience the flow firsthand. Navigate to the home page 
+                      and select a role from the header in the upper left corner to explore the different user perspectives.
+                    </p>
+                    <Button 
+                      onClick={() => {
+                        handleLogout();
+                        navigate('/');
+                      }}
+                      size="lg"
+                      className="group"
+                    >
+                      Go to Home Page
+                      <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
