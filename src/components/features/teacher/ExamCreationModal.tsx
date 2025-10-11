@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { examStorage } from '@/utils/examStorage';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import type { ExamFormData } from '@/types/exam';
 
 // Mock Estonian schools
@@ -54,13 +55,15 @@ const EXAM_TYPES = [
 ];
 
 interface ExamCreationModalProps {
+  teacherName: string;
   onExamCreated: () => void;
 }
 
-export default function ExamCreationModal({ onExamCreated }: ExamCreationModalProps) {
+export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCreationModalProps) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date>();
   const [isDirty, setIsDirty] = useState(false);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
   const [formData, setFormData] = useState<ExamFormData>({
     name: '',
     subject: '',
@@ -69,6 +72,7 @@ export default function ExamCreationModal({ onExamCreated }: ExamCreationModalPr
     location: '',
     scheduledDate: '',
     scheduledTime: '',
+    teacherName,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -88,6 +92,7 @@ export default function ExamCreationModal({ onExamCreated }: ExamCreationModalPr
       location: '',
       scheduledDate: '',
       scheduledTime: '',
+      teacherName,
     });
     setDate(undefined);
     setIsDirty(false);
@@ -108,10 +113,7 @@ export default function ExamCreationModal({ onExamCreated }: ExamCreationModalPr
 
   const handleCancel = () => {
     if (isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        resetForm();
-        setOpen(false);
-      }
+      setShowUnsavedDialog(true);
     } else {
       resetForm();
       setOpen(false);
@@ -120,16 +122,19 @@ export default function ExamCreationModal({ onExamCreated }: ExamCreationModalPr
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen && isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        resetForm();
-        setOpen(false);
-      }
+      setShowUnsavedDialog(true);
     } else {
       setOpen(newOpen);
       if (!newOpen) {
         resetForm();
       }
     }
+  };
+
+  const confirmLeave = () => {
+    resetForm();
+    setOpen(false);
+    setShowUnsavedDialog(false);
   };
 
   return (
@@ -276,6 +281,17 @@ export default function ExamCreationModal({ onExamCreated }: ExamCreationModalPr
           </div>
         </form>
       </DialogContent>
+
+      <ConfirmDialog
+        open={showUnsavedDialog}
+        onOpenChange={setShowUnsavedDialog}
+        title="Unsaved Changes"
+        description="You have unsaved changes. Are you sure you want to leave? All changes will be lost."
+        confirmText="Leave"
+        cancelText="Stay"
+        onConfirm={confirmLeave}
+        variant="destructive"
+      />
     </Dialog>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import StudentExamList from '@/components/features/student/StudentExamList';
 import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
@@ -19,6 +20,7 @@ export default function StudentPage() {
   const [studentPINs, setStudentPINs] = useState<Map<string, string>>(new Map());
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [examToUnregister, setExamToUnregister] = useState<string | null>(null);
 
   const loadExams = () => {
     const allExams = examStorage.getAll();
@@ -66,10 +68,13 @@ export default function StudentPage() {
   };
 
   const handleUnregister = (examId: string) => {
-    if (window.confirm('Are you sure you want to unregister from this exam?')) {
-      if (studentRegistration.unregister(examId, mockedStudent.idCode)) {
-        loadExams();
-      }
+    setExamToUnregister(examId);
+  };
+
+  const confirmUnregister = () => {
+    if (examToUnregister && studentRegistration.unregister(examToUnregister, mockedStudent.idCode)) {
+      loadExams();
+      setExamToUnregister(null);
     }
   };
 
@@ -129,6 +134,17 @@ export default function StudentPage() {
           onRegister={handleRegister}
         />
       )}
+
+      <ConfirmDialog
+        open={examToUnregister !== null}
+        onOpenChange={(open) => !open && setExamToUnregister(null)}
+        title="Unregister from Exam"
+        description="Are you sure you want to unregister from this exam? You will need to register again to access it."
+        confirmText="Unregister"
+        cancelText="Cancel"
+        onConfirm={confirmUnregister}
+        variant="destructive"
+      />
     </>
   );
 }

@@ -18,6 +18,7 @@ export interface Exam {
   scheduledTime: string;
   studentCount: number;
   status: 'scheduled' | 'active' | 'completed';
+  teacherName: string;
   createdAt: string;
   registeredStudents: StudentRegistration[];
 }
@@ -30,5 +31,6 @@ export interface ExamFormData {
   location: string;
   scheduledDate: string;
   scheduledTime: string;
+  teacherName: string;
 }
 

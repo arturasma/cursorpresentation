@@ -9,9 +9,10 @@ interface ExamListProps {
   onDelete: (id: string) => void;
   onOpenExam: (exam: Exam) => void;
   onCreateExam: () => void;
+  teacherName: string;
 }
 
-export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam }: ExamListProps) {
+export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, teacherName }: ExamListProps) {
   if (exams.length === 0) {
     return (
       <Card className="border-dashed">
@@ -21,7 +22,7 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam }: 
           <p className="text-muted-foreground mb-6">
             Get started by creating your first exam session.
           </p>
-          <ExamCreationModal onExamCreated={onCreateExam} />
+          <ExamCreationModal teacherName={teacherName} onExamCreated={onCreateExam} />
         </CardContent>
       </Card>
     );
@@ -82,22 +83,31 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam }: 
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar size={16} weight="regular" />
-                <span>{formatDate(exam.scheduledDate)}</span>
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Calendar size={16} weight="regular" />
+                  <span>{formatDate(exam.scheduledDate)}</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock size={16} weight="regular" />
+                  <span>{exam.scheduledTime}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Clock size={16} weight="regular" />
-                <span>{exam.scheduledTime}</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <MapPin size={16} weight="regular" />
+              <div className="text-sm text-muted-foreground">
+                <MapPin size={16} weight="regular" className="inline mr-1" />
+                <span className="capitalize">{exam.school?.replace('-', ' ')}</span>
+                <span className="mx-1">•</span>
                 <span>{exam.location}</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users size={16} weight="regular" />
-                <span>{exam.studentCount} students</span>
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Users size={16} weight="regular" />
+                  <span>{exam.registeredStudents.length}/{exam.studentCount}</span>
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  By {exam.teacherName}
+                </div>
               </div>
             </div>
           </CardContent>

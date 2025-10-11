@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { examStorage } from '@/utils/examStorage';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import type { Exam } from '@/types/exam';
 
 // Mock Estonian schools
@@ -65,6 +66,8 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
   const [isEditing, setIsEditing] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [formData, setFormData] = useState({
     name: exam.name,
     subject: exam.subject,
@@ -112,36 +115,42 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
 
   const handleCancel = () => {
     if (isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to discard them?')) {
-        setFormData({
-          name: exam.name,
-          subject: exam.subject,
-          examType: exam.examType,
-          school: exam.school,
-          location: exam.location,
-          scheduledDate: exam.scheduledDate,
-          scheduledTime: exam.scheduledTime,
-        });
-        setIsEditing(false);
-        setIsDirty(false);
-      }
+      setShowUnsavedDialog(true);
     } else {
       setIsEditing(false);
     }
   };
 
+  const confirmCancelEdit = () => {
+    setFormData({
+      name: exam.name,
+      subject: exam.subject,
+      examType: exam.examType,
+      school: exam.school,
+      location: exam.location,
+      scheduledDate: exam.scheduledDate,
+      scheduledTime: exam.scheduledTime,
+    });
+    setIsEditing(false);
+    setIsDirty(false);
+    setShowUnsavedDialog(false);
+  };
+
   const handleClose = () => {
     if (isEditing && isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to close?')) {
-        onClose();
-        setIsEditing(false);
-        setIsDirty(false);
-      }
+      setShowUnsavedDialog(true);
     } else {
       onClose();
       setIsEditing(false);
       setIsDirty(false);
     }
+  };
+
+  const confirmClose = () => {
+    onClose();
+    setIsEditing(false);
+    setIsDirty(false);
+    setShowUnsavedDialog(false);
   };
 
   const formatDisplayDate = (dateString: string) => {
@@ -191,7 +200,7 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={onDelete}
+                  onClick={() => setShowDeleteDialog(true)}
                   className="text-destructive hover:text-destructive"
                 >
                   <Trash size={16} weight="regular" />
@@ -370,6 +379,10 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                       <p className="text-sm text-muted-foreground mb-1">Expected Students</p>
                       <p className="font-medium">{exam.studentCount} students</p>
                     </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Teacher</p>
+                      <p className="font-medium">{exam.teacherName}</p>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -425,6 +438,31 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
           )}
         </div>
       </DialogContent>
+
+      <ConfirmDialog
+        open={showUnsavedDialog}
+        onOpenChange={setShowUnsavedDialog}
+        title="Unsaved Changes"
+        description="You have unsaved changes. Are you sure you want to discard them?"
+        confirmText={isEditing && isDirty && !open ? "Close" : "Discard"}
+        cancelText="Keep Editing"
+        onConfirm={isEditing && isDirty && !open ? confirmClose : confirmCancelEdit}
+        variant="destructive"
+      />
+
+      <ConfirmDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title="Delete Exam"
+        description="Are you sure you want to delete this exam? This action cannot be undone. All student registrations will be lost."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => {
+          setShowDeleteDialog(false);
+          onDelete();
+        }}
+        variant="destructive"
+      />
     </Dialog>
   );
 }

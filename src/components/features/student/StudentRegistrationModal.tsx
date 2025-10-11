@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import type { Exam } from '@/types/exam';
 
 interface StudentRegistrationModalProps {
@@ -27,6 +28,7 @@ export default function StudentRegistrationModal({
 }: StudentRegistrationModalProps) {
   const [idCardLastDigits, setIdCardLastDigits] = useState('');
   const [isDirty, setIsDirty] = useState(false);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
 
   // Mocked Estonian ID card data (in real environment this comes from authentication)
   const mockedData = {
@@ -43,14 +45,13 @@ export default function StudentRegistrationModal({
   const handleClose = () => {
     setIdCardLastDigits('');
     setIsDirty(false);
+    setShowUnsavedDialog(false);
     onClose();
   };
 
   const handleCancel = () => {
     if (isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        handleClose();
-      }
+      setShowUnsavedDialog(true);
     } else {
       handleClose();
     }
@@ -58,9 +59,7 @@ export default function StudentRegistrationModal({
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen && isDirty) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        handleClose();
-      }
+      setShowUnsavedDialog(true);
     } else if (!newOpen) {
       handleClose();
     }
@@ -124,6 +123,10 @@ export default function StudentRegistrationModal({
                 <span className="text-muted-foreground">Time:</span>
                 <span className="font-medium">{exam.scheduledTime}</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Teacher:</span>
+                <span className="font-medium">{exam.teacherName}</span>
+              </div>
             </div>
           </div>
 
@@ -185,6 +188,17 @@ export default function StudentRegistrationModal({
           </div>
         </form>
       </DialogContent>
+
+      <ConfirmDialog
+        open={showUnsavedDialog}
+        onOpenChange={setShowUnsavedDialog}
+        title="Unsaved Changes"
+        description="You have unsaved changes. Are you sure you want to leave? You will need to start registration again."
+        confirmText="Leave"
+        cancelText="Stay"
+        onConfirm={handleClose}
+        variant="destructive"
+      />
     </Dialog>
   );
 }

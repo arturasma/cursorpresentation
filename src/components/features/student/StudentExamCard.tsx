@@ -89,9 +89,14 @@ export default function StudentExamCard({
                 {exam.location}
               </div>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users size={16} weight="regular" />
-              <span>{exam.registeredStudents.length}/{exam.studentCount} registered</span>
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Users size={16} weight="regular" />
+                <span>{exam.registeredStudents.length}/{exam.studentCount} registered</span>
+              </div>
+              <div className="text-muted-foreground text-xs">
+                Teacher: {exam.teacherName}
+              </div>
             </div>
           </div>
 

@@ -3,13 +3,20 @@ import Header from '@/components/Header';
 import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
 import ExamList from '@/components/features/teacher/ExamList';
 import ExamDetailsModal from '@/components/features/teacher/ExamDetailsModal';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { examStorage } from '@/utils/examStorage';
 import type { Exam } from '@/types/exam';
 
 export default function TeacherPage() {
+  // Mocked teacher data (in production from authentication)
+  const mockedTeacher = {
+    name: 'Tõnu Kuusk',
+  };
+
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [examToDelete, setExamToDelete] = useState<string | null>(null);
 
   const loadExams = () => {
     setExams(examStorage.getAll());
@@ -20,9 +27,14 @@ export default function TeacherPage() {
   }, []);
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this exam?')) {
-      examStorage.delete(id);
+    setExamToDelete(id);
+  };
+
+  const confirmDelete = () => {
+    if (examToDelete) {
+      examStorage.delete(examToDelete);
       loadExams();
+      setExamToDelete(null);
     }
   };
 
@@ -46,8 +58,11 @@ export default function TeacherPage() {
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold">Exam Management</h1>
-            <ExamCreationModal onExamCreated={loadExams} />
+            <div>
+              <h1 className="text-3xl font-bold">Exam Management</h1>
+              <p className="text-muted-foreground mt-1">Welcome, {mockedTeacher.name}</p>
+            </div>
+            <ExamCreationModal teacherName={mockedTeacher.name} onExamCreated={loadExams} />
           </div>
 
           <ExamList 
@@ -55,6 +70,7 @@ export default function TeacherPage() {
             onDelete={handleDelete}
             onOpenExam={handleOpenExam}
             onCreateExam={loadExams}
+            teacherName={mockedTeacher.name}
           />
         </div>
       </main>
@@ -71,6 +87,17 @@ export default function TeacherPage() {
           }}
         />
       )}
+
+      <ConfirmDialog
+        open={examToDelete !== null}
+        onOpenChange={(open) => !open && setExamToDelete(null)}
+        title="Delete Exam"
+        description="Are you sure you want to delete this exam? This action cannot be undone. All student registrations will be lost."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmDelete}
+        variant="destructive"
+      />
     </>
   );
 }

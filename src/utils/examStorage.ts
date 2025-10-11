@@ -12,6 +12,7 @@ export const examStorage = {
         ...exam,
         subject: exam.subject || 'mathematics',
         school: exam.school || 'tallinna-kesklinna-gumnaasium',
+        teacherName: exam.teacherName || 'Unknown Teacher',
         registeredStudents: exam.registeredStudents || []
       }));
     } catch (error) {
