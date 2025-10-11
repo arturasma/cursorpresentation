@@ -1,6 +1,8 @@
 export interface StudentRegistration {
   studentId: string;
   studentName: string;
+  idCode: string; // Estonian Isikukood
+  idCardLastDigits: string; // Last 3 digits of ID card document number
   registeredAt: string;
   pin: string;
 }

@@ -7,7 +7,7 @@ interface StudentExamListProps {
   exams: Exam[];
   registeredExamIds: Set<string>;
   studentPINs: Map<string, string>;
-  onRegister: (examId: string) => void;
+  onOpenRegistration: (exam: Exam) => void;
   onUnregister: (examId: string) => void;
 }
 
@@ -15,7 +15,7 @@ export default function StudentExamList({
   exams,
   registeredExamIds,
   studentPINs,
-  onRegister,
+  onOpenRegistration,
   onUnregister,
 }: StudentExamListProps) {
   // Separate registered and available exams
@@ -48,7 +48,7 @@ export default function StudentExamList({
                 exam={exam}
                 isRegistered={true}
                 studentPIN={studentPINs.get(exam.id)}
-                onRegister={onRegister}
+                onOpenRegistration={onOpenRegistration}
                 onUnregister={onUnregister}
               />
             ))}
@@ -65,7 +65,7 @@ export default function StudentExamList({
                 key={exam.id}
                 exam={exam}
                 isRegistered={false}
-                onRegister={onRegister}
+                onOpenRegistration={onOpenRegistration}
                 onUnregister={onUnregister}
               />
             ))}

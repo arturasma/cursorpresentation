@@ -7,7 +7,7 @@ interface StudentExamCardProps {
   exam: Exam;
   isRegistered: boolean;
   studentPIN?: string;
-  onRegister: (examId: string) => void;
+  onOpenRegistration: (exam: Exam) => void;
   onUnregister: (examId: string) => void;
 }
 
@@ -15,7 +15,7 @@ export default function StudentExamCard({
   exam,
   isRegistered,
   studentPIN,
-  onRegister,
+  onOpenRegistration,
   onUnregister,
 }: StudentExamCardProps) {
   const formatDate = (dateString: string) => {
@@ -115,7 +115,7 @@ export default function StudentExamCard({
               </>
             ) : (
               <Button
-                onClick={() => onRegister(exam.id)}
+                onClick={() => onOpenRegistration(exam)}
                 className="flex-1"
                 disabled={isFull}
               >

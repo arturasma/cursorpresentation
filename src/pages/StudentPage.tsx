@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import StudentExamList from '@/components/features/student/StudentExamList';
+import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
 import type { Exam } from '@/types/exam';
 
 export default function StudentPage() {
-  // Use a default student ID from localStorage or generate one
-  const [studentName] = useState<string>(() => {
-    let name = localStorage.getItem('studentIdentity');
-    if (!name) {
-      name = `Student-${Math.random().toString(36).substring(2, 9)}`;
-      localStorage.setItem('studentIdentity', name);
-    }
-    return name;
-  });
+  // Mocked Estonian ID data (in production from authentication)
+  const mockedStudent = {
+    name: 'Mari Maasikas',
+    idCode: '50001010001',
+  };
   
   const [exams, setExams] = useState<Exam[]>([]);
   const [registeredExamIds, setRegisteredExamIds] = useState<Set<string>>(new Set());
   const [studentPINs, setStudentPINs] = useState<Map<string, string>>(new Map());
+  const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 
   const loadExams = () => {
     const allExams = examStorage.getAll();
@@ -28,7 +28,7 @@ export default function StudentPage() {
     const pins = new Map<string, string>();
 
     allExams.forEach(exam => {
-      const registration = studentRegistration.getRegistration(exam.id, studentName);
+      const registration = studentRegistration.getRegistration(exam.id, mockedStudent.idCode);
       if (registration) {
         registered.add(exam.id);
         pins.set(exam.id, registration.pin);
@@ -41,11 +41,25 @@ export default function StudentPage() {
 
   useEffect(() => {
     loadExams();
-  }, [studentName]);
+  }, []);
 
-  const handleRegister = (examId: string) => {
-    if (studentRegistration.register(examId, studentName)) {
+  const handleOpenRegistration = (exam: Exam) => {
+    setSelectedExam(exam);
+    setIsRegistrationOpen(true);
+  };
+
+  const handleRegister = (idCardLastDigits: string) => {
+    if (!selectedExam) return;
+    
+    if (studentRegistration.register(
+      selectedExam.id,
+      mockedStudent.name,
+      mockedStudent.idCode,
+      idCardLastDigits
+    )) {
       loadExams();
+      setIsRegistrationOpen(false);
+      setSelectedExam(null);
     } else {
       alert('Unable to register for this exam. It may be full or you are already registered.');
     }
@@ -53,11 +67,15 @@ export default function StudentPage() {
 
   const handleUnregister = (examId: string) => {
     if (window.confirm('Are you sure you want to unregister from this exam?')) {
-      if (studentRegistration.unregister(examId, studentName)) {
+      if (studentRegistration.unregister(examId, mockedStudent.idCode)) {
         loadExams();
       }
     }
   };
+
+  // Separate exams by registration status
+  const registeredExams = exams.filter(exam => registeredExamIds.has(exam.id));
+  const availableExams = exams.filter(exam => !registeredExamIds.has(exam.id));
 
   return (
     <>
@@ -65,20 +83,52 @@ export default function StudentPage() {
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold">Available Exams</h1>
-            <p className="text-muted-foreground mt-1">Browse and register for exams</p>
+            <h1 className="text-3xl font-bold">Exam Registration</h1>
+            <p className="text-muted-foreground mt-1">Welcome, {mockedStudent.name}</p>
           </div>
 
-          <StudentExamList
-            exams={exams}
-            registeredExamIds={registeredExamIds}
-            studentPINs={studentPINs}
-            onRegister={handleRegister}
-            onUnregister={handleUnregister}
-          />
+          <Tabs defaultValue="available" className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2">
+              <TabsTrigger value="available">
+                Available Exams ({availableExams.length})
+              </TabsTrigger>
+              <TabsTrigger value="registered">
+                My Exams ({registeredExams.length})
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="available" className="mt-6">
+              <StudentExamList
+                exams={availableExams}
+                registeredExamIds={registeredExamIds}
+                studentPINs={studentPINs}
+                onOpenRegistration={handleOpenRegistration}
+                onUnregister={handleUnregister}
+              />
+            </TabsContent>
+            <TabsContent value="registered" className="mt-6">
+              <StudentExamList
+                exams={registeredExams}
+                registeredExamIds={registeredExamIds}
+                studentPINs={studentPINs}
+                onOpenRegistration={handleOpenRegistration}
+                onUnregister={handleUnregister}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
+
+      {selectedExam && (
+        <StudentRegistrationModal
+          exam={selectedExam}
+          open={isRegistrationOpen}
+          onClose={() => {
+            setIsRegistrationOpen(false);
+            setSelectedExam(null);
+          }}
+          onRegister={handleRegister}
+        />
+      )}
     </>
   );
 }
-

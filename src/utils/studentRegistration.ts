@@ -1,8 +1,8 @@
 import type { Exam, StudentRegistration } from '@/types/exam';
 import { examStorage } from './examStorage';
 
-// Generate a simple PIN from student name and exam date
-function generatePIN(studentName: string, examDate: string): string {
+// Generate a PIN from ID code, exam date, and ID card last digits
+function generatePIN(idCode: string, examDate: string, idCardLastDigits: string): string {
   const hash = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -13,22 +13,23 @@ function generatePIN(studentName: string, examDate: string): string {
     return Math.abs(hash);
   };
   
-  const combined = `${studentName.toLowerCase()}${examDate}`;
+  // Combine ID code, exam date, and ID card digits for unique PIN
+  const combined = `${idCode}${examDate}${idCardLastDigits}`;
   const numHash = hash(combined);
   const pin = String(numHash).slice(0, 8).padStart(8, '0');
   return `${pin.slice(0, 4)}-${pin.slice(4, 8)}`;
 }
 
 export const studentRegistration = {
-  register(examId: string, studentName: string): boolean {
+  register(examId: string, studentName: string, idCode: string, idCardLastDigits: string): boolean {
     try {
       const exams = examStorage.getAll();
       const exam = exams.find(e => e.id === examId);
       
       if (!exam) return false;
       
-      // Check if already registered
-      if (exam.registeredStudents.some(s => s.studentName === studentName)) {
+      // Check if already registered (by ID code)
+      if (exam.registeredStudents.some(s => s.idCode === idCode)) {
         return false;
       }
       
@@ -40,8 +41,10 @@ export const studentRegistration = {
       const registration: StudentRegistration = {
         studentId: crypto.randomUUID(),
         studentName,
+        idCode,
+        idCardLastDigits,
         registeredAt: new Date().toISOString(),
-        pin: generatePIN(studentName, exam.scheduledDate),
+        pin: generatePIN(idCode, exam.scheduledDate, idCardLastDigits),
       };
       
       exam.registeredStudents.push(registration);
@@ -54,7 +57,7 @@ export const studentRegistration = {
     }
   },
 
-  unregister(examId: string, studentName: string): boolean {
+  unregister(examId: string, idCode: string): boolean {
     try {
       const exams = examStorage.getAll();
       const exam = exams.find(e => e.id === examId);
@@ -62,7 +65,7 @@ export const studentRegistration = {
       if (!exam) return false;
       
       const filteredStudents = exam.registeredStudents.filter(
-        s => s.studentName !== studentName
+        s => s.idCode !== idCode
       );
       
       examStorage.update(examId, { registeredStudents: filteredStudents });
@@ -73,28 +76,28 @@ export const studentRegistration = {
     }
   },
 
-  isRegistered(examId: string, studentName: string): boolean {
+  isRegistered(examId: string, idCode: string): boolean {
     const exams = examStorage.getAll();
     const exam = exams.find(e => e.id === examId);
     
     if (!exam) return false;
     
-    return exam.registeredStudents.some(s => s.studentName === studentName);
+    return exam.registeredStudents.some(s => s.idCode === idCode);
   },
 
-  getRegistration(examId: string, studentName: string): StudentRegistration | null {
+  getRegistration(examId: string, idCode: string): StudentRegistration | null {
     const exams = examStorage.getAll();
     const exam = exams.find(e => e.id === examId);
     
     if (!exam) return null;
     
-    return exam.registeredStudents.find(s => s.studentName === studentName) || null;
+    return exam.registeredStudents.find(s => s.idCode === idCode) || null;
   },
 
-  getStudentExams(studentName: string): Exam[] {
+  getStudentExams(idCode: string): Exam[] {
     const exams = examStorage.getAll();
     return exams.filter(exam => 
-      exam.registeredStudents.some(s => s.studentName === studentName)
+      exam.registeredStudents.some(s => s.idCode === idCode)
     );
   }
 };
