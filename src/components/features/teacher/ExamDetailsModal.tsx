@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PencilSimple, CalendarBlank, Trash, X } from 'phosphor-react';
+import { PencilSimple, CalendarBlank, Trash } from 'phosphor-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {

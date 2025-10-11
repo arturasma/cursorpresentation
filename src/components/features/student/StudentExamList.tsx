@@ -5,7 +5,6 @@ import type { Exam } from '@/types/exam';
 
 interface StudentExamListProps {
   exams: Exam[];
-  studentName: string;
   registeredExamIds: Set<string>;
   studentPINs: Map<string, string>;
   onRegister: (examId: string) => void;
@@ -14,7 +13,6 @@ interface StudentExamListProps {
 
 export default function StudentExamList({
   exams,
-  studentName,
   registeredExamIds,
   studentPINs,
   onRegister,

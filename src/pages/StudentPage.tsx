@@ -71,7 +71,6 @@ export default function StudentPage() {
 
           <StudentExamList
             exams={exams}
-            studentName={studentName}
             registeredExamIds={registeredExamIds}
             studentPINs={studentPINs}
             onRegister={handleRegister}
