@@ -1,4 +1,4 @@
-import { Trash, Calendar, MapPin, Users, Clock, FolderOpen } from 'phosphor-react';
+import { Trash, Calendar, MapPin, Users, Clock, FolderOpen, Circle } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ExamCreationModal from './ExamCreationModal';
@@ -69,6 +69,15 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                   <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
                   <span className="text-sm text-muted-foreground">•</span>
                   <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
+                  {exam.activeSession && (
+                    <>
+                      <span className="text-sm text-muted-foreground">•</span>
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600">
+                        <Circle size={8} weight="fill" className="animate-pulse" />
+                        Session Active
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
               <Button

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
 import ExamList from '@/components/features/teacher/ExamList';
@@ -8,6 +9,8 @@ import { examStorage } from '@/utils/examStorage';
 import type { Exam } from '@/types/exam';
 
 export default function TeacherPage() {
+  const navigate = useNavigate();
+  
   // Mocked teacher data (in production from authentication)
   const mockedTeacher = {
     name: 'Tõnu Kuusk',
@@ -39,8 +42,8 @@ export default function TeacherPage() {
   };
 
   const handleOpenExam = (exam: Exam) => {
-    setSelectedExam(exam);
-    setIsDetailsOpen(true);
+    // Navigate to exam monitoring page
+    navigate(`/exam/${exam.id}`);
   };
 
   const handleCloseDetails = () => {

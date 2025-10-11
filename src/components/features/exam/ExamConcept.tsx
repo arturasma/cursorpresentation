@@ -1,3 +1,4 @@
+import { Clock } from 'phosphor-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ExamConceptProps {
@@ -61,6 +62,18 @@ export default function ExamConcept({
             <p className="text-xs text-blue-900">
               <strong>Note:</strong> This validates that you are the correct student at the correct location and time, without requiring traditional computer login procedures during the exam.
             </p>
+          </div>
+
+          <div className="bg-green-50 border border-green-200 p-3 rounded flex gap-2">
+            <Clock size={16} weight="regular" className="text-green-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-semibold text-green-900 mb-1">Production Feature: Time Window Validation</p>
+              <p className="text-xs text-green-800">
+                In the production system, students can only access exams within a specific time window. 
+                For example, access is granted from 15 minutes before the scheduled start time until 
+                30 minutes after. This prevents unauthorized exam access outside the designated time period.
+              </p>
+            </div>
           </div>
         </div>
       </CardContent>

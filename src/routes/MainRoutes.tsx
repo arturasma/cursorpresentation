@@ -1,19 +1,18 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useUser } from '@/context/UserContext';
 import Homepage from '@/pages/Homepage';
 import StudentPage from '@/pages/StudentPage';
 import TeacherPage from '@/pages/TeacherPage';
 import ExamPage from '@/pages/ExamPage';
 
-function ProtectedRoute({ children, allowedRole }: { children: React.ReactNode; allowedRole: 'student' | 'teacher' }) {
+function ProtectedRoute({ children, allowedRole }: { children: React.ReactNode; allowedRole: 'student' | 'teacher' | 'both' }) {
   const { userRole } = useUser();
   
   if (!userRole) {
     return <Navigate to="/" replace />;
   }
   
-  if (userRole !== allowedRole) {
+  if (allowedRole !== 'both' && userRole !== allowedRole) {
     return <Navigate to="/" replace />;
   }
   
@@ -22,16 +21,8 @@ function ProtectedRoute({ children, allowedRole }: { children: React.ReactNode; 
 
 function RoleBasedRedirect() {
   const { userRole } = useUser();
-  const navigate = useNavigate();
   
-  useEffect(() => {
-    if (userRole === 'student') {
-      navigate('/student', { replace: true });
-    } else if (userRole === 'teacher') {
-      navigate('/teacher', { replace: true });
-    }
-  }, [userRole, navigate]);
-  
+  // Simple redirect based on role - no useEffect needed
   if (userRole === 'student') {
     return <Navigate to="/student" replace />;
   }
@@ -40,6 +31,7 @@ function RoleBasedRedirect() {
     return <Navigate to="/teacher" replace />;
   }
   
+  // No role selected - show homepage
   return <Homepage />;
 }
 
@@ -67,7 +59,7 @@ export default function MainRoutes() {
         <Route 
           path="/exam/:id" 
           element={
-            <ProtectedRoute allowedRole="student">
+            <ProtectedRoute allowedRole="both">
               <ExamPage />
             </ProtectedRoute>
           } 

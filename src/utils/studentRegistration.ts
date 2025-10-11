@@ -45,6 +45,8 @@ export const studentRegistration = {
         idCardLastDigits,
         registeredAt: new Date().toISOString(),
         pin: generatePIN(idCode, exam.scheduledDate, idCardLastDigits),
+        teacherVerified: false,
+        awaitingVerification: false,
       };
       
       exam.registeredStudents.push(registration);
@@ -153,6 +155,96 @@ export const studentRegistration = {
       const registration = exam.registeredStudents.find(s => s.idCode === idCode);
       return registration && !registration.completedAt;
     });
+  },
+
+  // Mark student as awaiting teacher verification
+  setAwaitingVerification(examId: string, idCode: string): boolean {
+    try {
+      const exams = examStorage.getAll();
+      const exam = exams.find(e => e.id === examId);
+      
+      if (!exam) return false;
+      
+      const studentIndex = exam.registeredStudents.findIndex(s => s.idCode === idCode);
+      
+      if (studentIndex === -1) return false;
+      
+      exam.registeredStudents[studentIndex].awaitingVerification = true;
+      examStorage.update(examId, { registeredStudents: exam.registeredStudents });
+      
+      return true;
+    } catch (error) {
+      console.error('Error setting awaiting verification:', error);
+      return false;
+    }
+  },
+
+  // Verify student by teacher
+  verifyStudent(examId: string, idCode: string, teacherName: string): boolean {
+    try {
+      const exams = examStorage.getAll();
+      const exam = exams.find(e => e.id === examId);
+      
+      if (!exam) return false;
+      
+      const studentIndex = exam.registeredStudents.findIndex(s => s.idCode === idCode);
+      
+      if (studentIndex === -1) return false;
+      
+      exam.registeredStudents[studentIndex].teacherVerified = true;
+      exam.registeredStudents[studentIndex].verifiedAt = new Date().toISOString();
+      exam.registeredStudents[studentIndex].verifiedBy = teacherName;
+      exam.registeredStudents[studentIndex].awaitingVerification = false;
+      
+      examStorage.update(examId, { registeredStudents: exam.registeredStudents });
+      
+      return true;
+    } catch (error) {
+      console.error('Error verifying student:', error);
+      return false;
+    }
+  },
+
+  // Check if student is verified
+  isVerified(examId: string, idCode: string): boolean {
+    const exams = examStorage.getAll();
+    const exam = exams.find(e => e.id === examId);
+    
+    if (!exam) return false;
+    
+    const registration = exam.registeredStudents.find(s => s.idCode === idCode);
+    return registration?.teacherVerified === true;
+  },
+
+  // Check if student is awaiting verification
+  isAwaitingVerification(examId: string, idCode: string): boolean {
+    const exams = examStorage.getAll();
+    const exam = exams.find(e => e.id === examId);
+    
+    if (!exam) return false;
+    
+    const registration = exam.registeredStudents.find(s => s.idCode === idCode);
+    return registration?.awaitingVerification === true;
+  },
+
+  // Get students awaiting verification for an exam
+  getPendingVerifications(examId: string): StudentRegistration[] {
+    const exams = examStorage.getAll();
+    const exam = exams.find(e => e.id === examId);
+    
+    if (!exam) return [];
+    
+    return exam.registeredStudents.filter(s => s.awaitingVerification === true);
+  },
+
+  // Get all verified students for an exam
+  getVerifiedStudents(examId: string): StudentRegistration[] {
+    const exams = examStorage.getAll();
+    const exam = exams.find(e => e.id === examId);
+    
+    if (!exam) return [];
+    
+    return exam.registeredStudents.filter(s => s.teacherVerified === true);
   }
 };
 

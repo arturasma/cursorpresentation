@@ -1,5 +1,5 @@
 import { House, CaretDown, UserSwitch, SignOut } from 'phosphor-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -22,13 +22,16 @@ import { useExam } from '@/context/ExamContext';
 
 export default function Header() {
   const { userRole, isDialogOpen, setIsDialogOpen, handleRoleSelect, handleLogout } = useUser();
-  const { isInExam, setShowExitConfirmation } = useExam();
+  const { isInExam, setShowExitConfirmation, setPendingAction } = useExam();
   const location = useLocation();
+  const navigate = useNavigate();
   
   const isHomepage = location.pathname === '/';
+  const isOnExamPage = location.pathname.startsWith('/exam/');
 
   const handleHomeClick = () => {
     if (isInExam) {
+      setPendingAction({ type: 'home' });
       setShowExitConfirmation(true);
     } else {
       handleLogout();
@@ -37,14 +40,33 @@ export default function Header() {
 
   const handleRoleSwitchClick = (role: 'teacher' | 'student') => {
     if (isInExam) {
+      // Student is actively taking an exam
+      // Set pending action and show confirmation
+      setPendingAction({ type: 'roleSwitch', newRole: role });
       setShowExitConfirmation(true);
     } else {
+      // Switch role immediately (no exam in progress)
       handleRoleSelect(role);
+      
+      // Navigate to appropriate page for the new role
+      if (isOnExamPage) {
+        // If on exam page, stay on same exam to see it from new role's perspective
+        const examId = location.pathname.split('/exam/')[1];
+        if (examId) {
+          // Stay on same exam page - it will re-render with new role
+          navigate(`/exam/${examId}`, { replace: true });
+        } else {
+          // Go to appropriate dashboard
+          navigate(role === 'teacher' ? '/teacher' : '/student');
+        }
+      }
+      // Otherwise, the default routing will handle it
     }
   };
 
   const handleLogoutClick = () => {
     if (isInExam) {
+      setPendingAction({ type: 'logout' });
       setShowExitConfirmation(true);
     } else {
       handleLogout();

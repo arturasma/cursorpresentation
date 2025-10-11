@@ -47,13 +47,19 @@ export default function Homepage() {
                   <strong>Switch to Student Role</strong> - Change your role to "Student" and register for the exam
                 </li>
                 <li className="pl-2">
-                  <strong>Verify Registration (Teacher)</strong> - Switch back to "Teacher" to see the student registration
-                </li>
-                <li className="pl-2">
                   <strong>Reveal Your PIN (Student)</strong> - As a student, view and reveal your unique exam PIN
                 </li>
                 <li className="pl-2">
-                  <strong>Start the Exam</strong> - Use your PIN to authenticate and access the exam interface
+                  <strong>Activate Session (Teacher)</strong> - Switch to "Teacher", click on the exam, and activate the exam session to generate a 4-digit room code
+                </li>
+                <li className="pl-2">
+                  <strong>Enter Exam (Student)</strong> - As student, click "Take Exam", enter the room code and your PIN
+                </li>
+                <li className="pl-2">
+                  <strong>Verify Identity (Teacher)</strong> - Teacher verifies the student's identity in person by clicking "Verify" in the verification panel
+                </li>
+                <li className="pl-2">
+                  <strong>Complete Exam (Student)</strong> - After verification, student can access and complete the exam
                 </li>
               </ol>
             </div>
@@ -73,12 +79,19 @@ export default function Homepage() {
 
               <div className="bg-primary/5 p-6 rounded-lg border border-primary/20">
                 <h2 className="text-xl font-semibold text-foreground mb-3">The Solution</h2>
-                <p>
+                <p className="mb-3">
                   By hashing public student data (name, birthday, student ID) with exam information 
                   (location, date, type), we generate a unique PIN that validates identity. Students 
-                  register once, receive their PIN, and use it to authenticate at the exam location. 
-                  The system validates the match between exam details and PIN to grant access, then 
-                  deletes the hashes after exam completion.
+                  register once, receive their PIN, and use it to authenticate at the exam location.
+                </p>
+                <p className="font-semibold text-foreground mb-2">Security Enhancements:</p>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  <li><strong>Room Code Validation:</strong> Teacher-generated codes prevent wrong classroom access</li>
+                  <li><strong>Teacher Verification:</strong> In-person identity confirmation prevents impersonation</li>
+                  <li><strong>Time Window Validation:</strong> (Production) Access only during designated exam periods</li>
+                </ul>
+                <p className="text-sm mt-3">
+                  After exam completion, all hashes are deleted for privacy.
                 </p>
               </div>
             </div>

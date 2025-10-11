@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Key, LockOpen, ShieldCheck } from 'phosphor-react';
+import { Key, LockOpen, ShieldCheck, Clock } from 'phosphor-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,10 @@ interface PINAuthenticationCardProps {
   studentIdCode: string;
   teacherName: string;
   correctPIN: string;
+  examId: string;
+  activeRoomCode?: string;
   onAuthenticated: () => void;
+  onAwaitingVerification: () => void;
 }
 
 export default function PINAuthenticationCard({
@@ -18,10 +21,19 @@ export default function PINAuthenticationCard({
   studentIdCode,
   teacherName,
   correctPIN,
-  onAuthenticated,
+  activeRoomCode,
+  onAwaitingVerification,
 }: PINAuthenticationCardProps) {
+  const [roomCodeInput, setRoomCodeInput] = useState('');
   const [pinInput, setPinInput] = useState('');
   const [error, setError] = useState('');
+
+  const handleRoomCodeChange = (value: string) => {
+    // Only allow 4 digits
+    const digits = value.replace(/\D/g, '').slice(0, 4);
+    setRoomCodeInput(digits);
+    setError('');
+  };
 
   const handlePINChange = (value: string) => {
     // Format as XXXX-XXXX
@@ -36,12 +48,28 @@ export default function PINAuthenticationCard({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === correctPIN) {
-      onAuthenticated();
-    } else {
+    
+    // First validate room code
+    if (!activeRoomCode) {
+      setError('Exam session is not active. Please contact your teacher.');
+      return;
+    }
+    
+    if (roomCodeInput !== activeRoomCode) {
+      setError('Incorrect room code. Please check the code displayed by your teacher.');
+      setRoomCodeInput('');
+      return;
+    }
+    
+    // Then validate PIN
+    if (pinInput !== correctPIN) {
       setError('Incorrect PIN. Please try again.');
       setPinInput('');
+      return;
     }
+    
+    // Both validations passed, now awaiting teacher verification
+    onAwaitingVerification();
   };
 
   return (
@@ -67,11 +95,44 @@ export default function PINAuthenticationCard({
         </div>
 
         <div className="border-t pt-4">
+          {/* Info box about time validation */}
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-4 flex gap-2">
+            <Clock size={16} weight="regular" className="text-blue-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-semibold text-blue-900 mb-1">Production Feature Note</p>
+              <p className="text-xs text-blue-800">
+                In production, time and date validation ensures students can only access exams within a specific window 
+                (e.g., 15 minutes before to 30 minutes after scheduled time).
+              </p>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="room-code-input" className="flex items-center gap-2">
+                <Key size={16} weight="duotone" className="text-primary" />
+                Room Code
+              </Label>
+              <Input
+                id="room-code-input"
+                type="text"
+                inputMode="numeric"
+                placeholder="4-digit code"
+                value={roomCodeInput}
+                onChange={(e) => handleRoomCodeChange(e.target.value)}
+                maxLength={4}
+                className="font-mono text-2xl text-center tracking-wider"
+                required
+              />
+              <p className="text-xs text-muted-foreground">
+                Enter the 4-digit code displayed by your teacher
+              </p>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="pin-input" className="flex items-center gap-2">
                 <ShieldCheck size={16} weight="duotone" className="text-primary" />
-                Enter Your Exam PIN
+                Your Exam PIN
               </Label>
               <Input
                 id="pin-input"

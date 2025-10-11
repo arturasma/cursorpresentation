@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, SignOut, CheckCircle } from 'phosphor-react';
+import { ArrowLeft, SignOut, CheckCircle, Hourglass } from 'phosphor-react';
 import Header from '@/components/Header';
 import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
 import ExamConcept from '@/components/features/exam/ExamConcept';
+import ExamSessionControl from '@/components/features/teacher/ExamSessionControl';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Button } from '@/components/ui/button';
 import { useExam } from '@/context/ExamContext';
+import { useUser } from '@/context/UserContext';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
+import { activateExamSession, deactivateExamSession } from '@/utils/roomCodeGenerator';
 import type { Exam } from '@/types/exam';
 
 export default function ExamPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { setIsInExam, showExitConfirmation, setShowExitConfirmation } = useExam();
+  const { setIsInExam, showExitConfirmation, setShowExitConfirmation, pendingAction, setPendingAction } = useExam();
+  const { userRole, handleRoleSelect, handleLogout } = useUser();
   const [exam, setExam] = useState<Exam | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAwaitingVerification, setIsAwaitingVerification] = useState(false);
   const [showCompleteConfirmation, setShowCompleteConfirmation] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -27,48 +32,145 @@ export default function ExamPage() {
     idCode: '50001010001',
   };
 
-  useEffect(() => {
+  // Mocked teacher data
+  const mockedTeacher = {
+    id: 'teacher-1',
+    name: 'Tõnu Kuusk',
+  };
+
+  // Function to load/reload exam data
+  const loadExam = () => {
     if (id) {
       const allExams = examStorage.getAll();
       const foundExam = allExams.find(e => e.id === id);
       
       if (!foundExam) {
-        navigate('/student');
+        navigate(userRole === 'teacher' ? '/teacher' : '/student');
         return;
       }
 
-      // Check if student is registered
-      if (!studentRegistration.isRegistered(id, mockedStudent.idCode)) {
-        navigate('/student');
-        return;
-      }
+      // For students, check registration and verification
+      if (userRole === 'student') {
+        if (!studentRegistration.isRegistered(id, mockedStudent.idCode)) {
+          navigate('/student');
+          return;
+        }
 
-      // Check if already completed
-      const completed = studentRegistration.isCompleted(id, mockedStudent.idCode);
-      setIsCompleted(completed);
+        // Check if already completed
+        const completed = studentRegistration.isCompleted(id, mockedStudent.idCode);
+        setIsCompleted(completed);
+
+        // Check if awaiting verification
+        const awaiting = studentRegistration.isAwaitingVerification(id, mockedStudent.idCode);
+        setIsAwaitingVerification(awaiting);
+
+        // Check if verified
+        const verified = studentRegistration.isVerified(id, mockedStudent.idCode);
+        if (verified && awaiting) {
+          // Student was verified, can now access exam
+          setIsAwaitingVerification(false);
+          setIsAuthenticated(true);
+        }
+      }
 
       setExam(foundExam);
-      setIsInExam(true);
+      // Only set isInExam for students (blocks header navigation)
+      // Teachers can navigate freely
+      if (userRole === 'student') {
+        setIsInExam(true);
+      }
     }
+  };
+
+  useEffect(() => {
+    loadExam();
 
     return () => {
       setIsInExam(false);
     };
-  }, [id, navigate, setIsInExam]);
+  }, [id, navigate, setIsInExam, userRole]);
+
+  // Poll for verification status when awaiting
+  useEffect(() => {
+    if (!isAwaitingVerification || !id) return;
+
+    const interval = setInterval(() => {
+      const verified = studentRegistration.isVerified(id, mockedStudent.idCode);
+      if (verified) {
+        setIsAwaitingVerification(false);
+        setIsAuthenticated(true);
+      }
+    }, 2000); // Check every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isAwaitingVerification, id]);
 
   const handleExitExam = () => {
     setShowExitConfirmation(false);
-    setIsInExam(false);
+    if (userRole === 'student') {
+      setIsInExam(false);
+    }
     setIsAuthenticated(false);
-    navigate('/student');
+    setIsAwaitingVerification(false);
+    
+    // Execute the pending action
+    if (pendingAction.type === 'roleSwitch') {
+      // Switch to the new role
+      handleRoleSelect(pendingAction.newRole);
+      // Navigate to appropriate dashboard for new role
+      navigate(pendingAction.newRole === 'teacher' ? '/teacher' : '/student');
+    } else if (pendingAction.type === 'logout') {
+      // Logout
+      handleLogout();
+    } else if (pendingAction.type === 'home') {
+      // Go home (logout)
+      handleLogout();
+    } else {
+      // No pending action, just exit to appropriate dashboard
+      navigate(userRole === 'teacher' ? '/teacher' : '/student');
+    }
+    
+    // Clear the pending action
+    setPendingAction({ type: 'none' });
   };
 
-  const handleAuthenticated = () => {
-    setIsAuthenticated(true);
+  const handleAwaitingVerification = () => {
+    if (id) {
+      studentRegistration.setAwaitingVerification(id, mockedStudent.idCode);
+      setIsAwaitingVerification(true);
+    }
+  };
+
+  const handleActivateSession = () => {
+    if (id) {
+      activateExamSession(id, mockedTeacher.id, mockedTeacher.name);
+      loadExam();
+    }
+  };
+
+  const handleDeactivateSession = () => {
+    if (id) {
+      deactivateExamSession(id);
+      loadExam();
+    }
+  };
+
+  const handleVerifyStudent = (idCode: string) => {
+    if (id) {
+      studentRegistration.verifyStudent(id, idCode, mockedTeacher.name);
+      loadExam();
+    }
   };
 
   const handleRequestExit = () => {
+    // Clear any pending action when manually exiting
+    setPendingAction({ type: 'none' });
     setShowExitConfirmation(true);
+  };
+
+  const handleTeacherBackToDashboard = () => {
+    // Teachers can navigate back without confirmation
+    navigate('/teacher');
   };
 
   const handleCompleteExam = () => {
@@ -92,7 +194,52 @@ export default function ExamPage() {
   }
 
   const registration = studentRegistration.getRegistration(exam.id, mockedStudent.idCode);
+  const pendingVerifications = studentRegistration.getPendingVerifications(exam.id);
+  const verifiedStudents = studentRegistration.getVerifiedStudents(exam.id);
 
+  // Teacher view
+  if (userRole === 'teacher') {
+    return (
+      <>
+        <Header />
+        <main className="flex-1 container mx-auto px-6 py-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-4xl font-bold mb-2">{exam.name}</h1>
+                  <p className="text-muted-foreground">
+                    Teacher Exam Monitoring & Control
+                  </p>
+                </div>
+                <Button variant="outline" onClick={handleTeacherBackToDashboard} className="gap-2">
+                  <ArrowLeft size={16} weight="bold" />
+                  Back to Dashboard
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <ExamDetails exam={exam} />
+              <ExamSessionControl
+                examId={exam.id}
+                examName={exam.name}
+                activeSession={exam.activeSession || null}
+                pendingStudents={pendingVerifications}
+                verifiedStudents={verifiedStudents}
+                teacherName={mockedTeacher.name}
+                onActivateSession={handleActivateSession}
+                onDeactivateSession={handleDeactivateSession}
+                onVerifyStudent={handleVerifyStudent}
+              />
+            </div>
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  // Student view
   return (
     <>
       <Header />
@@ -106,7 +253,7 @@ export default function ExamPage() {
                   {exam.subject.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} - {exam.gradeLevel?.replace('grade-', '') + 'th Grade'}
                 </p>
               </div>
-              {!isAuthenticated && (
+              {!isAuthenticated && !isAwaitingVerification && (
                 <Button variant="outline" onClick={handleRequestExit} className="gap-2">
                   <ArrowLeft size={16} weight="bold" />
                   Back to Exams
@@ -115,7 +262,20 @@ export default function ExamPage() {
             </div>
           </div>
 
-          {!isAuthenticated ? (
+          {isAwaitingVerification ? (
+            <div className="text-center py-16">
+              <Hourglass size={64} weight="duotone" className="mx-auto mb-4 text-orange-600 animate-pulse" />
+              <h2 className="text-3xl font-bold mb-4">Awaiting Teacher Verification</h2>
+              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+                Your PIN and room code were correct. Please wait for your teacher to verify your identity before starting the exam.
+              </p>
+              <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg max-w-md mx-auto">
+                <p className="text-sm text-orange-800">
+                  The teacher will confirm your identity in person. This should only take a moment.
+                </p>
+              </div>
+            </div>
+          ) : !isAuthenticated ? (
             <>
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <ExamDetails exam={exam} />
@@ -126,7 +286,10 @@ export default function ExamPage() {
                     studentIdCode={mockedStudent.idCode}
                     teacherName={exam.teacherName}
                     correctPIN={registration.pin}
-                    onAuthenticated={handleAuthenticated}
+                    examId={exam.id}
+                    activeRoomCode={exam.activeSession?.roomCode}
+                    onAuthenticated={() => setIsAuthenticated(true)}
+                    onAwaitingVerification={handleAwaitingVerification}
                   />
                 )}
               </div>
@@ -181,7 +344,13 @@ export default function ExamPage() {
 
       <ConfirmDialog
         open={showExitConfirmation}
-        onOpenChange={setShowExitConfirmation}
+        onOpenChange={(open) => {
+          setShowExitConfirmation(open);
+          // If dialog is closed without confirming, clear pending action
+          if (!open) {
+            setPendingAction({ type: 'none' });
+          }
+        }}
         title="Exit Exam?"
         description="Are you sure you want to exit the exam? Any unsaved progress may be lost."
         confirmText="Exit Exam"
