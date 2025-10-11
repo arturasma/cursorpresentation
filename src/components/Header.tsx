@@ -18,12 +18,38 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/context/UserContext';
+import { useExam } from '@/context/ExamContext';
 
 export default function Header() {
   const { userRole, isDialogOpen, setIsDialogOpen, handleRoleSelect, handleLogout } = useUser();
+  const { isInExam, setShowExitConfirmation } = useExam();
   const location = useLocation();
   
   const isHomepage = location.pathname === '/';
+
+  const handleHomeClick = () => {
+    if (isInExam) {
+      setShowExitConfirmation(true);
+    } else {
+      handleLogout();
+    }
+  };
+
+  const handleRoleSwitchClick = (role: 'teacher' | 'student') => {
+    if (isInExam) {
+      setShowExitConfirmation(true);
+    } else {
+      handleRoleSelect(role);
+    }
+  };
+
+  const handleLogoutClick = () => {
+    if (isInExam) {
+      setShowExitConfirmation(true);
+    } else {
+      handleLogout();
+    }
+  };
 
   return (
     <header className="border-b border-border bg-background">
@@ -31,7 +57,7 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={handleLogout}
+          onClick={handleHomeClick}
           aria-label="Home"
         >
           <House size={32} weight="regular" />
@@ -50,7 +76,7 @@ export default function Header() {
                 <DropdownMenuLabel>Current Role</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => handleRoleSelect('teacher')}
+                  onClick={() => handleRoleSwitchClick('teacher')}
                   disabled={userRole === 'teacher'}
                   className="gap-2"
                 >
@@ -58,7 +84,7 @@ export default function Header() {
                   Switch to Teacher
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => handleRoleSelect('student')}
+                  onClick={() => handleRoleSwitchClick('student')}
                   disabled={userRole === 'student'}
                   className="gap-2"
                 >
@@ -67,7 +93,7 @@ export default function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={handleLogout}
+                  onClick={handleLogoutClick}
                   className="gap-2 text-destructive focus:text-destructive"
                 >
                   <SignOut size={16} weight="regular" />

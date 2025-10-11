@@ -1,6 +1,9 @@
-import { Calendar, MapPin, Clock, Users, Key } from 'phosphor-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, MapPin, Clock, Users, Key, LockSimple } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import PINRevealModal from './PINRevealModal';
 import type { Exam } from '@/types/exam';
 
 interface StudentExamCardProps {
@@ -18,6 +21,14 @@ export default function StudentExamCard({
   onOpenRegistration,
   onUnregister,
 }: StudentExamCardProps) {
+  const navigate = useNavigate();
+  const [showPINRevealModal, setShowPINRevealModal] = useState(false);
+  const [isPINRevealed, setIsPINRevealed] = useState(false);
+
+  const handleRevealPIN = () => {
+    setIsPINRevealed(true);
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       weekday: 'short',
@@ -102,14 +113,38 @@ export default function StudentExamCard({
 
           {isRegistered && studentPIN && (
             <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
-              <div className="flex items-center gap-2 mb-1">
-                <Key size={16} weight="regular" className="text-primary" />
-                <span className="text-sm font-medium">Your Exam PIN</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Key size={16} weight="regular" className="text-primary" />
+                  <span className="text-sm font-medium">Your Exam PIN</span>
+                </div>
+                {!isPINRevealed && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 gap-2 text-xs"
+                    onClick={() => setShowPINRevealModal(true)}
+                  >
+                    <LockSimple size={14} weight="bold" />
+                    Reveal
+                  </Button>
+                )}
               </div>
-              <p className="text-2xl font-bold font-mono">{studentPIN}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Use this PIN to access the exam
-              </p>
+              {isPINRevealed ? (
+                <>
+                  <p className="text-2xl font-bold font-mono">{studentPIN}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use this PIN to access the exam
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-2xl font-bold font-mono text-muted-foreground">••••-••••</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Click reveal to view your PIN
+                  </p>
+                </>
+              )}
             </div>
           )}
 
@@ -123,7 +158,10 @@ export default function StudentExamCard({
                 >
                   Unregister
                 </Button>
-                <Button variant="secondary" className="flex-1" disabled>
+                <Button 
+                  className="flex-1"
+                  onClick={() => navigate(`/exam/${exam.id}`)}
+                >
                   Take Exam
                 </Button>
               </>
@@ -139,6 +177,15 @@ export default function StudentExamCard({
           </div>
         </div>
       </CardContent>
+
+      {isRegistered && studentPIN && (
+        <PINRevealModal
+          open={showPINRevealModal}
+          onOpenChange={setShowPINRevealModal}
+          onReveal={handleRevealPIN}
+          examName={exam.name}
+        />
+      )}
     </Card>
   );
 }

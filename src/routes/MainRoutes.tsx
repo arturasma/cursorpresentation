@@ -4,6 +4,7 @@ import { useUser } from '@/context/UserContext';
 import Homepage from '@/pages/Homepage';
 import StudentPage from '@/pages/StudentPage';
 import TeacherPage from '@/pages/TeacherPage';
+import ExamPage from '@/pages/ExamPage';
 
 function ProtectedRoute({ children, allowedRole }: { children: React.ReactNode; allowedRole: 'student' | 'teacher' }) {
   const { userRole } = useUser();
@@ -60,6 +61,14 @@ export default function MainRoutes() {
           element={
             <ProtectedRoute allowedRole="teacher">
               <TeacherPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/exam/:id" 
+          element={
+            <ProtectedRoute allowedRole="student">
+              <ExamPage />
             </ProtectedRoute>
           } 
         />
