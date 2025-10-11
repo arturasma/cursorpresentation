@@ -1,68 +1,76 @@
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
+import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
+import ExamList from '@/components/features/teacher/ExamList';
+import ExamDetailsModal from '@/components/features/teacher/ExamDetailsModal';
+import { examStorage } from '@/utils/examStorage';
+import type { Exam } from '@/types/exam';
 
 export default function TeacherPage() {
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const loadExams = () => {
+    setExams(examStorage.getAll());
+  };
+
+  useEffect(() => {
+    loadExams();
+  }, []);
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this exam?')) {
+      examStorage.delete(id);
+      loadExams();
+    }
+  };
+
+  const handleOpenExam = (exam: Exam) => {
+    setSelectedExam(exam);
+    setIsDetailsOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setIsDetailsOpen(false);
+    setSelectedExam(null);
+  };
+
+  const handleExamUpdated = () => {
+    loadExams();
+  };
+
   return (
     <>
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-6">Teacher Dashboard</h1>
-          
-          <div className="space-y-6">
-            <div className="bg-card p-6 rounded-lg border border-border">
-              <h2 className="text-2xl font-semibold mb-4">Welcome, Teacher!</h2>
-              <p className="text-muted-foreground mb-4">
-                Manage exam sessions and monitor student access.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-primary/5 p-6 rounded-lg border border-primary/20">
-                <h3 className="text-xl font-semibold mb-3">Active Exams</h3>
-                <p className="text-muted-foreground mb-4">
-                  Monitor students currently taking exams
-                </p>
-                <div className="bg-background p-4 rounded border border-border">
-                  <p className="text-2xl font-bold">0</p>
-                  <p className="text-sm text-muted-foreground">Students online</p>
-                </div>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg border border-border">
-                <h3 className="text-xl font-semibold mb-3">Exam Sessions</h3>
-                <p className="text-muted-foreground mb-4">
-                  Create and manage exam sessions
-                </p>
-                <div className="bg-background p-4 rounded border border-border">
-                  <p className="text-2xl font-bold">0</p>
-                  <p className="text-sm text-muted-foreground">Scheduled exams</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-card p-6 rounded-lg border border-border">
-              <h3 className="text-xl font-semibold mb-3">Student Management</h3>
-              <p className="text-muted-foreground mb-4">
-                View student registrations and PIN assignments
-              </p>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-sm font-medium">Total Students</span>
-                  <span className="text-sm text-muted-foreground">15,000</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-sm font-medium">Students per Class</span>
-                  <span className="text-sm text-muted-foreground">30</span>
-                </div>
-                <div className="flex justify-between items-center py-3">
-                  <span className="text-sm font-medium">Active PINs</span>
-                  <span className="text-sm text-muted-foreground">0</span>
-                </div>
-              </div>
-            </div>
+      <main className="flex-1 container mx-auto px-6 py-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold">Exam Management</h1>
+            <ExamCreationModal onExamCreated={loadExams} />
           </div>
+
+          <ExamList 
+            exams={exams} 
+            onDelete={handleDelete}
+            onOpenExam={handleOpenExam}
+            onCreateExam={loadExams}
+          />
         </div>
       </main>
+
+      {selectedExam && (
+        <ExamDetailsModal
+          exam={selectedExam}
+          open={isDetailsOpen}
+          onClose={handleCloseDetails}
+          onUpdate={handleExamUpdated}
+          onDelete={() => {
+            handleDelete(selectedExam.id);
+            handleCloseDetails();
+          }}
+        />
+      )}
     </>
   );
 }
