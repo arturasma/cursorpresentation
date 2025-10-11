@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { TimePicker } from '@/components/ui/time-picker';
 import { examStorage } from '@/utils/examStorage';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import type { ExamFormData } from '@/types/exam';
@@ -302,11 +303,10 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
 
             <div className="space-y-2">
               <Label htmlFor="scheduledTime">Time</Label>
-              <Input
+              <TimePicker
                 id="scheduledTime"
-                type="time"
                 value={formData.scheduledTime}
-                onChange={(e) => handleChange('scheduledTime', e.target.value)}
+                onChange={(value) => handleChange('scheduledTime', value)}
                 required
               />
             </div>
