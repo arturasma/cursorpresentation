@@ -1,6 +1,16 @@
+import { useState } from 'react';
 import Header from '@/components/Header';
+import FeedbackList from '@/components/features/feedback/FeedbackList';
+import AddFeedbackForm from '@/components/features/feedback/AddFeedbackForm';
 
 export default function FeedbackPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleFeedbackAdded = () => {
+    // Trigger re-render of FeedbackList by changing key
+    setRefreshKey(prev => prev + 1);
+  };
+
   return (
     <>
       <Header />
@@ -9,9 +19,20 @@ export default function FeedbackPage() {
           <h1 className="text-5xl font-bold mb-6">
             Feedback page
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground mb-8">
             Give feedback or vote on the existing feedback
           </p>
+
+          {/* Feedback List */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6">All Feedback</h2>
+            <FeedbackList key={refreshKey} />
+          </div>
+
+          {/* Add Feedback Form */}
+          <div>
+            <AddFeedbackForm onFeedbackAdded={handleFeedbackAdded} />
+          </div>
         </div>
       </main>
     </>
