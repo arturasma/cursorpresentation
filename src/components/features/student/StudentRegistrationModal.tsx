@@ -95,11 +95,19 @@ export default function StudentRegistrationModal({
                 <span className="font-medium">{exam.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Type:</span>
-                <span className="font-medium">{exam.examType}</span>
+                <span className="text-muted-foreground">Subject:</span>
+                <span className="font-medium capitalize">{exam.subject?.replace('-', ' ')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Location:</span>
+                <span className="text-muted-foreground">Type:</span>
+                <span className="font-medium capitalize">{exam.examType?.replace('-', ' ')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">School:</span>
+                <span className="font-medium">{exam.school?.replace('-', ' ')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Room:</span>
                 <span className="font-medium">{exam.location}</span>
               </div>
               <div className="flex justify-between">

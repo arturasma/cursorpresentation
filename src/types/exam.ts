@@ -10,7 +10,9 @@ export interface StudentRegistration {
 export interface Exam {
   id: string;
   name: string;
+  subject: string;
   examType: string;
+  school: string;
   location: string;
   scheduledDate: string;
   scheduledTime: string;
@@ -22,7 +24,9 @@ export interface Exam {
 
 export interface ExamFormData {
   name: string;
+  subject: string;
   examType: string;
+  school: string;
   location: string;
   scheduledDate: string;
   scheduledTime: string;

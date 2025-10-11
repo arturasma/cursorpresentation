@@ -18,8 +18,40 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { examStorage } from '@/utils/examStorage';
 import type { Exam } from '@/types/exam';
+
+// Mock Estonian schools
+const ESTONIAN_SCHOOLS = [
+  { value: 'tallinna-kesklinna-gumnaasium', label: 'Tallinna Kesklinna Gümnaasium' },
+  { value: 'tartu-annelinna-gumnaasium', label: 'Tartu Annelinna Gümnaasium' },
+];
+
+const SUBJECTS = [
+  { value: 'mathematics', label: 'Mathematics' },
+  { value: 'estonian-language', label: 'Estonian Language' },
+  { value: 'english-language', label: 'English Language' },
+  { value: 'history', label: 'History' },
+  { value: 'geography', label: 'Geography' },
+  { value: 'physics', label: 'Physics' },
+  { value: 'chemistry', label: 'Chemistry' },
+  { value: 'biology', label: 'Biology' },
+];
+
+const EXAM_TYPES = [
+  { value: 'test', label: 'Test' },
+  { value: 'final-exam', label: 'Final Exam' },
+  { value: 'midterm', label: 'Midterm Exam' },
+  { value: 'quiz', label: 'Quiz' },
+  { value: 'practice-exam', label: 'Practice Exam' },
+];
 
 interface ExamDetailsModalProps {
   exam: Exam;
@@ -35,7 +67,9 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
   const [date, setDate] = useState<Date>();
   const [formData, setFormData] = useState({
     name: exam.name,
+    subject: exam.subject,
     examType: exam.examType,
+    school: exam.school,
     location: exam.location,
     scheduledDate: exam.scheduledDate,
     scheduledTime: exam.scheduledTime,
@@ -44,7 +78,9 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
   useEffect(() => {
     setFormData({
       name: exam.name,
+      subject: exam.subject,
       examType: exam.examType,
+      school: exam.school,
       location: exam.location,
       scheduledDate: exam.scheduledDate,
       scheduledTime: exam.scheduledTime,
@@ -79,7 +115,9 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
       if (window.confirm('You have unsaved changes. Are you sure you want to discard them?')) {
         setFormData({
           name: exam.name,
+          subject: exam.subject,
           examType: exam.examType,
+          school: exam.school,
           location: exam.location,
           scheduledDate: exam.scheduledDate,
           scheduledTime: exam.scheduledTime,
@@ -176,19 +214,70 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="edit-examType">Exam Type</Label>
-                  <Input
-                    id="edit-examType"
-                    value={formData.examType}
-                    onChange={(e) => handleChange('examType', e.target.value)}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-subject">Subject</Label>
+                    <Select
+                      value={formData.subject}
+                      onValueChange={(value) => handleChange('subject', value)}
+                    >
+                      <SelectTrigger id="edit-subject">
+                        <SelectValue placeholder="Select subject" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SUBJECTS.map((subject) => (
+                          <SelectItem key={subject.value} value={subject.value}>
+                            {subject.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-examType">Exam Type</Label>
+                    <Select
+                      value={formData.examType}
+                      onValueChange={(value) => handleChange('examType', value)}
+                    >
+                      <SelectTrigger id="edit-examType">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {EXAM_TYPES.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="edit-location">Location</Label>
+                  <Label htmlFor="edit-school">School</Label>
+                  <Select
+                    value={formData.school}
+                    onValueChange={(value) => handleChange('school', value)}
+                  >
+                    <SelectTrigger id="edit-school">
+                      <SelectValue placeholder="Select school" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ESTONIAN_SCHOOLS.map((school) => (
+                        <SelectItem key={school.value} value={school.value}>
+                          {school.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="edit-location">Room / Location</Label>
                   <Input
                     id="edit-location"
+                    placeholder="e.g., Room 101"
                     value={formData.location}
                     onChange={(e) => handleChange('location', e.target.value)}
                   />
@@ -248,11 +337,25 @@ export default function ExamDetailsModal({ exam, open, onClose, onUpdate, onDele
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Type</p>
-                      <p className="font-medium">{exam.examType}</p>
+                      <p className="text-sm text-muted-foreground mb-1">Subject</p>
+                      <p className="font-medium capitalize">
+                        {SUBJECTS.find(s => s.value === exam.subject)?.label || exam.subject}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Location</p>
+                      <p className="text-sm text-muted-foreground mb-1">Type</p>
+                      <p className="font-medium capitalize">
+                        {EXAM_TYPES.find(t => t.value === exam.examType)?.label || exam.examType}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">School</p>
+                      <p className="font-medium">
+                        {ESTONIAN_SCHOOLS.find(s => s.value === exam.school)?.label || exam.school}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Room / Location</p>
                       <p className="font-medium">{exam.location}</p>
                     </div>
                     <div>

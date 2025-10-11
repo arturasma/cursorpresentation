@@ -54,7 +54,9 @@ export default function StudentExamCard({
                 {exam.status.charAt(0).toUpperCase() + exam.status.slice(1)}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">{exam.examType}</span>
+              <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
+              <span className="text-sm text-muted-foreground">•</span>
+              <span className="text-sm text-muted-foreground capitalize">{exam.examType?.replace('-', ' ')}</span>
               {isRegistered && (
                 <>
                   <span className="text-sm text-muted-foreground">•</span>
@@ -67,22 +69,29 @@ export default function StudentExamCard({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Calendar size={16} weight="regular" />
-              <span>{formatDate(exam.scheduledDate)}</span>
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Calendar size={16} weight="regular" />
+                <span>{formatDate(exam.scheduledDate)}</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Clock size={16} weight="regular" />
+                <span>{exam.scheduledTime}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Clock size={16} weight="regular" />
-              <span>{exam.scheduledTime}</span>
+            <div className="text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                <MapPin size={16} weight="regular" />
+                <span className="capitalize">{exam.school?.replace('-', ' ')}</span>
+              </div>
+              <div className="pl-6 text-xs text-muted-foreground">
+                {exam.location}
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin size={16} weight="regular" />
-              <span>{exam.location}</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Users size={16} weight="regular" />
-              <span>{exam.registeredStudents.length}/{exam.studentCount}</span>
+              <span>{exam.registeredStudents.length}/{exam.studentCount} registered</span>
             </div>
           </div>
 

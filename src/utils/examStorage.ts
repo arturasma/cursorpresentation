@@ -7,9 +7,11 @@ export const examStorage = {
     try {
       const exams = localStorage.getItem(EXAMS_STORAGE_KEY);
       const parsed = exams ? JSON.parse(exams) : [];
-      // Ensure all exams have registeredStudents array (migration for old data)
+      // Ensure all exams have required fields (migration for old data)
       return parsed.map((exam: Exam) => ({
         ...exam,
+        subject: exam.subject || 'mathematics',
+        school: exam.school || 'tallinna-kesklinna-gumnaasium',
         registeredStudents: exam.registeredStudents || []
       }));
     } catch (error) {

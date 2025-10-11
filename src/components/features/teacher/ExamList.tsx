@@ -60,12 +60,12 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam }: 
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <CardTitle className="text-lg">{exam.name}</CardTitle>
-                <div className="mt-1 flex items-center gap-2">
+                <div className="mt-1 flex items-center gap-2 flex-wrap">
                   <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getStatusColor(exam.status)}`}>
                     {exam.status.charAt(0).toUpperCase() + exam.status.slice(1)}
                   </span>
                   <span className="text-sm text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground">{exam.examType}</span>
+                  <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
                 </div>
               </div>
               <Button
