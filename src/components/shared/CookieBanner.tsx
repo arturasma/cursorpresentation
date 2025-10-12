@@ -31,7 +31,7 @@ export default function CookieBanner() {
           <div className="flex-1">
             <h3 className="font-semibold text-base mb-2">Privacy Notice</h3>
             <p className="text-sm text-muted-foreground">
-              This site uses local storage only and has no real backend. The site is hosted on 
+              This site uses local storage only and has no real backend. The site does not do any external requests. The site is hosted on 
               Cloudflare and collects non-personalized data that is compliant with GDPR.
             </p>
           </div>
