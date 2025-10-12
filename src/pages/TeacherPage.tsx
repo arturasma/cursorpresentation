@@ -20,6 +20,8 @@ export default function TeacherPage() {
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [examToDelete, setExamToDelete] = useState<string | null>(null);
+  const [examToEdit, setExamToEdit] = useState<Exam | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const loadExams = () => {
     setExams(examStorage.getAll());
@@ -55,6 +57,29 @@ export default function TeacherPage() {
     loadExams();
   };
 
+  const handleEditExam = (exam: Exam) => {
+    setExamToEdit(exam);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    // Delay clearing examToEdit to allow modal to close gracefully
+    setTimeout(() => setExamToEdit(null), 300);
+  };
+
+  const handleEditComplete = () => {
+    loadExams();
+    handleCloseEditModal();
+  };
+
+  const handleEditModalOpenChange = (open: boolean) => {
+    setIsEditModalOpen(open);
+    if (!open) {
+      handleCloseEditModal();
+    }
+  };
+
   return (
     <>
       <Header />
@@ -73,6 +98,7 @@ export default function TeacherPage() {
           <ExamList 
             exams={exams} 
             onDelete={handleDelete}
+            onEdit={handleEditExam}
             onOpenExam={handleOpenExam}
             onCreateExam={loadExams}
             teacherName={mockedTeacher.name}
@@ -90,6 +116,17 @@ export default function TeacherPage() {
             handleDelete(selectedExam.id);
             handleCloseDetails();
           }}
+        />
+      )}
+
+      {examToEdit && (
+        <ExamCreationModal
+          teacherName={mockedTeacher.name}
+          onExamCreated={handleEditComplete}
+          exam={examToEdit}
+          mode="edit"
+          open={isEditModalOpen}
+          onOpenChange={handleEditModalOpenChange}
         />
       )}
 

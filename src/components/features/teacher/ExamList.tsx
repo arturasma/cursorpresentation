@@ -1,4 +1,4 @@
-import { Trash, Calendar, MapPin, Users, Clock, FolderOpen, Circle } from 'phosphor-react';
+import { Trash, Calendar, MapPin, Users, Clock, FolderOpen, Circle, PencilSimple } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ExamCreationModal from './ExamCreationModal';
@@ -7,12 +7,13 @@ import type { Exam } from '@/types/exam';
 interface ExamListProps {
   exams: Exam[];
   onDelete: (id: string) => void;
+  onEdit: (exam: Exam) => void;
   onOpenExam: (exam: Exam) => void;
   onCreateExam: () => void;
   teacherName: string;
 }
 
-export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, teacherName }: ExamListProps) {
+export default function ExamList({ exams, onDelete, onEdit, onOpenExam, onCreateExam, teacherName }: ExamListProps) {
   if (exams.length === 0) {
     return (
       <Card className="border-dashed">
@@ -80,17 +81,30 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                   )}
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(exam.id);
-                }}
-                className="text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
-              >
-                <Trash size={18} weight="regular" />
-              </Button>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(exam);
+                  }}
+                  className="text-muted-foreground hover:text-foreground hover:bg-accent"
+                >
+                  <PencilSimple size={18} weight="regular" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(exam.id);
+                  }}
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <Trash size={18} weight="regular" />
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, CalendarBlank } from 'phosphor-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -28,7 +28,7 @@ import {
 import { TimePicker } from '@/components/ui/time-picker';
 import { examStorage } from '@/utils/examStorage';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
-import type { ExamFormData } from '@/types/exam';
+import type { ExamFormData, Exam } from '@/types/exam';
 
 // Mock Estonian schools
 const ESTONIAN_SCHOOLS = [
@@ -73,10 +73,22 @@ const GRADE_LEVELS = [
 interface ExamCreationModalProps {
   teacherName: string;
   onExamCreated: () => void;
+  exam?: Exam; // Optional exam for edit mode
+  mode?: 'create' | 'edit'; // Mode flag
+  open?: boolean; // Control open state externally for edit mode
+  onOpenChange?: (open: boolean) => void; // External control
 }
 
-export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCreationModalProps) {
-  const [open, setOpen] = useState(false);
+export default function ExamCreationModal({ 
+  teacherName, 
+  onExamCreated, 
+  exam, 
+  mode = 'create',
+  open: externalOpen,
+  onOpenChange: externalOnOpenChange,
+}: ExamCreationModalProps) {
+  const isEditMode = mode === 'edit';
+  const [internalOpen, setInternalOpen] = useState(false);
   const [date, setDate] = useState<Date>();
   const [isDirty, setIsDirty] = useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
@@ -92,9 +104,45 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
     teacherName,
   });
 
+  // Use external open state for edit mode, internal for create mode
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange || setInternalOpen;
+
+  // Initialize form data when exam prop changes (edit mode)
+  useEffect(() => {
+    if (exam && isEditMode) {
+      setFormData({
+        name: exam.name,
+        subject: exam.subject,
+        examType: exam.examType,
+        gradeLevel: exam.gradeLevel,
+        school: exam.school,
+        location: exam.location,
+        scheduledDate: exam.scheduledDate,
+        scheduledTime: exam.scheduledTime,
+        teacherName: exam.teacherName,
+        durationMinutes: exam.durationMinutes,
+        numberOfBreaks: exam.numberOfBreaks,
+        breakDurationMinutes: exam.breakDurationMinutes,
+      });
+      if (exam.scheduledDate) {
+        setDate(parseISO(exam.scheduledDate));
+      }
+      setIsDirty(false);
+    }
+  }, [exam, isEditMode]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    examStorage.create(formData);
+    
+    if (isEditMode && exam) {
+      // Update existing exam
+      examStorage.update(exam.id, formData);
+    } else {
+      // Create new exam
+      examStorage.create(formData);
+    }
+    
     resetForm();
     setOpen(false);
     onExamCreated();
@@ -117,7 +165,12 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
   };
 
   const handleChange = (field: keyof ExamFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    // Convert numeric fields from string to number
+    let processedValue: string | number | undefined = value;
+    if (field === 'durationMinutes' || field === 'numberOfBreaks' || field === 'breakDurationMinutes') {
+      processedValue = value === '' ? undefined : Number(value);
+    }
+    setFormData(prev => ({ ...prev, [field]: processedValue }));
     setIsDirty(true);
   };
 
@@ -143,7 +196,8 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
       setShowUnsavedDialog(true);
     } else {
       setOpen(newOpen);
-      if (!newOpen) {
+      if (!newOpen && !isEditMode) {
+        // Only reset form on close for create mode
         resetForm();
       }
     }
@@ -157,17 +211,21 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button size="sm" className="gap-2 w-full sm:w-auto">
-          <Plus size={16} weight="bold" />
-          Create Exam
-        </Button>
-      </DialogTrigger>
+      {!isEditMode && (
+        <DialogTrigger asChild>
+          <Button size="sm" className="gap-2 w-full sm:w-auto">
+            <Plus size={16} weight="bold" />
+            Create Exam
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Create New Exam Session</DialogTitle>
+          <DialogTitle>{isEditMode ? 'Edit Exam' : 'Create New Exam Session'}</DialogTitle>
           <DialogDescription>
-            Set up a new exam with PIN-based authentication. Student PINs will be generated from their registration data.
+            {isEditMode 
+              ? 'Update the exam details. Changes will be saved immediately.'
+              : 'Set up a new exam with PIN-based authentication. Student PINs will be generated from their registration data.'}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -353,7 +411,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="submit">Create Exam</Button>
+            <Button type="submit">{isEditMode ? 'Save Changes' : 'Create Exam'}</Button>
           </div>
         </form>
       </DialogContent>
