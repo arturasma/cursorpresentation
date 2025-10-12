@@ -1,16 +1,4 @@
-#TechStack
-
-- Vite React with typescript
-
-
-#Design system
-Official governmental without any more than needed animations. 
-ShadCNui with tweakCN custom theme
-
-#About
-This is a project that show cases how a project or product manager can fastly protype the solution. Below is the presentation that i will do. I need to show a site that encompassess the full process and solution.
-
-Presentation Title: Cursor Hackathon: Streamlining Student Exam Logins
+Presentation: Cursor Hackathon: Streamlining Student Exam Logins
 
 I. Introduction (5 minutes)
 A. Current Challenges with Student Logins During Exams:
