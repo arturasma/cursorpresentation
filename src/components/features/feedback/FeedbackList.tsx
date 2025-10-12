@@ -67,7 +67,6 @@ export default function FeedbackList() {
 
       setFeedbacks(allFeedbacks);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error(`[${MODULE_NAME}:loadFeedbacks] Error loading feedbacks | Error:`, error);
       setLoadError(error instanceof Error ? error : new Error('Failed to load feedbacks'));
       setFeedbacks([]);
