@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useUser } from '@/context/UserContext';
 import Homepage from '@/pages/Homepage';
 import AboutPage from '@/pages/AboutPage';
+import HowBuiltPage from '@/pages/HowBuiltPage';
 import FeedbackPage from '@/pages/FeedbackPage';
 import StudentPage from '@/pages/StudentPage';
 import TeacherPage from '@/pages/TeacherPage';
@@ -32,6 +33,7 @@ export default function MainRoutes() {
       <Routes>
         <Route path="/" element={<RoleBasedRedirect />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/how-built" element={<HowBuiltPage />} />
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route 
           path="/student" 

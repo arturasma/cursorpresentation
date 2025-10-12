@@ -40,6 +40,7 @@ export default function Header() {
   
   const isHomepage = location.pathname === '/';
   const isAboutPage = location.pathname === '/about';
+  const isHowBuiltPage = location.pathname === '/how-built';
   const isFeedbackPage = location.pathname === '/feedback';
   const isOnExamPage = location.pathname.startsWith('/exam/');
 
@@ -154,12 +155,28 @@ export default function Header() {
           >
             Dashboard
           </Button>
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/about')}
-          >
-            About
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="gap-2">
+                About
+                <CaretDown size={16} weight="bold" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuItem
+                onClick={() => navigate('/about')}
+                className="gap-2"
+              >
+                Presentation
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate('/how-built')}
+                className="gap-2"
+              >
+                How was this site built
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button
             variant="ghost"
             onClick={() => navigate('/feedback')}
@@ -207,7 +224,7 @@ export default function Header() {
           ) : (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button>{isHomepage || isAboutPage || isFeedbackPage ? 'Select Role' : 'Login'}</Button>
+                <Button>{isHomepage || isAboutPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -267,16 +284,31 @@ export default function Header() {
                 >
                   Dashboard
                 </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    navigate('/about');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full justify-start"
-                >
-                  About
-                </Button>
+                <div className="border-t border-border pt-2">
+                  <p className="text-sm font-semibold text-muted-foreground mb-2 px-2">
+                    About
+                  </p>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      navigate('/about');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start pl-4"
+                  >
+                    Presentation
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      navigate('/how-built');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start pl-4"
+                  >
+                    How was this site built
+                  </Button>
+                </div>
                 <Button
                   variant="ghost"
                   onClick={() => {
@@ -335,7 +367,7 @@ export default function Header() {
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                       <Button className="w-full" onClick={() => setMobileMenuOpen(false)}>
-                        {isHomepage || isAboutPage || isFeedbackPage ? 'Select Role' : 'Login'}
+                        {isHomepage || isAboutPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
