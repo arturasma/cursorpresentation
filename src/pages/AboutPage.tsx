@@ -1,14 +1,29 @@
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Warning, CaretRight } from 'phosphor-react';
-import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/context/UserContext';
 
 export default function AboutPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { handleLogout } = useUser();
+  
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('about-page-active-tab') || 'challenge';
+  });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    localStorage.setItem('about-page-active-tab', value);
+  };
 
   return (
     <>
@@ -22,7 +37,7 @@ export default function AboutPage() {
             A Case Study in Fast Prototyping for Estonian Public Sector
           </p>
 
-          <Tabs defaultValue="challenge" className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
               <TabsTrigger value="challenge">Challenge</TabsTrigger>
               <TabsTrigger value="context">Context</TabsTrigger>
