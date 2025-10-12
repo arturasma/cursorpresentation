@@ -58,15 +58,15 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
           onClick={() => onOpenExam(exam)}
         >
           <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <CardTitle className="text-lg">{exam.name}</CardTitle>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <CardTitle className="text-lg break-words">{exam.name}</CardTitle>
                 <div className="mt-1 flex items-center gap-2 flex-wrap">
                   <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getStatusColor(exam.status)}`}>
                     {exam.status.charAt(0).toUpperCase() + exam.status.slice(1)}
                   </span>
                   <span className="text-sm text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
+                  <span className="text-sm text-muted-foreground capitalize break-words">{exam.subject?.replace('-', ' ')}</span>
                   <span className="text-sm text-muted-foreground">•</span>
                   <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
                   {exam.activeSession && (
@@ -87,7 +87,7 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                   e.stopPropagation();
                   onDelete(exam.id);
                 }}
-                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
               >
                 <Trash size={18} weight="regular" />
               </Button>
@@ -105,7 +105,7 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                   <span>{exam.scheduledTime}</span>
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted-foreground break-words">
                 <MapPin size={16} weight="regular" className="inline mr-1" />
                 <span className="capitalize">{exam.school?.replace('-', ' ')}</span>
                 <span className="mx-1">•</span>

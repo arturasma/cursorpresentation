@@ -64,14 +64,14 @@ export default function StudentExamCard({
     <Card className={isCompleted ? 'border-green-500' : isRegistered ? 'border-primary' : ''}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <CardTitle className="text-lg">{exam.name}</CardTitle>
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-lg break-words">{exam.name}</CardTitle>
             <div className="mt-1 flex items-center gap-2 flex-wrap">
               <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium border ${getStatusColor(exam.status)}`}>
                 {exam.status.charAt(0).toUpperCase() + exam.status.slice(1)}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground capitalize">{exam.subject?.replace('-', ' ')}</span>
+              <span className="text-sm text-muted-foreground capitalize break-words">{exam.subject?.replace('-', ' ')}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">{exam.gradeLevel?.replace('grade-', '') + 'th Grade'}</span>
               {isCompleted ? (
@@ -95,27 +95,27 @@ export default function StudentExamCard({
       <CardContent>
         <div className="space-y-4">
           <div className="space-y-2">
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar size={16} weight="regular" />
-                <span>{formatDate(exam.scheduledDate)}</span>
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground min-w-0">
+                <Calendar size={16} weight="regular" className="flex-shrink-0" />
+                <span className="break-words">{formatDate(exam.scheduledDate)}</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Clock size={16} weight="regular" />
+              <div className="flex items-center gap-2 text-muted-foreground min-w-0">
+                <Clock size={16} weight="regular" className="flex-shrink-0" />
                 <span>{exam.scheduledTime}</span>
               </div>
             </div>
-            <div className="text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                <MapPin size={16} weight="regular" />
-                <span className="capitalize">{exam.school?.replace('-', ' ')}</span>
+            <div className="text-sm min-w-0">
+              <div className="flex items-start gap-2 text-muted-foreground mb-1">
+                <MapPin size={16} weight="regular" className="flex-shrink-0 mt-0.5" />
+                <span className="capitalize break-words">{exam.school?.replace('-', ' ')}</span>
               </div>
-              <div className="pl-6 text-xs text-muted-foreground">
+              <div className="pl-6 text-xs text-muted-foreground break-words">
                 {exam.location}
               </div>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <div className="text-muted-foreground text-sm">
+            <div className="flex items-start justify-between text-sm min-w-0">
+              <div className="text-muted-foreground text-sm break-words">
                 Teacher: {exam.teacherName}
               </div>
             </div>
@@ -123,11 +123,11 @@ export default function StudentExamCard({
 
           {isCompleted && completionInfo && (
             <div className="bg-green-50 p-3 rounded-lg border border-green-200">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle size={20} weight="fill" className="text-green-600" />
+              <div className="flex items-start gap-2 mb-2">
+                <CheckCircle size={20} weight="fill" className="text-green-600 flex-shrink-0 mt-0.5" />
                 <span className="text-sm font-semibold text-green-700">Exam Completed</span>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground break-words">
                 Submitted on {new Date(completionInfo.completedAt!).toLocaleDateString('en-US', {
                   weekday: 'long',
                   month: 'long',
@@ -142,16 +142,16 @@ export default function StudentExamCard({
 
           {isRegistered && !isCompleted && studentPIN && (
             <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Key size={16} weight="regular" className="text-primary" />
+              <div className="flex items-start justify-between mb-2 gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Key size={16} weight="regular" className="text-primary flex-shrink-0" />
                   <span className="text-sm font-medium">Your Exam PIN</span>
                 </div>
                 {!isPINRevealed && (
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-7 gap-2 text-xs"
+                    className="h-7 gap-2 text-xs flex-shrink-0"
                     onClick={() => setShowPINRevealModal(true)}
                   >
                     <LockSimple size={14} weight="bold" />
@@ -161,7 +161,7 @@ export default function StudentExamCard({
               </div>
               {isPINRevealed ? (
                 <>
-                  <p className="text-2xl font-bold font-mono">{studentPIN}</p>
+                  <p className="text-2xl font-bold font-mono break-all">{studentPIN}</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Use this PIN to access the exam
                   </p>
@@ -177,9 +177,9 @@ export default function StudentExamCard({
             </div>
           )}
 
-          <div className="flex gap-2 pt-2">
+          <div className="flex flex-col xs:flex-row gap-2 pt-2">
             {isCompleted ? (
-              <div className="flex-1 text-center py-2 px-4 rounded-md bg-green-100 text-green-700 font-medium text-sm">
+              <div className="flex-1 text-center py-2 px-4 rounded-md bg-green-100 text-green-700 font-medium text-sm break-words">
                 Exam Submitted
               </div>
             ) : isRegistered ? (

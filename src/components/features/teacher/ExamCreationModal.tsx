@@ -158,7 +158,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-2">
+        <Button size="sm" className="gap-2 w-full sm:w-auto">
           <Plus size={16} weight="bold" />
           Create Exam
         </Button>
@@ -182,7 +182,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="subject">Subject</Label>
               <Select
@@ -224,7 +224,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="gradeLevel">Grade Level</Label>
               <Select
@@ -277,7 +277,7 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Date</Label>
               <Popover>

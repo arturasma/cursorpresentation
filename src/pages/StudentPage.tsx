@@ -113,17 +113,19 @@ export default function StudentPage() {
           </div>
 
           <Tabs defaultValue="available" className="w-full">
-            <TabsList className="grid w-full max-w-2xl grid-cols-3">
-              <TabsTrigger value="available">
-                Available ({availableExams.length})
-              </TabsTrigger>
-              <TabsTrigger value="registered">
-                Registered ({registeredExams.length})
-              </TabsTrigger>
-              <TabsTrigger value="completed">
-                Completed ({completedExams.length})
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="inline-flex w-full min-w-max sm:grid sm:max-w-2xl sm:grid-cols-3 sm:w-auto">
+                <TabsTrigger value="available" className="flex-shrink-0">
+                  Available ({availableExams.length})
+                </TabsTrigger>
+                <TabsTrigger value="registered" className="flex-shrink-0">
+                  Registered ({registeredExams.length})
+                </TabsTrigger>
+                <TabsTrigger value="completed" className="flex-shrink-0">
+                  Completed ({completedExams.length})
+                </TabsTrigger>
+              </TabsList>
+            </div>
             <TabsContent value="available" className="mt-6">
               <StudentExamList
                 exams={availableExams}

@@ -30,21 +30,23 @@ export default function AboutPage() {
       <Header />
       <main className="flex-1 container mx-auto px-6 py-12">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 break-words">
             Streamlining Student Exam Logins
           </h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 break-words">
             A Case Study in Fast Prototyping for Estonian Public Sector
           </p>
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
-              <TabsTrigger value="challenge">Challenge</TabsTrigger>
-              <TabsTrigger value="context">Context</TabsTrigger>
-              <TabsTrigger value="solution">Solution</TabsTrigger>
-              <TabsTrigger value="approach">Approach</TabsTrigger>
-              <TabsTrigger value="results">Results</TabsTrigger>
-            </TabsList>
+            <div className="mb-8 overflow-x-auto">
+              <TabsList className="inline-flex w-full min-w-max md:grid md:grid-cols-5 md:w-full">
+                <TabsTrigger value="challenge" className="flex-shrink-0">Challenge</TabsTrigger>
+                <TabsTrigger value="context" className="flex-shrink-0">Context</TabsTrigger>
+                <TabsTrigger value="solution" className="flex-shrink-0">Solution</TabsTrigger>
+                <TabsTrigger value="approach" className="flex-shrink-0">Approach</TabsTrigger>
+                <TabsTrigger value="results" className="flex-shrink-0">Results</TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Challenge Tab */}
             <TabsContent value="challenge" className="space-y-6">
@@ -437,9 +439,9 @@ export default function AboutPage() {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-600 dark:text-red-400 font-bold">6.</span>
-                          <span className="flex items-center gap-1">
-                            <Warning size={16} weight="fill" className="text-red-600 dark:text-red-400 flex-shrink-0" />
-                            Communication chain grows: PM → Agency PM → Analyst → UI/UX → Real beneficiaries → UI/UX/Analyst → Agency PM → PM
+                          <span className="flex items-start gap-1">
+                            <Warning size={16} weight="fill" className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                            <span className="break-words">Communication chain grows: PM → Agency PM → Analyst → UI/UX → Real beneficiaries → UI/UX/Analyst → Agency PM → PM</span>
                           </span>
                         </li>
                         <li className="flex items-start gap-2">

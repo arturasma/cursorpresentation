@@ -208,14 +208,14 @@ export default function ExamPage() {
         <main className="flex-1 container mx-auto px-6 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-4xl font-bold mb-2">{exam.name}</h1>
                   <p className="text-muted-foreground">
                     Teacher Exam Monitoring & Control
                   </p>
                 </div>
-                <Button variant="outline" onClick={handleTeacherBackToDashboard} className="gap-2">
+                <Button variant="outline" onClick={handleTeacherBackToDashboard} className="gap-2 w-full sm:w-auto">
                   <ArrowLeft size={16} weight="bold" />
                   Back to Dashboard
                 </Button>
@@ -253,15 +253,15 @@ export default function ExamPage() {
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold mb-2">{exam.name}</h1>
-                <p className="text-muted-foreground">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-4xl font-bold mb-2 break-words">{exam.name}</h1>
+                <p className="text-muted-foreground break-words">
                   {exam.subject.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} - {exam.gradeLevel?.replace('grade-', '') + 'th Grade'}
                 </p>
               </div>
               {(!isAuthenticated && !isAwaitingVerification) || isCompleted ? (
-                <Button variant="outline" onClick={handleRequestExit} className="gap-2">
+                <Button variant="outline" onClick={handleRequestExit} className="gap-2 w-full sm:w-auto">
                   <ArrowLeft size={16} weight="bold" />
                   Back to Exams
                 </Button>

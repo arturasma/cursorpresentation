@@ -82,17 +82,17 @@ export default function PINAuthenticationCard({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm text-muted-foreground mb-2">Student Name</p>
-          <p className="font-medium">{studentName}</p>
+          <p className="font-medium break-words">{studentName}</p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-sm text-muted-foreground mb-2">Isikukood</p>
-          <p className="font-mono font-medium">{studentIdCode}</p>
+          <p className="font-mono font-medium break-all">{studentIdCode}</p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-sm text-muted-foreground mb-2">Teacher</p>
-          <p className="font-medium">{teacherName}</p>
+          <p className="font-medium break-words">{teacherName}</p>
         </div>
 
         <div className="border-t pt-4">
@@ -100,9 +100,9 @@ export default function PINAuthenticationCard({
           {!isSessionActive && (
             <div className="bg-orange-50 border border-orange-200 p-3 rounded-lg mb-4 flex gap-2">
               <Clock size={16} weight="regular" className="text-orange-600 mt-0.5 flex-shrink-0" />
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold text-orange-900 mb-1">Session Not Active</p>
-                <p className="text-xs text-orange-800">
+                <p className="text-xs text-orange-800 break-words">
                   The teacher has not yet activated the exam session. Please wait for the teacher to generate a room code before entering your PIN.
                 </p>
               </div>
@@ -112,9 +112,9 @@ export default function PINAuthenticationCard({
           {/* Info box about time validation */}
           <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-4 flex gap-2">
             <Clock size={16} weight="regular" className="text-blue-600 mt-0.5 flex-shrink-0" />
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="text-xs font-semibold text-blue-900 mb-1">Production Feature Note</p>
-              <p className="text-xs text-blue-800">
+              <p className="text-xs text-blue-800 break-words">
                 In production, time and date validation ensures students can only access exams within a specific window 
                 (e.g., 15 minutes before to 30 minutes after scheduled time).
               </p>
@@ -124,8 +124,8 @@ export default function PINAuthenticationCard({
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="room-code-input" className="flex items-center gap-2">
-                <Key size={16} weight="duotone" className="text-primary" />
-                Room Code
+                <Key size={16} weight="duotone" className="text-primary flex-shrink-0" />
+                <span>Room Code</span>
               </Label>
               <Input
                 id="room-code-input"
@@ -139,15 +139,15 @@ export default function PINAuthenticationCard({
                 disabled={!isSessionActive}
                 required
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground break-words">
                 Enter the 4-digit code displayed by your teacher
               </p>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="pin-input" className="flex items-center gap-2">
-                <ShieldCheck size={16} weight="duotone" className="text-primary" />
-                Your Exam PIN
+                <ShieldCheck size={16} weight="duotone" className="text-primary flex-shrink-0" />
+                <span>Your Exam PIN</span>
               </Label>
               <Input
                 id="pin-input"
@@ -162,16 +162,16 @@ export default function PINAuthenticationCard({
                 required
               />
               {error && (
-                <p className="text-sm text-destructive">{error}</p>
+                <p className="text-sm text-destructive break-words">{error}</p>
               )}
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground break-words">
                 Enter your 8-digit PIN to begin the exam
               </p>
             </div>
 
-            <Button type="submit" className="w-full gap-2" size="lg" disabled={!isSessionActive}>
-              <LockOpen size={18} weight="bold" />
-              {isSessionActive ? 'Start Exam' : 'Waiting for Teacher to Activate Session'}
+            <Button type="submit" className="w-full gap-2 whitespace-normal min-h-[44px]" size="lg" disabled={!isSessionActive}>
+              <LockOpen size={18} weight="bold" className="flex-shrink-0" />
+              <span className="break-words">{isSessionActive ? 'Start Exam' : 'Waiting for Teacher to Activate Session'}</span>
             </Button>
           </form>
         </div>

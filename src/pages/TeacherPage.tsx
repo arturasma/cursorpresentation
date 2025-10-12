@@ -60,12 +60,14 @@ export default function TeacherPage() {
       <Header />
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
               <h1 className="text-3xl font-bold">Exam Management</h1>
               <p className="text-muted-foreground mt-1">Welcome, {mockedTeacher.name}</p>
             </div>
-            <ExamCreationModal teacherName={mockedTeacher.name} onExamCreated={loadExams} />
+            <div className="w-full sm:w-auto">
+              <ExamCreationModal teacherName={mockedTeacher.name} onExamCreated={loadExams} />
+            </div>
           </div>
 
           <ExamList 
