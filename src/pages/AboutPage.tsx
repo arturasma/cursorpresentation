@@ -620,7 +620,7 @@ export default function AboutPage() {
                   <div className="bg-muted/50 border border-border p-6 rounded-lg">
                     <h3 className="font-semibold text-lg mb-3">The Pragmatic Outcome</h3>
                     <p className="text-muted-foreground mb-4">
-                      "Nothing really - things are today as they were back then."
+                      "Nothing really happened afterwards - things are today as they were back then."
                     </p>
                     <p className="text-sm text-foreground/90">
                       While the solution wasn't ultimately implemented, this wasn't a failure. The fast 
@@ -639,7 +639,7 @@ export default function AboutPage() {
                     
                     <div className="grid md:grid-cols-3 gap-4 mt-6">
                       <div className="bg-white dark:bg-green-950/40 p-4 rounded-lg border border-green-200 dark:border-green-700">
-                        <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">Days</p>
+                        <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">8h</p>
                         <p className="text-sm text-muted-foreground">Not weeks or months</p>
                       </div>
                       <div className="bg-white dark:bg-green-950/40 p-4 rounded-lg border border-green-200 dark:border-green-700">
@@ -647,62 +647,48 @@ export default function AboutPage() {
                         <p className="text-sm text-muted-foreground">Not entire team</p>
                       </div>
                       <div className="bg-white dark:bg-green-950/40 p-4 rounded-lg border border-green-200 dark:border-green-700">
-                        <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">Zero €</p>
+                        <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">0 €</p>
                         <p className="text-sm text-muted-foreground">On wrong solution</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-lg">Key Lessons for Public Sector Development</h3>
+                  <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg">
+                    <h3 className="font-semibold text-lg mb-4">Key Lessons for Public Sector Development</h3>
                     
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base">Validate Before Investing</CardTitle>
-                      </CardHeader>
-                      <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-base mb-2">Validate Before Investing</h4>
                         <p className="text-sm text-muted-foreground">
                           Fast prototyping enables stakeholder validation before committing significant development 
                           resources, reducing the risk of building the wrong solution.
                         </p>
-                      </CardContent>
-                    </Card>
+                      </div>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base">Enable Informed Decisions</CardTitle>
-                      </CardHeader>
-                      <CardContent>
+                      <div>
+                        <h4 className="font-semibold text-base mb-2">Enable Informed Decisions</h4>
                         <p className="text-sm text-muted-foreground">
                           Working prototypes empower stakeholders and legal teams to ask specific questions rather 
                           than generic concerns, leading to faster and more accurate decision-making.
                         </p>
-                      </CardContent>
-                    </Card>
+                      </div>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base">Reduce Discovery Overhead</CardTitle>
-                      </CardHeader>
-                      <CardContent>
+                      <div>
+                        <h4 className="font-semibold text-base mb-2">Reduce Discovery Overhead</h4>
                         <p className="text-sm text-muted-foreground">
                           By creating detailed prototypes upfront, you eliminate lengthy discovery phases and can 
                           deliver fully-specified user stories directly to development teams.
                         </p>
-                      </CardContent>
-                    </Card>
+                      </div>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base">Respect Budget Constraints</CardTitle>
-                      </CardHeader>
-                      <CardContent>
+                      <div>
+                        <h4 className="font-semibold text-base mb-2">Respect Budget Constraints</h4>
                         <p className="text-sm text-muted-foreground">
                           In public sector, every euro counts. Fast prototyping ensures taxpayer money is spent 
                           only on validated solutions with proven stakeholder buy-in.
                         </p>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="bg-primary/10 border border-primary/30 p-6 rounded-lg">

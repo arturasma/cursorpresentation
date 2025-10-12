@@ -22,7 +22,7 @@ export default function Homepage() {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h2 className="text-xl font-semibold text-foreground mb-3">How to Test the Prototype</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-3">How to Test the Prototype</h2>
               <ol className="list-decimal list-inside space-y-3 text-foreground/90">
                 <li className="pl-2">
                   <strong>Choose Teacher Role</strong> - Select "Teacher" to access the exam management dashboard
@@ -56,7 +56,7 @@ export default function Homepage() {
               
               <div className="bg-white dark:bg-slate-900 p-4 rounded-md mb-4 font-mono text-xs sm:text-sm overflow-x-auto">
                 <pre className="text-foreground/90 leading-relaxed">
-{`    👨‍🏫 TEACHER                    ⚙️  SYSTEM                     👨‍🎓 STUDENT
+{`      TEACHER                       SYSTEM                       STUDENT
          │                            │                            │
          │                            │                            │
     ┌────▼─────┐                      │                            │
