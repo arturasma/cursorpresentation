@@ -35,7 +35,7 @@ interface SheetContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, ...props }, ref) => (
+>(({ side = "right", className, children, onOpenAutoFocus, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
@@ -54,6 +54,15 @@ const SheetContent = React.forwardRef<
         },
         className
       )}
+      onOpenAutoFocus={(e) => {
+        // Prevent auto-focusing on specific elements during animation to avoid aria-hidden conflicts
+        if (onOpenAutoFocus) {
+          onOpenAutoFocus(e);
+        } else {
+          // Prevent default auto-focus behavior and focus the sheet itself
+          e.preventDefault();
+        }
+      }}
       {...props}
     >
       {children}

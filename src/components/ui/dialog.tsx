@@ -48,6 +48,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onOpenAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
@@ -61,6 +62,15 @@ function DialogContent({
           "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex flex-col w-full max-w-[calc(100%-2rem)] max-h-[calc(100vh-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg border shadow-lg duration-200 sm:max-w-lg overflow-hidden",
           className
         )}
+        onOpenAutoFocus={(e) => {
+          // Prevent auto-focusing on specific elements during animation to avoid aria-hidden conflicts
+          if (onOpenAutoFocus) {
+            onOpenAutoFocus(e);
+          } else {
+            // Prevent default auto-focus behavior and focus the dialog itself
+            e.preventDefault();
+          }
+        }}
         {...props}
       >
         <div className="overflow-y-auto overflow-x-hidden p-6 flex flex-col gap-4">

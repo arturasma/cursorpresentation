@@ -21,6 +21,7 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -251,6 +252,9 @@ export default function Header() {
             <SheetContent side="right">
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
+                <SheetDescription>
+                  Navigate through the application and manage your account
+                </SheetDescription>
               </SheetHeader>
               <div className="flex flex-col gap-4 mt-6">
                 <Button
