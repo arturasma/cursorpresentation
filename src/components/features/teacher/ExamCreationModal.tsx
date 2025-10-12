@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, CalendarBlank } from 'phosphor-react';
+import { Plus, CalendarBlank, Sparkle } from 'phosphor-react';
 import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/select';
 import { TimePicker } from '@/components/ui/time-picker';
 import { examStorage } from '@/utils/examStorage';
+import { getRandomMockExam } from '@/utils/mockExamData';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import type { ExamFormData, Exam } from '@/types/exam';
 
@@ -207,6 +208,26 @@ export default function ExamCreationModal({
     resetForm();
     setOpen(false);
     setShowUnsavedDialog(false);
+  };
+
+  const handleFillMockData = () => {
+    // Get existing exam names to avoid duplicates
+    const existingExams = examStorage.getAll();
+    const existingNames = existingExams.map(exam => exam.name);
+    
+    // Get random mock exam data
+    const mockData = getRandomMockExam(existingNames, teacherName);
+    
+    // Fill form with mock data
+    setFormData(mockData);
+    
+    // Parse and set the date
+    if (mockData.scheduledDate) {
+      setDate(parseISO(mockData.scheduledDate));
+    }
+    
+    // Mark form as dirty to enable unsaved changes detection
+    setIsDirty(true);
   };
 
   return (
@@ -407,11 +428,26 @@ export default function ExamCreationModal({
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button type="submit">{isEditMode ? 'Save Changes' : 'Create Exam'}</Button>
+          <div className="flex justify-between items-center pt-4">
+            {!isEditMode ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleFillMockData}
+                title="Fill with Mock Data"
+              >
+                <Sparkle size={16} weight="duotone" />
+              </Button>
+            ) : (
+              <div />
+            )}
+            <div className="flex gap-3">
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button type="submit">{isEditMode ? 'Save Changes' : 'Create Exam'}</Button>
+            </div>
           </div>
         </form>
       </DialogContent>
