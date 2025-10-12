@@ -1,6 +1,6 @@
 import { House, CaretDown, UserSwitch, SignOut, List } from 'phosphor-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -34,11 +34,45 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   const isHomepage = location.pathname === '/';
   const isAboutPage = location.pathname === '/about';
   const isFeedbackPage = location.pathname === '/feedback';
   const isOnExamPage = location.pathname.startsWith('/exam/');
+
+  // Handle scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when scrolling up or at the top
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Hide header when scrolling down (after 100px)
+        setIsVisible(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Show header when mouse is near the top (within 100px)
+      if (e.clientY < 100) {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [lastScrollY]);
 
   const handleHomeClick = () => {
     if (isInExam) {
@@ -85,7 +119,11 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b border-border bg-background">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-border bg-background transition-transform duration-300 ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         {/* Home Button */}
         <Button

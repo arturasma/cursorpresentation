@@ -424,7 +424,7 @@ export default function AboutPage() {
                           <span className="text-red-600 dark:text-red-400 font-bold">6.</span>
                           <span className="flex items-center gap-1">
                             <Warning size={16} weight="fill" className="text-red-600 dark:text-red-400 flex-shrink-0" />
-                            Communication chain grows: PM → Agency PM → Analyst → UI/UX → Real beneficiaries
+                            Communication chain grows: PM → Agency PM → Analyst → UI/UX → Real beneficiaries → UI/UX/Analyst → Agency PM → PM
                           </span>
                         </li>
                         <li className="flex items-start gap-2">

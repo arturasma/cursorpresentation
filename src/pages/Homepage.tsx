@@ -1,18 +1,6 @@
 import Header from '@/components/Header';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { useUser } from '@/context/UserContext';
 
 export default function Homepage() {
-  const { userRole, isDialogOpen, setIsDialogOpen, handleRoleSelect } = useUser();
-
   return (
     <>
       <Header />
@@ -21,42 +9,6 @@ export default function Homepage() {
           <h1 className="text-5xl font-bold mb-6">
             Student Exam Login Prototype
           </h1>
-          
-          {!userRole && (
-            <div className="mb-8">
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button size="lg" className="text-lg px-8 py-6">
-                    Get Started - Select Your Role
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Select Your Role</DialogTitle>
-                    <DialogDescription>
-                      Please select whether you are a teacher or a student.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex flex-col gap-4 py-4">
-                    <Button
-                      onClick={() => handleRoleSelect('teacher')}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Teacher
-                    </Button>
-                    <Button
-                      onClick={() => handleRoleSelect('student')}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Student
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          )}
 
           <div className="space-y-6 text-lg text-muted-foreground mb-8">
             <div className="bg-primary/10 p-6 rounded-lg border border-primary/30">
@@ -95,6 +47,9 @@ export default function Homepage() {
                 </li>
                 <li className="pl-2">
                   <strong>Complete Exam (Student)</strong> - After verification, student can access and complete the exam
+                </li>
+                <li className="pl-2">
+                  <strong>Leave feedback (Teacher/Student)</strong> - After trying the flow leave the feedback or vote on already left feedback on the feedback page which you can find in header
                 </li>
               </ol>
               <h3 className="text-2xl font-semibold text-foreground mb-4 mt-6">Process Flow</h3>

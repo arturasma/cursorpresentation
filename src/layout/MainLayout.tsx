@@ -7,7 +7,9 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {children}
+      <div className="pt-[73px]">
+        {children}
+      </div>
     </div>
   );
 }
