@@ -357,7 +357,7 @@ export default function AboutPage() {
                         <div className="bg-primary text-primary-foreground rounded w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
                           4
                         </div>
-                        <p className="text-sm">At exam, student enters PIN to authenticate</p>
+                        <p className="text-sm">At exam, student enters PIN and room code to authenticate</p>
                       </div>
                       <div className="flex items-start gap-3">
                         <div className="bg-primary text-primary-foreground rounded w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
