@@ -21,7 +21,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const handleRoleSelect = (role: 'teacher' | 'student', afterSelect?: () => void) => {
     setUserRole(role);
     setIsDialogOpen(false);
-    afterSelect?.();
+    // Defer callback execution to allow state to update first
+    if (afterSelect) {
+      setTimeout(afterSelect, 0);
+    }
   };
 
   const handleLogout = () => {

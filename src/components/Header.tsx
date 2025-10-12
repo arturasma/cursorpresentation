@@ -98,22 +98,24 @@ export default function Header() {
       setPendingAction({ type: 'roleSwitch', newRole: role });
       setShowExitConfirmation(true);
     } else {
-      // Switch role immediately (no exam in progress)
-      handleRoleSelect(role);
-      
-      // Navigate to appropriate page for the new role
-      if (isOnExamPage) {
-        // If on exam page, stay on same exam to see it from new role's perspective
-        const examId = location.pathname.split('/exam/')[1];
-        if (examId) {
-          // Stay on same exam page - it will re-render with new role
-          navigate(`/exam/${examId}`, { replace: true });
+      // Switch role and navigate after role is set (using callback)
+      handleRoleSelect(role, () => {
+        // Navigate to appropriate page for the new role
+        if (isOnExamPage) {
+          // If on exam page, stay on same exam to see it from new role's perspective
+          const examId = location.pathname.split('/exam/')[1];
+          if (examId) {
+            // Stay on same exam page - it will re-render with new role
+            navigate(`/exam/${examId}`, { replace: true });
+          } else {
+            // Go to appropriate dashboard
+            navigate(role === 'teacher' ? '/teacher' : '/student');
+          }
         } else {
-          // Go to appropriate dashboard
+          // Always navigate to the new role's dashboard
           navigate(role === 'teacher' ? '/teacher' : '/student');
         }
-      }
-      // Otherwise, the default routing will handle it
+      });
     }
   };
 
