@@ -8,7 +8,7 @@ interface UserContextType {
   setUserRole: (role: UserRole) => void;
   isDialogOpen: boolean;
   setIsDialogOpen: (open: boolean) => void;
-  handleRoleSelect: (role: 'teacher' | 'student') => void;
+  handleRoleSelect: (role: 'teacher' | 'student', afterSelect?: () => void) => void;
   handleLogout: () => void;
 }
 
@@ -18,9 +18,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleRoleSelect = (role: 'teacher' | 'student') => {
+  const handleRoleSelect = (role: 'teacher' | 'student', afterSelect?: () => void) => {
     setUserRole(role);
     setIsDialogOpen(false);
+    afterSelect?.();
   };
 
   const handleLogout = () => {

@@ -25,7 +25,7 @@ export default function Homepage() {
               <h2 className="text-2xl font-semibold text-foreground mb-3">How to Test the Prototype</h2>
               <ol className="list-decimal list-inside space-y-3 text-foreground/90">
                 <li className="pl-2">
-                  <strong>Choose Teacher Role</strong> - Select "Teacher" to access the exam management dashboard
+                  <strong>Choose Teacher Role</strong> - Select "Teacher" from the header to access the exam management dashboard
                 </li>
                 <li className="pl-2">
                   <strong>Create an Exam</strong> - Set up a new exam with details like date, location, and exam type

@@ -22,18 +22,7 @@ function ProtectedRoute({ children, allowedRole }: { children: React.ReactNode; 
 }
 
 function RoleBasedRedirect() {
-  const { userRole } = useUser();
-  
-  // Simple redirect based on role - no useEffect needed
-  if (userRole === 'student') {
-    return <Navigate to="/student" replace />;
-  }
-  
-  if (userRole === 'teacher') {
-    return <Navigate to="/teacher" replace />;
-  }
-  
-  // No role selected - show homepage
+  // Always show homepage - Dashboard button handles navigation
   return <Homepage />;
 }
 

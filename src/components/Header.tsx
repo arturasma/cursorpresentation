@@ -75,11 +75,19 @@ export default function Header() {
   }, [lastScrollY]);
 
   const handleHomeClick = () => {
-    if (isInExam) {
-      setPendingAction({ type: 'home' });
-      setShowExitConfirmation(true);
+    navigate('/');
+  };
+
+  const handleDashboardClick = () => {
+    if (userRole) {
+      const dashboardPath = userRole === 'teacher' ? '/teacher' : '/student';
+      // Don't navigate if already on dashboard
+      if (location.pathname !== dashboardPath) {
+        navigate(dashboardPath);
+      }
     } else {
-      navigate('/');
+      // Open role selection dialog
+      setIsDialogOpen(true);
     }
   };
 
@@ -137,6 +145,12 @@ export default function Header() {
 
         {/* Desktop Navigation - Hidden on Mobile */}
         <div className="hidden md:flex items-center gap-4">
+          <Button
+            variant="ghost"
+            onClick={handleDashboardClick}
+          >
+            Dashboard
+          </Button>
           <Button
             variant="ghost"
             onClick={() => navigate('/about')}
@@ -201,14 +215,18 @@ export default function Header() {
                 </DialogHeader>
                 <div className="flex flex-col gap-4 py-4">
                   <Button
-                    onClick={() => handleRoleSelect('teacher')}
+                    onClick={() => handleRoleSelect('teacher', () => {
+                      navigate('/teacher');
+                    })}
                     variant="outline"
                     className="w-full"
                   >
                     Teacher
                   </Button>
                   <Button
-                    onClick={() => handleRoleSelect('student')}
+                    onClick={() => handleRoleSelect('student', () => {
+                      navigate('/student');
+                    })}
                     variant="outline"
                     className="w-full"
                   >
@@ -233,6 +251,16 @@ export default function Header() {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-4 mt-6">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    handleDashboardClick();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full justify-start"
+                >
+                  Dashboard
+                </Button>
                 <Button
                   variant="ghost"
                   onClick={() => {
@@ -313,14 +341,18 @@ export default function Header() {
                       </DialogHeader>
                       <div className="flex flex-col gap-4 py-4">
                         <Button
-                          onClick={() => handleRoleSelect('teacher')}
+                          onClick={() => handleRoleSelect('teacher', () => {
+                            navigate('/teacher');
+                          })}
                           variant="outline"
                           className="w-full"
                         >
                           Teacher
                         </Button>
                         <Button
-                          onClick={() => handleRoleSelect('student')}
+                          onClick={() => handleRoleSelect('student', () => {
+                            navigate('/student');
+                          })}
                           variant="outline"
                           className="w-full"
                         >
