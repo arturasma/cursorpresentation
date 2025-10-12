@@ -279,6 +279,43 @@ export default function ExamCreationModal({ teacherName, onExamCreated }: ExamCr
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
+              <Label htmlFor="durationMinutes">Duration (minutes)</Label>
+              <Input
+                id="durationMinutes"
+                type="number"
+                min="1"
+                placeholder="e.g., 90"
+                value={formData.durationMinutes || ''}
+                onChange={(e) => handleChange('durationMinutes', e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="numberOfBreaks">Number of Breaks</Label>
+              <Input
+                id="numberOfBreaks"
+                type="number"
+                min="0"
+                placeholder="e.g., 2"
+                value={formData.numberOfBreaks || ''}
+                onChange={(e) => handleChange('numberOfBreaks', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="breakDurationMinutes">Break Duration (minutes each)</Label>
+            <Input
+              id="breakDurationMinutes"
+              type="number"
+              min="0"
+              placeholder="e.g., 15"
+              value={formData.breakDurationMinutes || ''}
+              onChange={(e) => handleChange('breakDurationMinutes', e.target.value)}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
               <Label>Date</Label>
               <Popover>
                 <PopoverTrigger asChild>

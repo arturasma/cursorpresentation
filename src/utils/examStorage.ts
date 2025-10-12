@@ -14,7 +14,10 @@ export const examStorage = {
         gradeLevel: exam.gradeLevel || 'grade-9',
         school: exam.school || 'tallinna-kesklinna-gumnaasium',
         teacherName: exam.teacherName || 'Unknown Teacher',
-        registeredStudents: exam.registeredStudents || []
+        registeredStudents: exam.registeredStudents || [],
+        durationMinutes: exam.durationMinutes,
+        numberOfBreaks: exam.numberOfBreaks,
+        breakDurationMinutes: exam.breakDurationMinutes
       }));
     } catch (error) {
       console.error('Error reading exams from localStorage:', error);

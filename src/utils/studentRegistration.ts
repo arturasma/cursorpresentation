@@ -1,8 +1,8 @@
 import type { Exam, StudentRegistration } from '@/types/exam';
 import { examStorage } from './examStorage';
 
-// Generate a PIN from ID code, exam date, and ID card last digits
-function generatePIN(idCode: string, examDate: string, idCardLastDigits: string): string {
+// Generate a PIN from ID code and exam date
+function generatePIN(idCode: string, examDate: string, studentId: string): string {
   const hash = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -13,15 +13,15 @@ function generatePIN(idCode: string, examDate: string, idCardLastDigits: string)
     return Math.abs(hash);
   };
   
-  // Combine ID code, exam date, and ID card digits for unique PIN
-  const combined = `${idCode}${examDate}${idCardLastDigits}`;
+  // Combine ID code, exam date, and student ID for unique PIN
+  const combined = `${idCode}${examDate}${studentId}`;
   const numHash = hash(combined);
   const pin = String(numHash).slice(0, 8).padStart(8, '0');
   return `${pin.slice(0, 4)}-${pin.slice(4, 8)}`;
 }
 
 export const studentRegistration = {
-  register(examId: string, studentName: string, idCode: string, idCardLastDigits: string): boolean {
+  register(examId: string, studentName: string, idCode: string): boolean {
     try {
       const exams = examStorage.getAll();
       const exam = exams.find(e => e.id === examId);
@@ -38,13 +38,13 @@ export const studentRegistration = {
         return false;
       }
       
+      const studentId = crypto.randomUUID();
       const registration: StudentRegistration = {
-        studentId: crypto.randomUUID(),
+        studentId,
         studentName,
         idCode,
-        idCardLastDigits,
         registeredAt: new Date().toISOString(),
-        pin: generatePIN(idCode, exam.scheduledDate, idCardLastDigits),
+        pin: generatePIN(idCode, exam.scheduledDate, studentId),
         teacherVerified: false,
         awaitingVerification: false,
       };

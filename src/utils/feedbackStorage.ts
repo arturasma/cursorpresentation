@@ -5,40 +5,52 @@ const MOCK_INITIALIZED_KEY = 'feedbacks_mock_initialized';
 
 const MOCK_FEEDBACKS: Omit<Feedback, 'id'>[] = [
   {
-    summary: "PIN system is much faster than ID card readers",
-    comment: "As a teacher, I've seen students struggle with ID card readers that don't work properly. The PIN approach would eliminate those technical issues during stressful exam situations.",
-    thumbsUpCount: 12,
-    createdAt: new Date('2024-10-10T10:30:00').toISOString(),
-  },
-  {
-    summary: "SMS PIN delivery is essential for students without ID cards",
-    comment: "Some students forget their ID cards on exam day. Having the PIN sent via SMS as a backup would reduce stress and prevent students from missing exams.",
-    thumbsUpCount: 8,
-    createdAt: new Date('2024-10-10T11:15:00').toISOString(),
-  },
-  {
-    summary: "Teacher verification step adds important security layer",
-    comment: "The in-person teacher verification ensures that even with PIN authentication, identity is confirmed visually. This maintains the security standards required for high-stakes exams.",
-    thumbsUpCount: 15,
-    createdAt: new Date('2024-10-10T09:45:00').toISOString(),
-  },
-  {
-    summary: "Room code prevents students from logging in from wrong location",
-    comment: "The 4-digit room code is a simple but effective way to ensure students are physically present in the correct exam room. Great security feature!",
-    thumbsUpCount: 6,
-    createdAt: new Date('2024-10-10T14:20:00').toISOString(),
-  },
-  {
-    summary: "Could PIN be shorter? 6 digits might be too long",
+    summary: "Could PIN be shorter? 8 digits might be too long",
     comment: "Students are already stressed during exams. A 4-digit PIN might be easier to remember and type quickly without sacrificing too much security.",
-    thumbsUpCount: 3,
+    thumbsUpCount: 18,
     createdAt: new Date('2024-10-11T08:30:00').toISOString(),
   },
   {
-    summary: "Dashboard view helps teachers track student verification status",
-    comment: "The real-time student status panel is very helpful for teachers to see who has logged in and who still needs verification. Makes managing 30+ students much easier.",
-    thumbsUpCount: 10,
-    createdAt: new Date('2024-10-11T10:00:00').toISOString(),
+    summary: "Add ability to print student PINs for distribution",
+    comment: "Would be helpful if teachers could generate a printable sheet with all student PINs before the exam starts. Some students might not have access to view their PIN online.",
+    thumbsUpCount: 15,
+    createdAt: new Date('2024-10-10T09:15:00').toISOString(),
+  },
+
+  {
+    summary: "Notification when student enters PIN but awaits verification",
+    comment: "Teachers need an audio or visual alert when a student submits their PIN. Right now you have to keep refreshing the dashboard to see new verification requests.",
+    thumbsUpCount: 21,
+    createdAt: new Date('2024-10-11T10:05:00').toISOString(),
+  },
+  
+  {
+    summary: "Allow multiple teachers to co-manage the same exam",
+    comment: "For large exams with multiple exam rooms, it would be useful to have 2-3 teachers able to verify students and manage the same exam session.",
+    thumbsUpCount: 14,
+    createdAt: new Date('2024-10-10T08:20:00').toISOString(),
+  },
+  
+
+  {
+    summary: "Improvement: Show student photo during teacher verification",
+    comment: "When verifying student identity, display their ID card photo from the authentication system. This would speed up verification and reduce errors.",
+    thumbsUpCount: 16,
+    createdAt: new Date('2024-10-09T14:25:00').toISOString(),
+  },
+  {
+    summary: "Request: SMS/Email reminder 24 hours before exam",
+    comment: "Automatically send students a reminder with their exam details and a link to view their PIN 24 hours before the scheduled exam time.",
+    thumbsUpCount: 22,
+    createdAt: new Date('2024-10-08T12:10:00').toISOString(),
+  },
+
+
+  {
+    summary: "Improvement: Color-code exams by status on calendar view",
+    comment: "Add a calendar view where exams are color-coded by status (scheduled/active/completed). Makes it easier to visualize upcoming exam schedule.",
+    thumbsUpCount: 13,
+    createdAt: new Date('2024-10-10T13:45:00').toISOString(),
   },
 ];
 

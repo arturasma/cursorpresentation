@@ -111,6 +111,18 @@ export default function ExamList({ exams, onDelete, onOpenExam, onCreateExam, te
                 <span className="mx-1">•</span>
                 <span>{exam.location}</span>
               </div>
+              {(exam.durationMinutes || exam.numberOfBreaks) && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+                  <Clock size={16} weight="regular" />
+                  {exam.durationMinutes && <span>{exam.durationMinutes} minutes</span>}
+                  {exam.numberOfBreaks && exam.breakDurationMinutes && (
+                    <>
+                      <span className="mx-1">•</span>
+                      <span>{exam.numberOfBreaks} break{exam.numberOfBreaks > 1 ? 's' : ''} of {exam.breakDurationMinutes} min each</span>
+                    </>
+                  )}
+                </div>
+              )}
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Users size={16} weight="regular" />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IdentificationCard } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +17,7 @@ interface StudentRegistrationModalProps {
   exam: Exam;
   open: boolean;
   onClose: () => void;
-  onRegister: (idCardLastDigits: string) => void;
+  onRegister: () => void;
 }
 
 export default function StudentRegistrationModal({
@@ -26,7 +26,8 @@ export default function StudentRegistrationModal({
   onClose,
   onRegister,
 }: StudentRegistrationModalProps) {
-  const [idCardLastDigits, setIdCardLastDigits] = useState('');
+  const [confirmationCode, setConfirmationCode] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
   const [isDirty, setIsDirty] = useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
 
@@ -36,14 +37,25 @@ export default function StudentRegistrationModal({
     idCode: '50001010001', // Estonian Isikukood format
   };
 
+  // Generate a random 3-digit code when the modal opens
+  useEffect(() => {
+    if (open) {
+      const randomCode = Math.floor(100 + Math.random() * 900).toString();
+      setGeneratedCode(randomCode);
+    }
+  }, [open]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onRegister(idCardLastDigits);
-    handleClose();
+    if (confirmationCode === generatedCode) {
+      onRegister();
+      handleClose();
+    }
   };
 
   const handleClose = () => {
-    setIdCardLastDigits('');
+    setConfirmationCode('');
+    setGeneratedCode('');
     setIsDirty(false);
     setShowUnsavedDialog(false);
     onClose();
@@ -68,7 +80,7 @@ export default function StudentRegistrationModal({
   const handleInputChange = (value: string) => {
     // Only allow digits and max 3 characters
     const filtered = value.replace(/\D/g, '').slice(0, 3);
-    setIdCardLastDigits(filtered);
+    setConfirmationCode(filtered);
     setIsDirty(filtered.length > 0);
   };
 
@@ -131,6 +143,18 @@ export default function StudentRegistrationModal({
                 <span className="text-muted-foreground">Teacher:</span>
                 <span className="font-medium">{exam.teacherName}</span>
               </div>
+              {exam.durationMinutes && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Duration:</span>
+                  <span className="font-medium">{exam.durationMinutes} minutes</span>
+                </div>
+              )}
+              {exam.numberOfBreaks && exam.breakDurationMinutes && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Breaks:</span>
+                  <span className="font-medium">{exam.numberOfBreaks} × {exam.breakDurationMinutes} min</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -162,23 +186,30 @@ export default function StudentRegistrationModal({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="idCardDigits">
-                ID Card Document Number (last 3 digits) <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="idCardDigits"
-                type="text"
-                inputMode="numeric"
-                placeholder="e.g., 123"
-                value={idCardLastDigits}
-                onChange={(e) => handleInputChange(e.target.value)}
-                maxLength={3}
-                required
-                className="font-mono text-lg"
-              />
-              <p className="text-xs text-muted-foreground">
-                Enter the last 3 digits from your ID card document number for PIN generation
-              </p>
+              <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                <Label htmlFor="confirmationCode" className="text-sm font-semibold text-amber-900">
+                  Attention Check <span className="text-destructive">*</span>
+                </Label>
+                <p className="text-sm text-amber-800 mt-2 mb-3">
+                  In order to confirm you have read the exam information, please type these numbers below:
+                </p>
+                <div className="bg-white border-2 border-amber-300 rounded-lg p-4 mb-3 text-center">
+                  <span className="font-mono text-3xl font-bold text-amber-900 tracking-wider">
+                    {generatedCode}
+                  </span>
+                </div>
+                <Input
+                  id="confirmationCode"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="Type the numbers here"
+                  value={confirmationCode}
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  maxLength={3}
+                  required
+                  className="font-mono text-lg"
+                />
+              </div>
             </div>
           </div>
 
@@ -186,7 +217,7 @@ export default function StudentRegistrationModal({
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="submit" disabled={idCardLastDigits.length !== 3}>
+            <Button type="submit" disabled={confirmationCode !== generatedCode}>
               Register for Exam
             </Button>
           </div>

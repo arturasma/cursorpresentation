@@ -60,14 +60,13 @@ export default function StudentPage() {
     setIsRegistrationOpen(true);
   };
 
-  const handleRegister = (idCardLastDigits: string) => {
+  const handleRegister = () => {
     if (!selectedExam) return;
     
     if (studentRegistration.register(
       selectedExam.id,
       mockedStudent.name,
-      mockedStudent.idCode,
-      idCardLastDigits
+      mockedStudent.idCode
     )) {
       // Get the newly created PIN
       const registration = studentRegistration.getRegistration(selectedExam.id, mockedStudent.idCode);

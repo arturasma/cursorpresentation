@@ -2,7 +2,7 @@ export interface StudentRegistration {
   studentId: string;
   studentName: string;
   idCode: string; // Estonian Isikukood
-  idCardLastDigits: string; // Last 3 digits of ID card document number
+  idCardLastDigits?: string; // Last 3 digits of ID card document number (optional, legacy)
   registeredAt: string;
   pin: string;
   completedAt?: string; // Timestamp when student completed the exam
@@ -36,6 +36,9 @@ export interface Exam {
   createdAt: string;
   registeredStudents: StudentRegistration[];
   activeSession?: ExamSession; // Active exam session with room code
+  durationMinutes?: number; // Total exam duration in minutes
+  numberOfBreaks?: number; // Number of breaks during exam
+  breakDurationMinutes?: number; // Duration of each break in minutes
 }
 
 export interface ExamFormData {
@@ -48,5 +51,8 @@ export interface ExamFormData {
   scheduledDate: string;
   scheduledTime: string;
   teacherName: string;
+  durationMinutes?: number;
+  numberOfBreaks?: number;
+  breakDurationMinutes?: number;
 }
 

@@ -119,6 +119,18 @@ export default function StudentExamCard({
                 Teacher: {exam.teacherName}
               </div>
             </div>
+            {(exam.durationMinutes || exam.numberOfBreaks) && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+                <Clock size={16} weight="regular" className="flex-shrink-0" />
+                {exam.durationMinutes && <span>{exam.durationMinutes} minutes</span>}
+                {exam.numberOfBreaks && exam.breakDurationMinutes && (
+                  <>
+                    <span className="mx-1">•</span>
+                    <span>{exam.numberOfBreaks} break{exam.numberOfBreaks > 1 ? 's' : ''} of {exam.breakDurationMinutes} min each</span>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {isCompleted && completionInfo && (
