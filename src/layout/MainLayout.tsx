@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import CookieBanner from '@/components/shared/CookieBanner';
+import Footer from '@/components/shared/Footer';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <div className="pt-[73px]">
         {children}
       </div>
+      <Footer />
       <CookieBanner />
     </div>
   );
