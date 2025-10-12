@@ -1,4 +1,4 @@
-import { Calendar, Clock, MapPin, GraduationCap, Chalkboard, IdentificationCard } from 'phosphor-react';
+import { Calendar, Clock, MapPin, GraduationCap, Chalkboard, IdentificationCard, Hourglass, Coffee } from 'phosphor-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Exam } from '@/types/exam';
 
@@ -53,6 +53,27 @@ export default function ExamDetails({ exam }: ExamDetailsProps) {
             <p className="font-medium">{exam.scheduledTime}</p>
           </div>
         </div>
+        {exam.durationMinutes && (
+          <div className="flex items-start gap-3">
+            <Hourglass size={20} weight="regular" className="text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-muted-foreground">Duration</p>
+              <p className="font-medium">{exam.durationMinutes} minutes</p>
+            </div>
+          </div>
+        )}
+        {(exam.numberOfBreaks !== undefined && exam.numberOfBreaks > 0) && (
+          <div className="flex items-start gap-3">
+            <Coffee size={20} weight="regular" className="text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-muted-foreground">Breaks</p>
+              <p className="font-medium">
+                {exam.numberOfBreaks} {exam.numberOfBreaks === 1 ? 'break' : 'breaks'}
+                {exam.breakDurationMinutes && ` (${exam.breakDurationMinutes} min each)`}
+              </p>
+            </div>
+          </div>
+        )}
         <div className="flex items-start gap-3">
           <MapPin size={20} weight="regular" className="text-muted-foreground flex-shrink-0 mt-0.5" />
           <div className="min-w-0 flex-1">
