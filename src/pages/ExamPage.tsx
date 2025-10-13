@@ -315,20 +315,95 @@ export default function ExamPage() {
                 <>
                   <CheckCircle size={64} weight="fill" className="mx-auto mb-4 text-green-600" />
                   <h2 className="text-3xl font-bold mb-4 text-green-600">Exam Completed!</h2>
-                  <p className="text-muted-foreground mb-4">
-                    Your exam has been successfully submitted.
+                  <p className="text-muted-foreground mb-8">
+                    Your exam has been successfully submitted. What would you like to do next?
                   </p>
-                  <Button 
-                    onClick={() => {
-                      setIsInExam(false);
-                      navigate('/student');
-                    }}
-                    className="gap-2"
-                    size="lg"
-                  >
-                    <ArrowLeft size={16} weight="bold" />
-                    Back to Exams
-                  </Button>
+                  
+                  <div className="max-w-2xl mx-auto space-y-4">
+                    <Button 
+                      onClick={() => {
+                        setIsInExam(false);
+                        handleRoleSelect('teacher');
+                        navigate(`/exam/${exam.id}`);
+                      }}
+                      variant="outline"
+                      className="w-full justify-start text-left h-auto py-4 px-6"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H216V88H40ZM40,200V104H216v96H40Zm64-56a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H112A8,8,0,0,1,104,144Z"></path>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-base mb-1">Check as Teacher</div>
+                          <div className="text-sm text-muted-foreground">
+                            Switch to teacher view to verify that your exam appears as completed in the system
+                          </div>
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button 
+                      onClick={() => {
+                        setIsInExam(false);
+                        navigate('/feedback');
+                      }}
+                      variant="outline"
+                      className="w-full justify-start text-left h-auto py-4 px-6"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"></path>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-base mb-1">Leave Feedback</div>
+                          <div className="text-sm text-muted-foreground">
+                            Share your thoughts about this prototype or vote on existing feedback
+                          </div>
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button 
+                      onClick={() => {
+                        setIsInExam(false);
+                        navigate('/how-built');
+                      }}
+                      variant="outline"
+                      className="w-full justify-start text-left h-auto py-4 px-6"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M184,144a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,144Zm-8-40H80a8,8,0,0,0,0,16h96a8,8,0,0,0,0-16Zm56-64V216a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V40A16,16,0,0,1,40,24H216A16,16,0,0,1,232,40ZM216,216V40H40V216H216Z"></path>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-base mb-1">How This Was Built</div>
+                          <div className="text-sm text-muted-foreground">
+                            Learn about the technology stack and tools used to create this prototype
+                          </div>
+                        </div>
+                      </div>
+                    </Button>
+
+                    <div className="pt-4">
+                      <Button 
+                        onClick={() => {
+                          setIsInExam(false);
+                          navigate('/student');
+                        }}
+                        variant="ghost"
+                        className="gap-2"
+                      >
+                        <ArrowLeft size={16} weight="bold" />
+                        Back to Exams
+                      </Button>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <>
