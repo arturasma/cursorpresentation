@@ -557,48 +557,57 @@ export default function AboutPage() {
                     </ul>
                   </div>
                 
-                  <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-3">Validation Process</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="font-semibold text-sm mb-2">Teacher Validation</p>
-                        <p className="text-sm text-muted-foreground">
-                          Presented to a select group of teachers to gather practical feedback. This allowed 
-                          refinement of the user experience based on real-world classroom scenarios before 
-                          any development investment.
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-sm mb-2">Legal Review</p>
-                        <p className="text-sm text-muted-foreground">
-                          Armed with pre-gathered data insights and a working prototype, legal teams could 
-                          pose specific, informed questions rather than generic concerns. This accelerated 
-                          the compliance review process significantly.
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-sm mb-2">Technical Documentation</p>
-                        <p className="text-sm text-muted-foreground">
-                          The Jira ticket created at the end included fully documented user stories with 
-                          technical specifications, eliminating the need for further discovery phases.
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-sm mb-2">Easy mobile testing</p>
-                        <p className="text-sm text-muted-foreground">
-                          The prototype's responsive design allowed easy testing across many screen sizes as well asmobile devices, helping identify 
-                          and address cross-platform issues early in the validation process rather than discovering them 
-                          during development.
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-sm mb-2">Public feedback and voting system</p>
-                        <p className="text-sm text-muted-foreground">
-                          The prototype included an easy-to-use feedback form where teachers and students could leave comments 
-                          and vote on others' feedback. This helped surface the most valuable insights and prioritize 
-                          improvements based on actual user needs during the prototyping phase.
-                        </p>
-                      </div>
+                  <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg space-y-4">
+                    <h3 className="font-semibold text-lg">Validation Process</h3>
+                    
+                    <div className="space-y-1">
+                      <p className="font-semibold text-sm">Teacher Validation</p>
+                      <p className="text-sm text-muted-foreground">
+                        Presented to a select group of teachers to gather practical feedback. This allowed 
+                        refinement of the user experience based on real-world classroom scenarios before 
+                        any development investment.
+                      </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="font-semibold text-sm">Legal Review</p>
+                      <p className="text-sm text-muted-foreground">
+                        Armed with pre-gathered data insights and a working prototype, legal teams could 
+                        pose specific, informed questions rather than generic concerns. This accelerated 
+                        the compliance review process significantly.
+                      </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="font-semibold text-sm">Technical Documentation</p>
+                      <p className="text-sm text-muted-foreground">
+                        The Jira ticket created at the end included fully documented user stories with 
+                        technical specifications, eliminating the need for further discovery phases.
+                      </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="font-semibold text-sm">Easy Mobile Testing</p>
+                      <p className="text-sm text-muted-foreground">
+                        The prototype's responsive design allowed easy testing across many screen sizes as well as mobile devices, helping identify 
+                        and address cross-platform issues early in the validation process rather than discovering them 
+                        during development.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2 pt-2">
+                      <p className="font-semibold text-sm">Public Feedback and Voting System</p>
+                      <p className="text-sm text-muted-foreground">
+                        The prototype included an integrated feedback system where teachers and students could leave comments 
+                        and vote on others' feedback. This democratized the validation process by surfacing the most valuable 
+                        insights and allowing the community to prioritize improvements based on actual user needs.
+                      </p>
+                      <ul className="text-sm space-y-1 pl-4 text-muted-foreground">
+                        <li>• Community-driven prioritization - focus on what truly matters</li>
+                        <li>• Transparent feedback process - everyone sees what's being requested</li>
+                        <li>• Efficient validation - upvoting eliminates duplicate feedback</li>
+                        <li>• Direct stakeholder input - no intermediaries filtering feedback</li>
+                      </ul>
                     </div>
                   </div>
 
@@ -606,19 +615,31 @@ export default function AboutPage() {
                     <h3 className="font-semibold text-lg mb-3">Try It Yourself</h3>
                     <p className="text-sm text-foreground/90 mb-4">
                       Test the prototype yourself and experience the flow firsthand. Navigate to the home page 
-                      and select a role from the header in the upper left corner to explore the different user perspectives.
+                      and select a role from the header in the upper left corner to explore the different user perspectives. 
+                      Don't forget to try the feedback system to see how community-driven validation works in practice!
                     </p>
-                    <Button 
-                      onClick={() => {
-                        handleLogout();
-                        navigate('/');
-                      }}
-                      size="lg"
-                      className="group"
-                    >
-                      Go to Home Page
-                      <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    <div className="flex flex-wrap gap-3">
+                      <Button 
+                        onClick={() => {
+                          handleLogout();
+                          navigate('/');
+                        }}
+                        size="lg"
+                        className="group"
+                      >
+                        Go to Home Page
+                        <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                      <Button 
+                        onClick={() => navigate('/feedback')}
+                        variant="outline"
+                        size="lg"
+                        className="group"
+                      >
+                        Leave Feedback
+                        <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
