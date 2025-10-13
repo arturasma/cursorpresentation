@@ -57,6 +57,12 @@ export default function Homepage() {
                   <strong>Complete Exam (Student)</strong> - After verification, student can access and complete the exam
                 </li>
                 <li className="pl-2">
+                  <strong>Test Break Feature (Optional)</strong> - If exam has breaks defined, teacher can pause the session. Students will see a break screen. Teacher can then resume.
+                </li>
+                <li className="pl-2">
+                  <strong>End Session (Teacher)</strong> - When exam is finished, teacher ends the session. Exam moves to "Completed" tab.
+                </li>
+                <li className="pl-2">
                   <strong>Leave feedback (Teacher/Student)</strong> - After trying the flow leave the feedback or vote on already left feedback on the feedback page which you can find in header
                 </li>
               </ol>
@@ -66,41 +72,51 @@ export default function Homepage() {
                 <pre className="text-foreground/90 leading-relaxed">
 {`      TEACHER                       SYSTEM                       STUDENT
          │                            │                            │
-         │                            │                            │
     ┌────▼─────┐                      │                            │
     │ Create   │──────────────────────▼                            │
     │ Exam     │              Store Exam Details                   │
-    └──────────┘                      │                            │
-         │                            │                       ┌────▼──────┐
+    │(+Breaks) │                      │                            │
+    └──────────┘                      │                       ┌────▼──────┐
          │                            │◄──────────────────────│ Register  │
          │                            │                       │ for Exam  │
          │                      Generate Hash                 └───────────┘
          │                   (Student + Exam Data)                 │
-         │                            │                            │
          │                      Generate PIN ─────────────────────►│
          │                            │                       Reveal PIN
-         │                            │                            │
     ┌────▼─────┐                      │                            │
     │ Activate │──────────────────────▼                            │
-    │ Session  │              Generate Room Code                   │
+    │ Session  │        Generate Room Code + Active                │
     └──────────┘                      │                            │
          │                            │                       ┌────▼──────┐
-         │                            │                       │ Take Exam │
-         │                            │◄──────────────────────│ Enter:    │
-         │                            │                       │ Room+PIN  │
-         │                      Validate Codes                └───────────┘
-         │                            │                            │
+         │                            │◄──────────────────────│ Take Exam │
+         │                      Validate Codes                │ Room+PIN  │
+         │                            │                       └───────────┘
          │                            │                       Await Verify
     ┌────▼─────┐                      │                            │
     │ Verify   │──────────────────────▼                            │
-    │ Student  │              Mark as Verified                     │
-    │ (in person)                     │                            │
+    │ Identity │              Mark as Verified                     │
     └──────────┘                      │                            │
-         │                            │                            │
          │                      Grant Access ─────────────────────►│
-         │                            │                       Complete Exam
+         │                            │                       Exam Active
          │                            │                            │
-         │                      Delete Hashes                      │
+    ┌────▼─────┐                      │                            │
+    │  Pause   │──────────────────────▼                            │
+    │ Session  │              Session Paused ────────────────────►│
+    │(Optional)│              (Break 1 of N)                  Show Break
+    └──────────┘                      │                       Screen
+         │                            │                            │
+    ┌────▼─────┐                      │                            │
+    │  Resume  │──────────────────────▼                            │
+    │ Session  │            Session Resumed ─────────────────────►│
+    └──────────┘                      │                       Continue Exam
+         │                            │                            │
+         │                            │                       ┌────▼──────┐
+         │                            │◄──────────────────────│ Complete  │
+         │                            │                       │   Exam    │
+    ┌────▼─────┐                      │                       └───────────┘
+    │   End    │──────────────────────▼                            │
+    │ Session  │       Mark Completed + Clear Code                 │
+    └──────────┘              Delete Hashes                        │
          │                            │                            │
          ▼                            ▼                            ▼`}
                 </pre>

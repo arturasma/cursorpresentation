@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
 import ExamList from '@/components/features/teacher/ExamList';
 import ExamDetailsModal from '@/components/features/teacher/ExamDetailsModal';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { examStorage } from '@/utils/examStorage';
+import { useStorageSync } from '@/hooks/useStorageSync';
 import type { Exam } from '@/types/exam';
 
 export default function TeacherPage() {
@@ -22,14 +24,26 @@ export default function TeacherPage() {
   const [examToDelete, setExamToDelete] = useState<string | null>(null);
   const [examToEdit, setExamToEdit] = useState<Exam | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('teacher-exams-tab') || 'scheduled';
+  });
 
-  const loadExams = () => {
+  const loadExams = useCallback(() => {
     setExams(examStorage.getAll());
-  };
+  }, []);
 
   useEffect(() => {
     loadExams();
-  }, []);
+  }, [loadExams]);
+
+  // Sync exam changes across tabs
+  const handleStorageChange = useCallback((key: string) => {
+    if (key === 'exams') {
+      loadExams();
+    }
+  }, [loadExams]);
+
+  useStorageSync(handleStorageChange);
 
   const handleDelete = (id: string) => {
     setExamToDelete(id);
@@ -80,6 +94,16 @@ export default function TeacherPage() {
     }
   };
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    localStorage.setItem('teacher-exams-tab', value);
+  };
+
+  // Filter exams by status
+  const scheduledExams = exams.filter(exam => exam.status === 'scheduled');
+  const ongoingExams = exams.filter(exam => exam.status === 'active' || exam.activeSession);
+  const completedExams = exams.filter(exam => exam.status === 'completed');
+
   return (
     <>
       <Header />
@@ -95,14 +119,70 @@ export default function TeacherPage() {
             </div>
           </div>
 
-          <ExamList 
-            exams={exams} 
-            onDelete={handleDelete}
-            onEdit={handleEditExam}
-            onOpenExam={handleOpenExam}
-            onCreateExam={loadExams}
-            teacherName={mockedTeacher.name}
-          />
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="scheduled">
+                Scheduled ({scheduledExams.length})
+              </TabsTrigger>
+              <TabsTrigger value="ongoing">
+                Ongoing ({ongoingExams.length})
+              </TabsTrigger>
+              <TabsTrigger value="completed">
+                Completed ({completedExams.length})
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="scheduled">
+              <ExamList 
+                exams={scheduledExams} 
+                onDelete={handleDelete}
+                onEdit={handleEditExam}
+                onOpenExam={handleOpenExam}
+                onCreateExam={loadExams}
+                teacherName={mockedTeacher.name}
+              />
+            </TabsContent>
+
+            <TabsContent value="ongoing">
+              {ongoingExams.length === 0 ? (
+                <div className="text-center py-16">
+                  <p className="text-muted-foreground mb-4">No ongoing exams</p>
+                  <p className="text-sm text-muted-foreground">
+                    Activate a scheduled exam session to see it here
+                  </p>
+                </div>
+              ) : (
+                <ExamList 
+                  exams={ongoingExams} 
+                  onDelete={handleDelete}
+                  onEdit={handleEditExam}
+                  onOpenExam={handleOpenExam}
+                  onCreateExam={loadExams}
+                  teacherName={mockedTeacher.name}
+                />
+              )}
+            </TabsContent>
+
+            <TabsContent value="completed">
+              {completedExams.length === 0 ? (
+                <div className="text-center py-16">
+                  <p className="text-muted-foreground mb-4">No completed exams</p>
+                  <p className="text-sm text-muted-foreground">
+                    Completed exams will appear here after ending their sessions
+                  </p>
+                </div>
+              ) : (
+                <ExamList 
+                  exams={completedExams} 
+                  onDelete={handleDelete}
+                  onEdit={handleEditExam}
+                  onOpenExam={handleOpenExam}
+                  onCreateExam={loadExams}
+                  teacherName={mockedTeacher.name}
+                />
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 

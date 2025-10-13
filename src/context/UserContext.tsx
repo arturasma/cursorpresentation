@@ -15,6 +15,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
+  // Role is tab-specific (not synced across tabs)
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

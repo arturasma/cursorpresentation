@@ -18,6 +18,10 @@ export interface ExamSession {
   activeAt: string; // Timestamp when session was activated
   teacherId: string; // ID of teacher who activated session
   activatedBy: string; // Name of teacher who activated session
+  isPaused: boolean; // Whether session is currently paused
+  pausedAt?: string; // Timestamp of current pause
+  pauseCount: number; // Number of times paused (e.g., for tracking breaks)
+  pauseHistory?: Array<{ pausedAt: string; resumedAt?: string }>; // Optional history of pauses
 }
 
 export interface Exam {

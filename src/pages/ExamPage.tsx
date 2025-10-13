@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, SignOut, CheckCircle, Hourglass } from 'phosphor-react';
+import { ArrowLeft, SignOut, CheckCircle, Hourglass, Coffee } from 'phosphor-react';
 import Header from '@/components/Header';
 import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
@@ -13,7 +13,8 @@ import { useExam } from '@/context/ExamContext';
 import { useUser } from '@/context/UserContext';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
-import { activateExamSession, deactivateExamSession } from '@/utils/roomCodeGenerator';
+import { activateExamSession, deactivateExamSession, pauseExamSession, resumeExamSession } from '@/utils/roomCodeGenerator';
+import { useStorageSync } from '@/hooks/useStorageSync';
 import type { Exam } from '@/types/exam';
 
 export default function ExamPage() {
@@ -40,7 +41,7 @@ export default function ExamPage() {
   };
 
   // Function to load/reload exam data
-  const loadExam = () => {
+  const loadExam = useCallback(() => {
     if (id) {
       const allExams = examStorage.getAll();
       const foundExam = allExams.find(e => e.id === id);
@@ -81,7 +82,7 @@ export default function ExamPage() {
         setIsInExam(true);
       }
     }
-  };
+  }, [id, navigate, setIsInExam, userRole, mockedStudent.idCode]);
 
   useEffect(() => {
     loadExam();
@@ -89,7 +90,16 @@ export default function ExamPage() {
     return () => {
       setIsInExam(false);
     };
-  }, [id, navigate, setIsInExam, userRole]);
+  }, [loadExam, setIsInExam]);
+
+  // Sync exam changes across tabs (e.g., teacher pauses, student sees it immediately)
+  const handleStorageChange = useCallback((key: string) => {
+    if (key === 'exams') {
+      loadExam();
+    }
+  }, [loadExam]);
+
+  useStorageSync(handleStorageChange);
 
   // Poll for verification status when awaiting
   useEffect(() => {
@@ -163,6 +173,20 @@ export default function ExamPage() {
     }
   };
 
+  const handlePauseSession = () => {
+    if (id) {
+      pauseExamSession(id);
+      loadExam();
+    }
+  };
+
+  const handleResumeSession = () => {
+    if (id) {
+      resumeExamSession(id);
+      loadExam();
+    }
+  };
+
   const handleRequestExit = () => {
     // If exam is completed, navigate directly without confirmation
     if (isCompleted) {
@@ -232,8 +256,12 @@ export default function ExamPage() {
                   pendingStudents={pendingVerifications}
                   verifiedStudents={verifiedStudents}
                   teacherName={mockedTeacher.name}
+                  numberOfBreaks={exam.numberOfBreaks}
+                  breakDurationMinutes={exam.breakDurationMinutes}
                   onActivateSession={handleActivateSession}
                   onDeactivateSession={handleDeactivateSession}
+                  onPauseSession={handlePauseSession}
+                  onResumeSession={handleResumeSession}
                   onVerifyStudent={handleVerifyStudent}
                 />
               </div>
@@ -309,6 +337,25 @@ export default function ExamPage() {
                 examType={exam.examType}
               />
             </>
+          ) : exam.activeSession?.isPaused ? (
+            <div className="text-center py-16">
+              <Coffee size={64} weight="duotone" className="mx-auto mb-4 text-amber-600" />
+              <h2 className="text-3xl font-bold mb-4">Exam on Break</h2>
+              <div className="bg-amber-50 border border-amber-200 p-6 rounded-lg max-w-md mx-auto mb-6">
+                <p className="text-lg font-semibold text-amber-900 mb-2">
+                  Break {exam.activeSession.pauseCount} of {exam.numberOfBreaks}
+                </p>
+                <p className="text-2xl font-bold text-amber-700 mb-3">
+                  {exam.breakDurationMinutes} minutes
+                </p>
+                <p className="text-sm text-amber-800">
+                  Your teacher has paused the exam for a scheduled break. Please wait while your teacher resumes the session.
+                </p>
+              </div>
+              <p className="text-muted-foreground">
+                The exam will continue automatically when your teacher resumes the session.
+              </p>
+            </div>
           ) : (
             <div className="text-center py-16">
               {isCompleted ? (

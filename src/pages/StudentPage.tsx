@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Header from '@/components/Header';
 import StudentExamList from '@/components/features/student/StudentExamList';
 import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
@@ -7,6 +7,7 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
+import { useStorageSync } from '@/hooks/useStorageSync';
 import type { Exam } from '@/types/exam';
 
 export default function StudentPage() {
@@ -25,7 +26,7 @@ export default function StudentPage() {
   const [examToUnregister, setExamToUnregister] = useState<string | null>(null);
   const [registrationSuccess, setRegistrationSuccess] = useState<{ examName: string; pin: string } | null>(null);
 
-  const loadExams = () => {
+  const loadExams = useCallback(() => {
     const allExams = examStorage.getAll();
     setExams(allExams);
 
@@ -49,11 +50,20 @@ export default function StudentPage() {
     setRegisteredExamIds(registered);
     setCompletedExamIds(completed);
     setStudentPINs(pins);
-  };
+  }, [mockedStudent.idCode]);
 
   useEffect(() => {
     loadExams();
-  }, []);
+  }, [loadExams]);
+
+  // Sync exam changes across tabs
+  const handleStorageChange = useCallback((key: string) => {
+    if (key === 'exams') {
+      loadExams();
+    }
+  }, [loadExams]);
+
+  useStorageSync(handleStorageChange);
 
   const handleOpenRegistration = (exam: Exam) => {
     setSelectedExam(exam);

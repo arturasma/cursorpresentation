@@ -11,6 +11,7 @@ const StudentContext = createContext<StudentContextType | undefined>(undefined);
 const STUDENT_NAME_KEY = 'studentName';
 
 export function StudentProvider({ children }: { children: ReactNode }) {
+  // Student name persists in localStorage but is tab-specific (not synced)
   const [studentName, setStudentNameState] = useState<string>(() => {
     return localStorage.getItem(STUDENT_NAME_KEY) || '';
   });

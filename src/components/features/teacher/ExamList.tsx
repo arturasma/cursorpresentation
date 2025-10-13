@@ -73,26 +73,35 @@ export default function ExamList({ exams, onDelete, onEdit, onOpenExam, onCreate
                   {exam.activeSession && (
                     <>
                       <span className="text-sm text-muted-foreground">•</span>
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600">
-                        <Circle size={8} weight="fill" className="animate-pulse" />
-                        Session Active
-                      </span>
+                      {exam.activeSession.isPaused ? (
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
+                          <Circle size={8} weight="fill" />
+                          Session Paused
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600">
+                          <Circle size={8} weight="fill" className="animate-pulse" />
+                          Session Active
+                        </span>
+                      )}
                     </>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(exam);
-                  }}
-                  className="text-muted-foreground hover:text-foreground hover:bg-accent"
-                >
-                  <PencilSimple size={18} weight="regular" />
-                </Button>
+                {exam.status === 'scheduled' && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(exam);
+                    }}
+                    className="text-muted-foreground hover:text-foreground hover:bg-accent"
+                  >
+                    <PencilSimple size={18} weight="regular" />
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="icon"
