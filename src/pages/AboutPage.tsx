@@ -625,19 +625,17 @@ export default function AboutPage() {
                           navigate('/');
                         }}
                         size="lg"
-                        className="group"
                       >
                         Go to Home Page
-                        <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        <CaretRight size={20} weight="bold" className="ml-2" />
                       </Button>
                       <Button 
                         onClick={() => navigate('/feedback')}
                         variant="outline"
                         size="lg"
-                        className="group"
                       >
                         Leave Feedback
-                        <CaretRight size={20} weight="bold" className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        <CaretRight size={20} weight="bold" className="ml-2" />
                       </Button>
                     </div>
                   </div>

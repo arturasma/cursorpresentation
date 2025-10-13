@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import FeedbackList from '@/components/features/feedback/FeedbackList';
 import AddFeedbackForm from '@/components/features/feedback/AddFeedbackForm';
 
 export default function FeedbackPage() {
+  const location = useLocation();
   const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const handleFeedbackAdded = () => {
     // Trigger re-render of FeedbackList by changing key
