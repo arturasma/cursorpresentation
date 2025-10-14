@@ -443,10 +443,57 @@ These rules ensure the codebase remains maintainable and consistent.`}
                 <span className="text-primary">13.</span>
                 Cloudflare Pages
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                <a href="https://pages.cloudflare.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Cloudflare Pages <ArrowSquareOut size={16} weight="bold" /></a> is a hosting platform that makes deploying websites remarkably simple. The key advantage is its GitHub integration: once you connect your repository, every time you push code to the main branch, the site automatically rebuilds and deploys to Cloudflare's global network within minutes. This means no manual deployment steps, no server configuration, and no worrying about infrastructure. You simply commit your changes, push to GitHub, and the updated site goes live automatically. It's like having a deployment assistant that watches your code repository and handles all the technical work of getting your changes online, ensuring your site is always running the latest version without any extra effort on your part. Best of all, Cloudflare Pages offers a generous free tier that's more than sufficient for simple prototypes like this one—you can host and deploy without any hosting costs.
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                <a href="https://pages.cloudflare.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Cloudflare Pages <ArrowSquareOut size={16} weight="bold" /></a> is a hosting platform that makes deploying websites remarkably simple, though it's not the only option available. Popular alternatives include <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Vercel <ArrowSquareOut size={16} weight="bold" /></a> (known for its excellent Next.js integration and preview deployments) and <a href="https://www.hetzner.com/cloud/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Hetzner <ArrowSquareOut size={16} weight="bold" /></a> (offering more traditional VPS hosting with greater control but requiring more technical setup).
               </p>
-              </section>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                For this clickable prototype, Cloudflare Pages stands out for several reasons:
+              </p>
+              <div className="bg-muted/50 p-4 rounded-lg mb-4">
+                <h3 className="text-lg font-semibold mb-3">Why Cloudflare Pages for This Project:</h3>
+                <ul className="space-y-3 text-muted-foreground list-none">
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Zero-config deployment</strong> - Connect your GitHub repository once, and every push to main automatically deploys. No build scripts, no server configuration, just instant updates
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Global edge network</strong> - Your prototype loads quickly worldwide without setting up CDNs or caching rules
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Generous free tier</strong> - 500 builds per month and unlimited bandwidth is more than enough for prototype development and demonstrations
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Integrated ecosystem</strong> - Since the domain is already on Cloudflare, everything works seamlessly together - DNS, SSL certificates, and deployment all in one place
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Built-in analytics</strong> - Performance metrics come standard without additional setup or tracking codes
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-semibold shrink-0">•</span>
+                    <div>
+                      <strong className="text-foreground">Instant rollbacks</strong> - Every deployment is saved, so you can revert to any previous version with one click if something breaks
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                For a simple React + Vite prototype focused on demonstrating functionality quickly, Cloudflare Pages offers the perfect balance: professional hosting with zero complexity. You commit your code, and it's live globally within minutes - no DevOps knowledge required. The automatic GitHub integration means you can focus entirely on building features rather than managing infrastructure.
+              </p>
+            </section>
               {/* 14. Contact me */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
