@@ -1,7 +1,3 @@
-#Mobile view
-1. mobile view for tabs in teacher exam viw in dashboard
-2. mobile view in student status overview as teacher
-
 # how  built page
 1. cursor rule imporvement on the how built page
 2. add to 13th step alternative as vercel.
