@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import FeedbackList from '@/components/features/feedback/FeedbackList';
 import AddFeedbackForm from '@/components/features/feedback/AddFeedbackForm';
+import SolutionRatingCard from '@/components/features/feedback/SolutionRatingCard';
 
 export default function FeedbackPage() {
   const location = useLocation();
@@ -26,6 +27,8 @@ export default function FeedbackPage() {
           Give feedback or vote on the existing feedback
           </h1>
          
+          {/* Solution Rating */}
+          <SolutionRatingCard />
 
           {/* Feedback List */}
           <div className="mb-12">

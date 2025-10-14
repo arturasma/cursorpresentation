@@ -2,9 +2,6 @@
 1. mobile view for tabs in teacher exam viw in dashboard
 2. mobile view in student status overview as teacher
 
-#Feedback page
-1. add to feedback score on how much the feature is liked
-
 # how  built page
 1. cursor rule imporvement on the how built page
 2. add to 13th step alternative as vercel.
