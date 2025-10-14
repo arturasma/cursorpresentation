@@ -88,6 +88,14 @@ export default function AboutPage() {
                     Homepage
                     <CaretRight size={20} weight="bold" className="ml-2" />
                   </Button>
+                  <Button 
+                    onClick={() => navigate('/how-built')}
+                    variant="outline"
+                    size="lg"
+                  >
+                    How Was This Site Built?
+                    <CaretRight size={20} weight="bold" className="ml-2" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
