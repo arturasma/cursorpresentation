@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GithubLogo, LinkedinLogo } from 'phosphor-react';
+import { GithubLogo, LinkedinLogo, Trash } from 'phosphor-react';
 import ConfirmDialog from './ConfirmDialog';
 
 export default function Footer() {
@@ -45,10 +45,11 @@ export default function Footer() {
               </a>
               <button
                 onClick={() => setShowPurgeDialog(true)}
-                className="text-sm text-red-600 hover:text-red-700 transition-colors"
+                className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700 transition-colors"
                 aria-label="Purge Cache"
               >
-                Purge Cache
+                <Trash size={20} weight="fill" />
+                <span className="hidden sm:inline">Purge LocalStorage</span>
               </button>
             </div>
           </div>
