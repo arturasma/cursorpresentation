@@ -120,17 +120,19 @@ export default function TeacherPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="scheduled">
-                Scheduled ({scheduledExams.length})
-              </TabsTrigger>
-              <TabsTrigger value="ongoing">
-                Ongoing ({ongoingExams.length})
-              </TabsTrigger>
-              <TabsTrigger value="completed">
-                Completed ({completedExams.length})
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="inline-flex w-full min-w-max sm:grid sm:max-w-2xl sm:grid-cols-3 sm:w-auto">
+                <TabsTrigger value="scheduled" className="flex-shrink-0">
+                  Scheduled ({scheduledExams.length})
+                </TabsTrigger>
+                <TabsTrigger value="ongoing" className="flex-shrink-0">
+                  Ongoing ({ongoingExams.length})
+                </TabsTrigger>
+                <TabsTrigger value="completed" className="flex-shrink-0">
+                  Completed ({completedExams.length})
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="scheduled">
               <ExamList 

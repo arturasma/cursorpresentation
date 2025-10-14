@@ -46,7 +46,7 @@ export default function StudentStatusPanel({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Stats Summary */}
-        <div className="grid grid-cols-4 gap-2 text-center text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
           <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 px-2 py-2 rounded-lg">
             <p className="font-bold text-lg text-blue-900 dark:text-blue-300">{registeredOnly.length}</p>
             <p className="text-blue-700 dark:text-blue-400">Registered</p>
