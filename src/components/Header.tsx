@@ -40,6 +40,7 @@ export default function Header() {
   
   const isHomepage = location.pathname === '/';
   const isAboutPage = location.pathname === '/about';
+  const isPresentationPage = location.pathname === '/presentation';
   const isHowBuiltPage = location.pathname === '/how-built';
   const isFeedbackPage = location.pathname === '/feedback';
   const isOnExamPage = location.pathname.startsWith('/exam/');
@@ -167,6 +168,12 @@ export default function Header() {
                 onClick={() => navigate('/about')}
                 className="gap-2"
               >
+                About
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate('/presentation')}
+                className="gap-2"
+              >
                 Presentation
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -224,7 +231,7 @@ export default function Header() {
           ) : (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button>{isHomepage || isAboutPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}</Button>
+                <Button>{isHomepage || isAboutPage || isPresentationPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -292,6 +299,16 @@ export default function Header() {
                     variant="ghost"
                     onClick={() => {
                       navigate('/about');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start pl-4"
+                  >
+                    About
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      navigate('/presentation');
                       setMobileMenuOpen(false);
                     }}
                     className="w-full justify-start pl-4"
@@ -367,7 +384,7 @@ export default function Header() {
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                       <Button className="w-full" onClick={() => setMobileMenuOpen(false)}>
-                        {isHomepage || isAboutPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}
+                        {isHomepage || isAboutPage || isPresentationPage || isHowBuiltPage || isFeedbackPage ? 'Select Role' : 'Login'}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
