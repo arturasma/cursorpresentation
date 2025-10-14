@@ -132,10 +132,146 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 2. TSDoc for Comments */}
+            {/* 3. PRD and Context Files */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">3.</span>
+                PRD and Context Files
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Product Requirements Documents (PRDs) and context files are like instruction manuals for AI assistants. Without them, even the smartest AI might build something that doesn't match your vision. These documents tell the AI what you're building, how it should work, and why certain decisions were made.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                A well-structured PRD typically includes:
+              </p>
+              <ul className="space-y-2 text-muted-foreground mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Project Vision</strong> - What you're building, who it's for, and what problems it solves</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Feature List</strong> - Detailed descriptions of how each feature should work</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">User Flows</strong> - Step-by-step interactions from the user's perspective</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Technical Constraints</strong> - What technologies to use and what limitations exist</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Success Metrics</strong> - What "done" looks like for each feature</span>
+                </li>
+              </ul>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Context files extend this by providing reference materials the AI can consult:
+              </p>
+              <ul className="space-y-2 text-muted-foreground mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Architecture Decisions</strong> - Why certain technical choices were made</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Component Relationships</strong> - How different parts of the system work together</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Data Models</strong> - The structure and relationships of your data</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Edge Cases</strong> - Scenarios that need special handling</span>
+                </li>
+              </ul>
+              <p className="text-muted-foreground leading-relaxed">
+                These documents become your "single source of truth." Instead of repeatedly explaining the same concepts, you reference the context file once, and the AI maintains consistency across all generated code. This dramatically reduces errors, ensures features work together properly, and speeds up development by eliminating repetitive explanations.
+              </p>
+            </section>
+
+            {/* 4. Cursor Workflow Strategy */}
+            <section>
+              <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
+                <span className="text-primary">4.</span>
+                Cursor Workflow Strategy
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Working effectively with Cursor means understanding how to break down complex tasks and communicate clearly with the AI. Here's the workflow that maximizes results:
+              </p>
+              
+              <h3 className="text-xl font-semibold mb-3 mt-6">Plan Mode vs Agent Mode</h3>
+              <ul className="space-y-2 text-muted-foreground mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Plan Mode</strong> - Use this for exploring ideas and getting suggestions. Perfect for questions like "How should I structure this feature?" or "What's the best approach for user authentication?" Plan mode helps you think through problems before writing code.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Agent Mode</strong> - This is where actual implementation happens. Agent mode can modify multiple files, create new components, and refactor existing code. It's powerful when you have a clear goal and want the AI to handle implementation details.</span>
+                </li>
+              </ul>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6">Small Chunks Strategy</h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Breaking work into smaller pieces isn't just about organization - it's about working within the AI's limits:
+              </p>
+              <ul className="space-y-2 text-muted-foreground mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">File Size Matters</strong> - Keep individual files under 200-300 lines. Smaller files are easier for the AI to fully understand and modify accurately.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Single Responsibility</strong> - Each component or function should do one thing well. This makes it easier for the AI to understand context and suggest appropriate changes.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span><strong className="text-foreground">Incremental Changes</strong> - Instead of asking for massive refactors, make small, testable changes. This reduces the chance of breaking existing functionality.</span>
+                </li>
+              </ul>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6">Granular Flow Descriptions</h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                The more specific your descriptions, the better the AI performs. Here's the difference:
+              </p>
+              <div className="bg-muted/50 p-4 rounded-lg mb-4">
+                <p className="text-muted-foreground mb-2">
+                  <span className="text-red-500 font-semibold">Bad:</span> "Add user authentication"
+                </p>
+                <p className="text-muted-foreground">
+                  <span className="text-green-500 font-semibold">Good:</span> "Create a login form with email and password fields. Validate email format on blur. Show password strength indicator. Display error messages below each field. On successful login, redirect to dashboard and store session token in localStorage."
+                </p>
+              </div>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Detailed descriptions work better because:
+              </p>
+              <ul className="space-y-2 text-muted-foreground">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>LLMs work better with concrete requirements than abstract concepts</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Specific instructions reduce ambiguity and prevent incorrect assumptions</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Clear criteria make it obvious when a feature is complete</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Edge cases and error handling get addressed upfront rather than discovered later</span>
+                </li>
+              </ul>
+            </section>
+
+            {/* 5. TSDoc for Comments */}
+            <section>
+              <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
+                <span className="text-primary">5.</span>
                 TSDoc for Comments
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -150,10 +286,10 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 3. Console.log for Debugging */}
+            {/* 6. Console.log for Debugging */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">4.</span>
+                <span className="text-primary">6.</span>
                 Console.log for Debugging
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -161,10 +297,10 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 4. Local Storage for Everything */}
+            {/* 7. Local Storage for Everything */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">5.</span>
+                <span className="text-primary">7.</span>
                 Local Storage for Everything
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -172,10 +308,10 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 5. Design System */}
+            {/* 8. Design System */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">6.</span>
+                <span className="text-primary">8.</span>
                 Design System
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -218,10 +354,10 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 6. React Router DOM */}
+            {/* 9. React Router DOM */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">7.</span>
+                <span className="text-primary">9.</span>
                 React Router DOM
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -229,10 +365,10 @@ export default function HowBuiltPage() {
               </p>
             </section>
 
-            {/* 8. Folder Structure */}
+            {/* 10. Folder Structure */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">8.</span>
+                <span className="text-primary">10.</span>
                 Folder Structure
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -284,10 +420,10 @@ export default function HowBuiltPage() {
                 </p>
               </div>
             </section>
-{/* 9. Cursor rules*/}
+{/* 11. Cursor rules*/}
 <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">9.</span>
+                <span className="text-primary">11.</span>
                 Cursor Rules
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -364,10 +500,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
                 By setting these rules once, every AI-generated suggestion automatically follows your project's standards. This saves time reviewing code and prevents inconsistencies from creeping in as the project grows. The rules act as a contract between you and the AI, ensuring it understands not just what to build, but how to build it in a way that matches your existing codebase.
               </p>
             </section>
-            {/* 10. GitHub */}
+            {/* 12. GitHub */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">10.</span>
+                <span className="text-primary">12.</span>
                 GitHub
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -415,10 +551,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 11. Domain */}
+            {/* 13. Domain */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">11.</span>
+                <span className="text-primary">13.</span>
                 Domain
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -426,10 +562,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 12. Cloudflare Domain */}
+            {/* 14. Cloudflare Domain */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">12.</span>
+                <span className="text-primary">14.</span>
                 Cloudflare Domain Management
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -437,67 +573,27 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 13. Cloudflare Pages */}
+            {/* 15. Cloudflare Pages */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">13.</span>
+                <span className="text-primary">15.</span>
                 Cloudflare Pages
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 <a href="https://pages.cloudflare.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Cloudflare Pages <ArrowSquareOut size={16} weight="bold" /></a> is a hosting platform that makes deploying websites remarkably simple, though it's not the only option available. Popular alternatives include <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Vercel <ArrowSquareOut size={16} weight="bold" /></a> (known for its excellent Next.js integration and preview deployments) and <a href="https://www.hetzner.com/cloud/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Hetzner <ArrowSquareOut size={16} weight="bold" /></a> (offering more traditional VPS hosting with greater control but requiring more technical setup).
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                For this clickable prototype, Cloudflare Pages stands out for several reasons:
+                For this clickable prototype, Cloudflare Pages was chosen mainly since the domain is already on Cloudflare, everything works seamlessly together - DNS, SSL certificates, and deployment all in one place
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                <h3 className="text-lg font-semibold mb-3">Why Cloudflare Pages for This Project:</h3>
-                <ul className="space-y-3 text-muted-foreground list-none">
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Zero-config deployment</strong> - Connect your GitHub repository once, and every push to main automatically deploys. No build scripts, no server configuration, just instant updates
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Global edge network</strong> - Your prototype loads quickly worldwide without setting up CDNs or caching rules
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Generous free tier</strong> - 500 builds per month and unlimited bandwidth is more than enough for prototype development and demonstrations
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Integrated ecosystem</strong> - Since the domain is already on Cloudflare, everything works seamlessly together - DNS, SSL certificates, and deployment all in one place
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Built-in analytics</strong> - Performance metrics come standard without additional setup or tracking codes
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-primary font-semibold shrink-0">•</span>
-                    <div>
-                      <strong className="text-foreground">Instant rollbacks</strong> - Every deployment is saved, so you can revert to any previous version with one click if something breaks
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              
               <p className="text-muted-foreground leading-relaxed">
                 For a simple React + Vite prototype focused on demonstrating functionality quickly, Cloudflare Pages offers the perfect balance: professional hosting with zero complexity. You commit your code, and it's live globally within minutes - no DevOps knowledge required. The automatic GitHub integration means you can focus entirely on building features rather than managing infrastructure.
               </p>
             </section>
-              {/* 14. Contact me */}
+              {/* 16. Contact me */}
             <section>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">14.</span>
+                <span className="text-primary">16.</span>
                 Contact Me
               </h2>
               <p className="text-muted-foreground leading-relaxed">
