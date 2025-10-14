@@ -437,19 +437,29 @@ export default function ExamPage() {
                       </div>
                     </Button>
 
-                    <div className="pt-4">
-                      <Button 
-                        onClick={() => {
-                          setIsInExam(false);
-                          navigate('/student');
-                        }}
-                        variant="ghost"
-                        className="gap-2"
-                      >
-                        <ArrowLeft size={16} weight="bold" />
-                        Back to Exams
-                      </Button>
-                    </div>
+                    <Button 
+                      onClick={() => {
+                        setIsInExam(false);
+                        localStorage.setItem('about-page-active-tab', 'results');
+                        navigate('/presentation');
+                      }}
+                      variant="outline"
+                      className="w-full justify-start text-left h-auto py-4 px-6"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z"></path>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-base mb-1">View Results & Impact</div>
+                          <div className="text-sm text-muted-foreground">
+                            See the outcomes and key takeaways from this fast prototyping approach
+                          </div>
+                        </div>
+                      </div>
+                    </Button>
                   </div>
                 </>
               ) : (
