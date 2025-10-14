@@ -1,0 +1,22 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow crawling of exam pages (they require authentication)
+Disallow: /exam/
+Disallow: /student
+Disallow: /teacher
+
+# Allow crawling of public pages
+Allow: /
+Allow: /about
+Allow: /presentation
+Allow: /how-built
+Allow: /feedback
+
+# Sitemap location
+Sitemap: https://www.howtoproto.ee/sitemap.xml
+
+# Crawl delay for polite crawling (optional)
+Crawl-delay: 1
+
