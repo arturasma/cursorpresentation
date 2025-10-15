@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import type { Feedback } from '@/types/feedback';
 
 // Constants
-const MODULE_NAME = 'FeedbackItem';
 const ICON_SIZE = {
   CARET: 16,
   THUMBS_UP: 14,
@@ -64,12 +63,9 @@ interface FeedbackItemProps {
  * - Shows thumbs up count with interactive button
  * - Preserves whitespace and line breaks in comment text
  * - Fully accessible with proper ARIA labels
- * - Logs all user interactions for monitoring and debugging
  */
 export default function FeedbackItem({ feedback, onThumbsUp }: FeedbackItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  console.log(`[${MODULE_NAME}:Component] Rendered | Feedback ID: ${feedback.id}, Expanded: ${isExpanded}, Thumbs Up: ${feedback.thumbsUpCount}`);
 
   /**
    * Toggles the expanded/collapsed state of the feedback item
@@ -77,9 +73,7 @@ export default function FeedbackItem({ feedback, onThumbsUp }: FeedbackItemProps
    * @returns {void}
    */
   const handleToggleExpand = (): void => {
-    const newExpandedState = !isExpanded;
-    console.log(`[${MODULE_NAME}:handleToggleExpand] Toggle expand/collapse | Feedback ID: ${feedback.id}, New state: ${newExpandedState ? 'expanded' : 'collapsed'}`);
-    setIsExpanded(newExpandedState);
+    setIsExpanded(!isExpanded);
   };
 
   /**
@@ -88,24 +82,8 @@ export default function FeedbackItem({ feedback, onThumbsUp }: FeedbackItemProps
    * @returns {void}
    */
   const handleThumbsUpClick = (): void => {
-    console.log(`[${MODULE_NAME}:handleThumbsUpClick] Thumbs up clicked | Feedback ID: ${feedback.id}, Current count: ${feedback.thumbsUpCount}`);
-    
-    try {
-      onThumbsUp(feedback.id);
-      console.log(`[${MODULE_NAME}:handleThumbsUpClick] Thumbs up callback executed successfully | Feedback ID: ${feedback.id}`);
-    } catch (error) {
-      console.error(`[${MODULE_NAME}:handleThumbsUpClick] Error executing thumbs up callback | Feedback ID: ${feedback.id}, Error:`, error);
-    }
+    onThumbsUp(feedback.id);
   };
-
-  // Log if feedback data is missing or invalid
-  if (!feedback.id) {
-    console.error(`[${MODULE_NAME}:Component] Invalid feedback data | Missing feedback ID`);
-  }
-
-  if (feedback.thumbsUpCount < 0) {
-    console.warn(`[${MODULE_NAME}:Component] Invalid thumbs up count | Feedback ID: ${feedback.id}, Count: ${feedback.thumbsUpCount}`);
-  }
 
   return (
     <div className="border rounded-lg bg-card text-card-foreground shadow-sm">

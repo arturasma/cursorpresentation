@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import { ArrowSquareOut } from 'phosphor-react';
@@ -20,6 +20,8 @@ import { ArrowSquareOut } from 'phosphor-react';
  */
 export default function HowBuiltPage() {
   const location = useLocation();
+  const consoleLogSectionRef = useRef<HTMLDivElement>(null);
+  const hasLoggedRef = useRef(false);
 
   /**
    * Effect to scroll to top when page loads
@@ -28,6 +30,30 @@ export default function HowBuiltPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  /**
+   * Effect to demonstrate console.log when user scrolls to that section
+   * Meta-demonstration: shows console.log in action when reading about it
+   */
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasLoggedRef.current) {
+            console.log('Hey there! You just scrolled to the Console.log section. This is console.log in action - pretty handy for debugging, right?');
+            hasLoggedRef.current = true;
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (consoleLogSectionRef.current) {
+      observer.observe(consoleLogSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
@@ -287,7 +313,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 6. Console.log for Debugging */}
-            <section>
+            <section ref={consoleLogSectionRef}>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">6.</span>
                 Console.log for Debugging
