@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import Header from '@/components/Header';
 import StudentExamList from '@/components/features/student/StudentExamList';
 import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
 import RegistrationSuccessDialog from '@/components/features/student/RegistrationSuccessDialog';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Toaster } from '@/components/ui/sonner';
 import { examStorage } from '@/utils/examStorage';
 import { studentRegistration } from '@/utils/studentRegistration';
 import { useStorageSync } from '@/hooks/useStorageSync';
@@ -90,8 +92,9 @@ export default function StudentPage() {
       loadExams();
       setIsRegistrationOpen(false);
       setSelectedExam(null);
+      toast.success('Registered for exam successfully');
     } else {
-      alert('Unable to register for this exam. It may be full or you are already registered.');
+      toast.error('Unable to register for this exam. It may be full or you are already registered.');
     }
   };
 
@@ -103,6 +106,7 @@ export default function StudentPage() {
     if (examToUnregister && studentRegistration.unregister(examToUnregister, mockedStudent.idCode)) {
       loadExams();
       setExamToUnregister(null);
+      toast.success('Unregistered from exam');
     }
   };
 
@@ -114,6 +118,7 @@ export default function StudentPage() {
   return (
     <>
       <Header />
+      <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">

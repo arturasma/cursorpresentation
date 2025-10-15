@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Toaster } from '@/components/ui/sonner';
 import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
 import ExamList from '@/components/features/teacher/ExamList';
 import ExamDetailsModal from '@/components/features/teacher/ExamDetailsModal';
@@ -54,6 +56,7 @@ export default function TeacherPage() {
       examStorage.delete(examToDelete);
       loadExams();
       setExamToDelete(null);
+      toast.success('Exam deleted successfully');
     }
   };
 
@@ -69,6 +72,7 @@ export default function TeacherPage() {
 
   const handleExamUpdated = () => {
     loadExams();
+    toast.success('Exam updated successfully');
   };
 
   const handleEditExam = (exam: Exam) => {
@@ -107,6 +111,7 @@ export default function TeacherPage() {
   return (
     <>
       <Header />
+      <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -115,7 +120,13 @@ export default function TeacherPage() {
               <p className="text-muted-foreground mt-1">Welcome, {mockedTeacher.name}</p>
             </div>
             <div className="w-full sm:w-auto">
-              <ExamCreationModal teacherName={mockedTeacher.name} onExamCreated={loadExams} />
+              <ExamCreationModal 
+                teacherName={mockedTeacher.name} 
+                onExamCreated={() => {
+                  loadExams();
+                  toast.success('Exam created successfully');
+                }}
+              />
             </div>
           </div>
 

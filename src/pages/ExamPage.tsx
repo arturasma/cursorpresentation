@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { ArrowLeft, SignOut, CheckCircle, Hourglass, Coffee } from 'phosphor-react';
 import Header from '@/components/Header';
+import { Toaster } from '@/components/ui/sonner';
 import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
 import ExamConcept from '@/components/features/exam/ExamConcept';
@@ -156,6 +158,7 @@ export default function ExamPage() {
     if (id) {
       activateExamSession(id, mockedTeacher.id, mockedTeacher.name);
       loadExam();
+      toast.success('Session activated - Room code generated');
     }
   };
 
@@ -163,6 +166,7 @@ export default function ExamPage() {
     if (id) {
       deactivateExamSession(id);
       loadExam();
+      toast.success('Session ended');
     }
   };
 
@@ -170,6 +174,7 @@ export default function ExamPage() {
     if (id) {
       studentRegistration.verifyStudent(id, idCode, mockedTeacher.name);
       loadExam();
+      toast.success('Student verified successfully');
     }
   };
 
@@ -212,6 +217,7 @@ export default function ExamPage() {
     if (exam && studentRegistration.completeExam(exam.id, mockedStudent.idCode)) {
       setShowCompleteConfirmation(false);
       setIsCompleted(true);
+      toast.success('Exam completed successfully');
       // User can now manually click "Back to Exams" button
     }
   };
@@ -229,6 +235,7 @@ export default function ExamPage() {
     return (
       <>
         <Header />
+        <Toaster />
         <main className="flex-1 container mx-auto px-6 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
@@ -278,6 +285,7 @@ export default function ExamPage() {
   return (
     <>
       <Header />
+      <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
