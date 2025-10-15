@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { X } from 'phosphor-react';
+import { useStorageSync } from '@/hooks/useStorageSync';
 
 const COOKIE_CONSENT_KEY = 'cookie-consent-accepted';
 
@@ -14,6 +15,18 @@ export default function CookieBanner() {
       setIsVisible(true);
     }
   }, []);
+
+  // Sync cookie consent across tabs
+  const handleStorageChange = useCallback((key: string) => {
+    if (key === COOKIE_CONSENT_KEY) {
+      const hasAccepted = localStorage.getItem(COOKIE_CONSENT_KEY);
+      if (hasAccepted) {
+        setIsVisible(false);
+      }
+    }
+  }, []);
+
+  useStorageSync(handleStorageChange);
 
   const handleAccept = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
