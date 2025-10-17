@@ -1,14 +1,114 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import SEOHead from '@/components/shared/SEOHead';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import VerticalFlowStepper from '@/components/features/exam/VerticalFlowStepper';
+import { 
+  Chalkboard, 
+  UserCircle, 
+  Database, 
+  Key, 
+  User,
+  IdentificationCard,
+  CheckCircle,
+  CaretRight,
+  ClipboardText,
+  ShieldCheck
+} from 'phosphor-react';
 
 export default function Homepage() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const flowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const scrollToFlow = () => {
+    flowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const flowSteps = [
+    {
+      teacher: {
+        role: 'teacher' as const,
+        title: 'Create Exam',
+        description: 'Set up exam with date, location, and details',
+        icon: <Chalkboard size={24} weight="duotone" />,
+      },
+      system: {
+        role: 'system' as const,
+        title: 'Store Exam Details',
+        description: 'Save exam configuration in database',
+        icon: <Database size={24} weight="duotone" />,
+      },
+    },
+    {
+      student: {
+        role: 'student' as const,
+        title: 'Register for Exam',
+        description: 'Student enrolls using their ID card',
+        icon: <UserCircle size={24} weight="duotone" />,
+      },
+      system: {
+        role: 'system' as const,
+        title: 'Generate PIN',
+        description: 'Create unique PIN from student + exam data hash',
+        icon: <Key size={24} weight="duotone" />,
+      },
+    },
+    {
+      teacher: {
+        role: 'teacher' as const,
+        title: 'Activate Session',
+        description: 'Start exam and generate 4-digit room code',
+        icon: <ShieldCheck size={24} weight="duotone" />,
+      },
+      system: {
+        role: 'system' as const,
+        title: 'Generate Room Code',
+        description: 'Create temporary access code for classroom',
+        icon: <Key size={24} weight="duotone" />,
+      },
+    },
+    {
+      student: {
+        role: 'student' as const,
+        title: 'Take Exam (Room + PIN)',
+        description: 'Enter room code and personal PIN to authenticate',
+        icon: <IdentificationCard size={24} weight="duotone" />,
+      },
+      system: {
+        role: 'system' as const,
+        title: 'Validate Codes',
+        description: 'Verify room code and PIN match exam session',
+        icon: <CheckCircle size={24} weight="duotone" />,
+      },
+    },
+    {
+      teacher: {
+        role: 'teacher' as const,
+        title: 'Verify Identity',
+        description: 'Confirm student identity in person',
+        icon: <User size={24} weight="duotone" />,
+      },
+      system: {
+        role: 'system' as const,
+        title: 'Grant Access',
+        description: 'Enable exam interface for verified student',
+        icon: <CheckCircle size={24} weight="duotone" />,
+      },
+      student: {
+        role: 'student' as const,
+        title: 'Complete Exam',
+        description: 'Access exam and submit answers',
+        icon: <ClipboardText size={24} weight="duotone" />,
+      },
+    },
+  ];
 
   return (
     <>
@@ -19,117 +119,75 @@ export default function Homepage() {
         canonical="https://www.howtoproto.ee/"
       />
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12 animate-page-enter">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl font-bold mb-6">
+      <main className="flex-1 container mx-auto px-6 py-16 animate-page-enter">
+        {/* Hero Section */}
+        <div className="max-w-4xl mx-auto mb-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Student Exam Login Prototype
           </h1>
-
-          <div className="space-y-6 text-lg text-muted-foreground mb-8">
-            <div className="bg-primary/10 p-6 rounded-lg border border-primary/30">
-              <h2 className="text-2xl font-semibold text-foreground mb-3">What This Prototype Demonstrates</h2>
-              <p className="text-foreground/90">
-                This interactive prototype showcases a streamlined student exam login flow using PIN authentication. 
-                Students register once, receive a unique PIN generated from their data, and use it along with a 
-                teacher-provided room code to authenticate at exam locations. The system includes teacher verification 
-                to ensure security.
-              </p>
-            </div>
-
-            <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h2 className="text-2xl font-semibold text-foreground mb-3">How to Test the Prototype</h2>
-              <ol className="list-decimal list-inside space-y-3 text-foreground/90">
-                <li className="pl-2">
-                  <strong>Choose Teacher Role</strong> - Select "Teacher" from the header to access the exam management dashboard
-                </li>
-                <li className="pl-2">
-                  <strong>Create an Exam</strong> - Set up a new exam with details like date, location, and exam type
-                </li>
-                <li className="pl-2">
-                  <strong>Switch to Student Role</strong> - Change your role to "Student" and register for the exam
-                </li>
-                <li className="pl-2">
-                  <strong>Reveal Your PIN (Student)</strong> - As a student, view and reveal your unique exam PIN
-                </li>
-                <li className="pl-2">
-                  <strong>Activate Session (Teacher)</strong> - Switch to "Teacher", click on the exam, and activate the exam session to generate a 4-digit room code
-                </li>
-                <li className="pl-2">
-                  <strong>Enter Exam (Student)</strong> - As student, click "Take Exam", enter the room code and your PIN
-                </li>
-                <li className="pl-2">
-                  <strong>Verify Identity (Teacher)</strong> - Teacher verifies the student's identity in person by clicking "Verify" in the verification panel
-                </li>
-                <li className="pl-2">
-                  <strong>Complete Exam (Student)</strong> - After verification, student can access and complete the exam
-                </li>
-                <li className="pl-2">
-                  <strong>Test Break Feature (Optional)</strong> - If exam has breaks defined, teacher can pause the session. Students will see a break screen. Teacher can then resume.
-                </li>
-                <li className="pl-2">
-                  <strong>End Session (Teacher)</strong> - When exam is finished, teacher ends the session. Exam moves to "Completed" tab.
-                </li>
-                <li className="pl-2">
-                  <strong>Leave feedback (Teacher/Student)</strong> - After trying the flow leave the feedback or vote on already left feedback on the feedback page which you can find in header
-                </li>
-              </ol>
-              <h3 className="text-2xl font-semibold text-foreground mb-4 mt-6">Process Flow</h3>
-              
-              <div className="bg-white dark:bg-slate-900 p-4 rounded-md mb-4 font-mono text-xs sm:text-sm overflow-x-auto">
-                <pre className="text-foreground/90 leading-relaxed">
-{`      TEACHER                       SYSTEM                       STUDENT
-         │                            │                            │
-    ┌────▼─────┐                      │                            │
-    │ Create   │──────────────────────▼                            │
-    │ Exam     │              Store Exam Details                   │
-    │(+Breaks) │                      │                            │
-    └──────────┘                      │                       ┌────▼──────┐
-         │                            │◄──────────────────────│ Register  │
-         │                            │                       │ for Exam  │
-         │                      Generate Hash                 └───────────┘
-         │                   (Student + Exam Data)                 │
-         │                      Generate PIN ─────────────────────►│
-         │                            │                       Reveal PIN
-    ┌────▼─────┐                      │                            │
-    │ Activate │──────────────────────▼                            │
-    │ Session  │        Generate Room Code + Active                │
-    └──────────┘                      │                            │
-         │                            │                       ┌────▼──────┐
-         │                            │◄──────────────────────│ Take Exam │
-         │                      Validate Codes                │ Room+PIN  │
-         │                            │                       └───────────┘
-         │                            │                       Await Verify
-    ┌────▼─────┐                      │                            │
-    │ Verify   │──────────────────────▼                            │
-    │ Identity │              Mark as Verified                     │
-    └──────────┘                      │                            │
-         │                      Grant Access ─────────────────────►│
-         │                            │                       Exam Active
-         │                            │                            │
-    ┌────▼─────┐                      │                            │
-    │  Pause   │──────────────────────▼                            │
-    │ Session  │              Session Paused ────────────────────►│
-    │(Optional)│              (Break 1 of N)                  Show Break
-    └──────────┘                      │                       Screen
-         │                            │                            │
-    ┌────▼─────┐                      │                            │
-    │  Resume  │──────────────────────▼                            │
-    │ Session  │            Session Resumed ─────────────────────►│
-    └──────────┘                      │                       Continue Exam
-         │                            │                            │
-         │                            │                       ┌────▼──────┐
-         │                            │◄──────────────────────│ Complete  │
-         │                            │                       │   Exam    │
-    ┌────▼─────┐                      │                       └───────────┘
-    │   End    │──────────────────────▼                            │
-    │ Session  │       Mark Completed + Clear Code                 │
-    └──────────┘              Delete Hashes                        │
-         │                            │                            │
-         ▼                            ▼                            ▼`}
-                </pre>
-              </div>
-            </div>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Experience a working prototype built in 8 hours. This interactive exam login system demonstrates 
+            fast AI-powered prototyping for public sector validation.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button size="lg" onClick={scrollToFlow}>
+              See How It Works
+              <CaretRight size={20} weight="bold" />
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => navigate('/presentation')}>
+              Read Case Study
+              <CaretRight size={20} weight="bold" />
+            </Button>
           </div>
+        </div>
+
+        {/* Testing Tip Box */}
+        <div ref={flowRef} className="max-w-4xl mx-auto mb-8">
+          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <CardContent className="p-6">
+              <div className="flex gap-3">
+                <div className="text-blue-600 dark:text-blue-400 text-2xl flex-shrink-0">
+                  💡
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                    Testing Tip
+                  </h3>
+                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                    Use the role switcher in the header to experience both Teacher and Student perspectives 
+                    as you follow the authentication flow below. Each step shows what happens behind the scenes.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Visual Flow Diagram */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <h2 className="text-2xl md:text-3xl font-semibold mb-8 text-center">
+            Process Flow
+          </h2>
+          <VerticalFlowStepper steps={flowSteps} />
+        </div>
+
+        {/* CTA Card to Presentation */}
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/40">
+            <CardContent className="p-8 text-center">
+              <h2 className="text-2xl font-semibold mb-3">
+                Want to Learn How This Was Built?
+              </h2>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Discover how this prototype saved weeks of development time and validated 
+                stakeholder needs in just 8 hours
+              </p>
+              <Button size="lg" onClick={() => navigate('/presentation')}>
+                View Full Case Study
+                <CaretRight size={20} weight="bold" />
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </>
