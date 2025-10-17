@@ -176,21 +176,26 @@ export default function Homepage() {
         {/* About the Author Section */}
         <div className="max-w-4xl mx-auto mb-12">
           <Card className="bg-muted/30">
-            <CardContent className="p-6">
-              <div className="flex gap-3">
-                <div className="text-primary flex-shrink-0">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex gap-3 sm:gap-4">
+                <div className="text-primary flex-shrink-0 mt-1">
                   <Info size={24} weight="duotone" />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-base sm:text-lg mb-2">
                     About the Author
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-muted-foreground mb-3 sm:mb-4">
                     This prototype was created by a product manager with nearly a decade of experience 
                     in public sector digital services across Estonia, Sweden, and Ukraine. Learn about 
                     the journey and challenges that led to this rapid prototyping approach.
                   </p>
-                  <Button variant="outline" size="sm" onClick={() => navigate('/about')}>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => navigate('/about')}
+                    className="w-full sm:w-auto"
+                  >
                     Read More About This Project
                     <CaretRight size={16} weight="bold" />
                   </Button>
