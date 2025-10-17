@@ -15,7 +15,9 @@ import {
   CheckCircle,
   CaretRight,
   ClipboardText,
-  ShieldCheck
+  ShieldCheck,
+  Lightbulb,
+  Info
 } from 'phosphor-react';
 
 export default function Homepage() {
@@ -146,8 +148,8 @@ export default function Homepage() {
           <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
             <CardContent className="p-6">
               <div className="flex gap-3">
-                <div className="text-blue-600 dark:text-blue-400 text-2xl flex-shrink-0">
-                  💡
+                <div className="text-blue-600 dark:text-blue-400 flex-shrink-0">
+                  <Lightbulb size={28} weight="duotone" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
@@ -171,21 +173,54 @@ export default function Homepage() {
           <VerticalFlowStepper steps={flowSteps} />
         </div>
 
+        {/* About the Author Section */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <Card className="bg-muted/30">
+            <CardContent className="p-6">
+              <div className="flex gap-3">
+                <div className="text-primary flex-shrink-0">
+                  <Info size={24} weight="duotone" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">
+                    About the Author
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    This prototype was created by a product manager with nearly a decade of experience 
+                    in public sector digital services across Estonia, Sweden, and Ukraine. Learn about 
+                    the journey and challenges that led to this rapid prototyping approach.
+                  </p>
+                  <Button variant="outline" size="sm" onClick={() => navigate('/about')}>
+                    Read More About This Project
+                    <CaretRight size={16} weight="bold" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* CTA Card to Presentation */}
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/40">
             <CardContent className="p-8 text-center">
               <h2 className="text-2xl font-semibold mb-3">
-                Want to Learn How This Was Built?
+                Want to Learn More?
               </h2>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Discover how this prototype saved weeks of development time and validated 
-                stakeholder needs in just 8 hours
+                Explore the full case study showing how this prototype saved weeks of development time, 
+                or dive into the technical details of how it was built with AI tools
               </p>
-              <Button size="lg" onClick={() => navigate('/presentation')}>
-                View Full Case Study
-                <CaretRight size={20} weight="bold" />
-              </Button>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button size="lg" onClick={() => navigate('/presentation')}>
+                  View Full Case Study
+                  <CaretRight size={20} weight="bold" />
+                </Button>
+                <Button size="lg" variant="outline" onClick={() => navigate('/how-built')}>
+                  See Technical Details
+                  <CaretRight size={20} weight="bold" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
