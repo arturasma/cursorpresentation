@@ -66,7 +66,7 @@ export default function StudentStatusPanel({
         </div>
 
         {/* Student Lists */}
-        <div className="space-y-3 max-h-96 overflow-y-auto">
+        <div className="space-y-3 max-h-96 overflow-y-auto animate-content-update">
           {/* Completed Students */}
           {completedStudents.length > 0 && (
             <div>

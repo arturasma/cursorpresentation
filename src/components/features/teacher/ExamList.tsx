@@ -51,7 +51,7 @@ export default function ExamList({ exams, onDelete, onEdit, onOpenExam, onCreate
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 animate-content-update">
       {exams.map((exam) => (
         <Card 
           key={exam.id}

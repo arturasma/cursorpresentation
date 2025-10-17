@@ -41,7 +41,7 @@ export default function StudentExamList({
   return (
     <div className="space-y-6">
       {registeredExams.length > 0 && (
-        <div>
+        <div className="animate-content-update">
           <h2 className="text-xl font-semibold mb-4">My Registered Exams</h2>
           <div className="grid gap-4">
             {registeredExams.map((exam) => (
@@ -60,7 +60,7 @@ export default function StudentExamList({
       )}
 
       {availableExams.length > 0 && (
-        <div>
+        <div className="animate-content-update">
           <h2 className="text-xl font-semibold mb-4">Available Exams</h2>
           <div className="grid gap-4">
             {availableExams.map((exam) => (

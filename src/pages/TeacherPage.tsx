@@ -118,7 +118,7 @@ export default function TeacherPage() {
       />
       <Header />
       <Toaster />
-      <main className="flex-1 container mx-auto px-6 py-8">
+      <main className="flex-1 container mx-auto px-6 py-8 animate-page-enter">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
@@ -151,7 +151,7 @@ export default function TeacherPage() {
               </TabsList>
             </div>
 
-            <TabsContent value="scheduled">
+            <TabsContent value="scheduled" className="animate-tab-enter">
               <ExamList 
                 exams={scheduledExams} 
                 onDelete={handleDelete}
@@ -162,7 +162,7 @@ export default function TeacherPage() {
               />
             </TabsContent>
 
-            <TabsContent value="ongoing">
+            <TabsContent value="ongoing" className="animate-tab-enter">
               {ongoingExams.length === 0 ? (
                 <div className="text-center py-16">
                   <p className="text-muted-foreground mb-4">No ongoing exams</p>
@@ -182,7 +182,7 @@ export default function TeacherPage() {
               )}
             </TabsContent>
 
-            <TabsContent value="completed">
+            <TabsContent value="completed" className="animate-tab-enter">
               {completedExams.length === 0 ? (
                 <div className="text-center py-16">
                   <p className="text-muted-foreground mb-4">No completed exams</p>

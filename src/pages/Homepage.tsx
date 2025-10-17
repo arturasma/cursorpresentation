@@ -19,7 +19,7 @@ export default function Homepage() {
         canonical="https://www.howtoproto.ee/"
       />
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
+      <main className="flex-1 container mx-auto px-6 py-12 animate-page-enter">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl font-bold mb-6">
             Student Exam Login Prototype

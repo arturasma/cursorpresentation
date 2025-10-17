@@ -28,7 +28,7 @@ export default function FeedbackPage() {
         canonical="https://www.howtoproto.ee/feedback"
       />
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
+      <main className="flex-1 container mx-auto px-6 py-12 animate-page-enter">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl font-bold mb-6">
           Give feedback or vote on the existing feedback

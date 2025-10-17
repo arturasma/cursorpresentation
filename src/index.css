@@ -188,3 +188,46 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+@layer utilities {
+  .animate-page-enter {
+    animation: pageEnter 400ms ease-out;
+  }
+  
+  .animate-tab-enter {
+    animation: tabEnter 250ms ease-out;
+  }
+  
+  .animate-content-update {
+    animation: contentUpdate 300ms ease-out;
+  }
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tabEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentUpdate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

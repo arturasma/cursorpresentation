@@ -65,7 +65,7 @@ export default function HowBuiltPage() {
         canonical="https://www.howtoproto.ee/how-built"
       />
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
+      <main className="flex-1 container mx-auto px-6 py-12 animate-page-enter">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 break-words">
             How This Presentation Was Built

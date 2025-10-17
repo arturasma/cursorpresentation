@@ -35,7 +35,7 @@ export default function PresentationPage() {
         canonical="https://www.howtoproto.ee/presentation"
       />
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
+      <main className="flex-1 container mx-auto px-6 py-12 animate-page-enter">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 break-words">
             Streamlining Student Exam Logins
@@ -56,7 +56,7 @@ export default function PresentationPage() {
             </div>
 
             {/* Challenge Tab */}
-            <TabsContent value="challenge" className="space-y-6">
+            <TabsContent value="challenge" className="space-y-6 animate-tab-enter">
               <Card>
                 <CardHeader>
                   <CardTitle>Current Challenges with Student Exam Logins</CardTitle>
@@ -109,7 +109,7 @@ export default function PresentationPage() {
             </TabsContent>
 
             {/* Context Tab */}
-            <TabsContent value="context" className="space-y-6">
+            <TabsContent value="context" className="space-y-6 animate-tab-enter">
               <Card>
                 <CardHeader>
                   <CardTitle>How Development Works in Estonian Public Sector</CardTitle>
@@ -294,7 +294,7 @@ export default function PresentationPage() {
             </TabsContent>
 
             {/* Solution Tab */}
-            <TabsContent value="solution" className="space-y-6">
+            <TabsContent value="solution" className="space-y-6 animate-tab-enter">
               <Card>
                 <CardHeader>
                   <CardTitle>The "What If?" - Problem Reframing</CardTitle>
@@ -409,7 +409,7 @@ export default function PresentationPage() {
             </TabsContent>
 
             {/* Approach Tab */}
-            <TabsContent value="approach" className="space-y-6">
+            <TabsContent value="approach" className="space-y-6 animate-tab-enter">
               <Card>
                 <CardHeader>
                   <CardTitle>The Cursor Hackathon Approach</CardTitle>
@@ -651,7 +651,7 @@ export default function PresentationPage() {
             </TabsContent>
 
             {/* Results Tab */}
-            <TabsContent value="results" className="space-y-6">
+            <TabsContent value="results" className="space-y-6 animate-tab-enter">
               <Card>
                 <CardHeader>
                   <CardTitle>Results & Key Takeaways</CardTitle>

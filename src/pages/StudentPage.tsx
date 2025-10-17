@@ -125,7 +125,7 @@ export default function StudentPage() {
       />
       <Header />
       <Toaster />
-      <main className="flex-1 container mx-auto px-6 py-8">
+      <main className="flex-1 container mx-auto px-6 py-8 animate-page-enter">
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">
             <h1 className="text-3xl font-bold">Exam Registration</h1>
@@ -146,7 +146,7 @@ export default function StudentPage() {
                 </TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="available" className="mt-6">
+            <TabsContent value="available" className="mt-6 animate-tab-enter">
               <StudentExamList
                 exams={availableExams}
                 registeredExamIds={registeredExamIds}
@@ -156,7 +156,7 @@ export default function StudentPage() {
                 onUnregister={handleUnregister}
               />
             </TabsContent>
-            <TabsContent value="registered" className="mt-6">
+            <TabsContent value="registered" className="mt-6 animate-tab-enter">
               <StudentExamList
                 exams={registeredExams}
                 registeredExamIds={registeredExamIds}
@@ -166,7 +166,7 @@ export default function StudentPage() {
                 onUnregister={handleUnregister}
               />
             </TabsContent>
-            <TabsContent value="completed" className="mt-6">
+            <TabsContent value="completed" className="mt-6 animate-tab-enter">
               <StudentExamList
                 exams={completedExams}
                 registeredExamIds={registeredExamIds}

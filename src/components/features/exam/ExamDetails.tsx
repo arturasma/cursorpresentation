@@ -17,7 +17,7 @@ export default function ExamDetails({ exam }: ExamDetailsProps) {
   };
 
   return (
-    <Card>
+    <Card className="animate-content-update">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
           <IdentificationCard size={20} weight="duotone" />

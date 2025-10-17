@@ -242,7 +242,7 @@ export default function ExamPage() {
         />
         <Header />
         <Toaster />
-        <main className="flex-1 container mx-auto px-6 py-8">
+        <main className="flex-1 container mx-auto px-6 py-8 animate-page-enter">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -297,7 +297,7 @@ export default function ExamPage() {
       />
       <Header />
       <Toaster />
-      <main className="flex-1 container mx-auto px-6 py-8">
+      <main className="flex-1 container mx-auto px-6 py-8 animate-page-enter">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
