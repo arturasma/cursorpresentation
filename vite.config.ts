@@ -11,4 +11,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    // Ensure dev server handles SPA routing correctly
+    historyApiFallback: true,
+  },
 })
