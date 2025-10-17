@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Toaster } from '@/components/ui/sonner';
 import ExamCreationModal from '@/components/features/teacher/ExamCreationModal';
@@ -110,6 +111,11 @@ export default function TeacherPage() {
 
   return (
     <>
+      <SEOHead
+        title="Teacher Dashboard - Exam Management System"
+        description="Teacher dashboard for exam creation and management"
+        noindex={true}
+      />
       <Header />
       <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import { ArrowSquareOut } from 'phosphor-react';
 /**
  * HowBuiltPage Component
@@ -57,6 +58,12 @@ export default function HowBuiltPage() {
 
   return (
     <>
+      <SEOHead
+        title="How Was This Site Built? - AI Development with Cursor & Claude | HowToProto.ee"
+        description="Complete technical breakdown of building this exam prototype with Cursor AI and Claude Sonnet. Learn the tech stack, tools, deployment process, and development methodology used to rapidly create this React SPA prototype."
+        keywords="Cursor AI tutorial, Claude Sonnet development, React TypeScript, Vite SPA, Cloudflare Pages deployment, AI-assisted coding, rapid development tools, modern web stack, shadcn/ui components"
+        canonical="https://www.howtoproto.ee/how-built"
+      />
       <Header />
       <main className="flex-1 container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">

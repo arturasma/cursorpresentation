@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ArrowLeft, SignOut, CheckCircle, Hourglass, Coffee } from 'phosphor-react';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import { Toaster } from '@/components/ui/sonner';
 import ExamDetails from '@/components/features/exam/ExamDetails';
 import PINAuthenticationCard from '@/components/features/exam/PINAuthenticationCard';
@@ -234,6 +235,11 @@ export default function ExamPage() {
   if (userRole === 'teacher') {
     return (
       <>
+        <SEOHead
+          title="Exam Control Panel - Teacher View"
+          description="Teacher exam monitoring and control"
+          noindex={true}
+        />
         <Header />
         <Toaster />
         <main className="flex-1 container mx-auto px-6 py-8">
@@ -284,6 +290,11 @@ export default function ExamPage() {
   // Student view
   return (
     <>
+      <SEOHead
+        title="Take Exam - Student View"
+        description="Student exam authentication and access"
+        noindex={true}
+      />
       <Header />
       <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">

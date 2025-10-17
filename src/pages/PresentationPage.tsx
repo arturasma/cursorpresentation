@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -27,6 +28,12 @@ export default function PresentationPage() {
 
   return (
     <>
+      <SEOHead
+        title="Streamlining Student Exam Logins - Fast Prototyping Case Study | HowToProto.ee"
+        description="Complete case study showing how AI-powered rapid prototyping saved weeks of development time and public funds in Estonian education sector. Learn the challenge, context, solution, and results of fast validation methodology."
+        keywords="case study, fast prototyping, exam authentication, Estonian education, public sector efficiency, AI development, stakeholder validation, Cursor development, product management methodology"
+        canonical="https://www.howtoproto.ee/presentation"
+      />
       <Header />
       <main className="flex-1 container mx-auto px-6 py-12">
         <div className="max-w-6xl mx-auto">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import StudentExamList from '@/components/features/student/StudentExamList';
 import StudentRegistrationModal from '@/components/features/student/StudentRegistrationModal';
 import RegistrationSuccessDialog from '@/components/features/student/RegistrationSuccessDialog';
@@ -117,6 +118,11 @@ export default function StudentPage() {
 
   return (
     <>
+      <SEOHead
+        title="Student Dashboard - Exam Login System"
+        description="Student dashboard for exam registration and authentication"
+        noindex={true}
+      />
       <Header />
       <Toaster />
       <main className="flex-1 container mx-auto px-6 py-8">

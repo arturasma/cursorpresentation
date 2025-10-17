@@ -1,0 +1,23 @@
+# Cloudflare Pages Headers Configuration
+
+# Cache static assets
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML files should not be cached to ensure fresh content
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Security headers for all pages
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+

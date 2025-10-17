@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowSquareOut, CaretRight } from 'phosphor-react';
@@ -15,6 +16,12 @@ export default function AboutPage() {
 
   return (
     <>
+      <SEOHead
+        title="About This Project - AI Rapid Prototyping for Public Sector | HowToProto.ee"
+        description="Learn about my journey building rapid prototypes with AI tools at the Estonian Ministry of Education and Research. Discover how fast prototyping can validate ideas before significant resource commitment in public sector development."
+        keywords="public sector development, Estonian government, Ministry of Education, AI prototyping journey, product management, stakeholder validation, government digital transformation"
+        canonical="https://www.howtoproto.ee/about"
+      />
       <Header />
       <main className="flex-1 container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">

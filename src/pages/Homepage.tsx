@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
+import SEOHead from '@/components/shared/SEOHead';
 
 export default function Homepage() {
   const location = useLocation();
@@ -11,6 +12,12 @@ export default function Homepage() {
 
   return (
     <>
+      <SEOHead
+        title="Rapid Prototyping with AI - Student Exam Login System Demo | HowToProto.ee"
+        description="Interactive prototype demonstrating how public sector teams can rapidly validate digital solutions using AI tools like Cursor and Claude. Built for Estonian education system - showcases exam authentication flow from concept to working demo."
+        keywords="AI prototyping, Cursor AI, Claude Sonnet, public sector innovation, exam authentication system, rapid prototyping methodology, government digital services, Estonia education technology, product management, AI development tools, React prototype"
+        canonical="https://www.howtoproto.ee/"
+      />
       <Header />
       <main className="flex-1 container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
