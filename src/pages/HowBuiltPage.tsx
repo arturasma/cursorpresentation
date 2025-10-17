@@ -71,12 +71,25 @@ export default function HowBuiltPage() {
     if (element) {
       // Close the TOC first
       setIsTocOpen(false);
-      // Wait for TOC to close, then scroll with offset
+      
+      // Wait for TOC to close animation, then measure and scroll
       setTimeout(() => {
-        const yOffset = -150; // Negative offset for header + TOC + padding
-        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        const header = document.querySelector('header') as HTMLElement | null;
+        const tocElement = document.querySelector('.mb-8.sticky') as HTMLElement | null;
         
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        const headerHeight = header?.offsetHeight || 73;
+        const tocHeight = tocElement?.offsetHeight || 60; // Collapsed trigger height
+        const padding = 16; // Extra breathing room
+        
+        const totalOffset = headerHeight + tocHeight + padding;
+        
+        // Calculate target scroll position
+        const targetPosition = element.offsetTop - totalOffset;
+        
+        window.scrollTo({ 
+          top: Math.max(0, targetPosition), 
+          behavior: 'smooth' 
+        });
       }, 300);
     }
   };
