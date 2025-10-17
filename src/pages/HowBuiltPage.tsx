@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import SEOHead from '@/components/shared/SEOHead';
-import { ArrowSquareOut } from 'phosphor-react';
+import { ArrowSquareOut, CaretDown, CaretUp } from 'phosphor-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 /**
  * HowBuiltPage Component
  * 
@@ -23,6 +25,8 @@ export default function HowBuiltPage() {
   const location = useLocation();
   const consoleLogSectionRef = useRef<HTMLDivElement>(null);
   const hasLoggedRef = useRef(false);
+  const [isTocOpen, setIsTocOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(73); // Default header height
 
   /**
    * Effect to scroll to top when page loads
@@ -31,6 +35,51 @@ export default function HowBuiltPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  /**
+   * Effect to track header visibility and adjust TOC position
+   * Syncs with header's show/hide behavior based on scroll
+   */
+  useEffect(() => {
+    let lastScrollY = 0;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Header is visible when at top or scrolling up
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setHeaderHeight(73);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Header is hidden when scrolling down
+        setHeaderHeight(0);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  /**
+   * Scrolls smoothly to a section by ID and closes the TOC
+   * Accounts for header and TOC heights to prevent content from being hidden
+   * @param sectionId - The ID of the section to scroll to
+   */
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // Close the TOC first
+      setIsTocOpen(false);
+      // Wait for TOC to close, then scroll with offset
+      setTimeout(() => {
+        const yOffset = -150; // Negative offset for header + TOC + padding
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }, 300);
+    }
+  };
 
   /**
    * Effect to demonstrate console.log when user scrolls to that section
@@ -70,13 +119,136 @@ export default function HowBuiltPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 break-words">
             How This Presentation Was Built
           </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-12 break-words">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 break-words">
             Technical stack and tools used to create this prototype
           </p>
 
+          {/* Table of Contents */}
+          <Collapsible 
+            open={isTocOpen} 
+            onOpenChange={setIsTocOpen} 
+            className="mb-8 sticky z-40 bg-background transition-all duration-300"
+            style={{ top: `${headerHeight}px` }}
+          >
+            <Card className="py-0 gap-0 shadow-md">
+              <CollapsibleTrigger className="w-full">
+                <div className="flex items-center justify-between w-full px-6 py-3 cursor-pointer group">
+                  <h3 className="text-base font-semibold">Table of Contents</h3>
+                  {isTocOpen ? (
+                    <CaretUp size={18} className="text-muted-foreground transition-all duration-200" />
+                  ) : (
+                    <CaretDown size={18} className="text-muted-foreground transition-all duration-200" />
+                  )}
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="transition-all duration-300 ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
+                <CardContent className="pt-0 pb-3 px-6">
+                  <nav className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      onClick={() => scrollToSection('cursor-ide')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      1. Cursor IDE
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('react-vite')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      2. React + Vite Project with TypeScript
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('prd-context')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      3. PRD and Context Files
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('cursor-workflow')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      4. Cursor Workflow Strategy
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('tsdoc')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      5. TSDoc for Comments
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('console-log')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      6. Console.log for Debugging
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('local-storage')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      7. Local Storage for Everything
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('design-system')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      8. Design System
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('react-router')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      9. React Router DOM
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('folder-structure')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      10. Folder Structure
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('cursor-rules')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      11. Cursor Rules
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('github')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      12. GitHub
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('domain')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      13. Domain
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('cloudflare-domain')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      14. Cloudflare Domain Management
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('cloudflare-pages')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      15. Cloudflare Pages
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('contact')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      16. Contact Me
+                    </button>
+                  </nav>
+                </CardContent>
+              </CollapsibleContent>
+            </Card>
+          </Collapsible>
+
           <div className="space-y-8">
             {/* 1. Cursor setup */}
-            <section>
+            <section id="cursor-ide">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">1.</span>
                 Cursor IDE
@@ -124,7 +296,7 @@ export default function HowBuiltPage() {
               </p>
             </section>
 {/* 2. React Vite Project with TypeScript */}
-            <section>
+            <section id="react-vite">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">2.</span>
                 React + Vite Project with TypeScript
@@ -166,7 +338,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 3. PRD and Context Files */}
-            <section>
+            <section id="prd-context">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">3.</span>
                 PRD and Context Files
@@ -226,7 +398,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 4. Cursor Workflow Strategy */}
-            <section>
+            <section id="cursor-workflow">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">4.</span>
                 Cursor Workflow Strategy
@@ -302,7 +474,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 5. TSDoc for Comments */}
-            <section>
+            <section id="tsdoc">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">5.</span>
                 TSDoc for Comments
@@ -320,7 +492,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 6. Console.log for Debugging */}
-            <section ref={consoleLogSectionRef}>
+            <section id="console-log" ref={consoleLogSectionRef}>
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">6.</span>
                 Console.log for Debugging
@@ -331,7 +503,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 7. Local Storage for Everything */}
-            <section>
+            <section id="local-storage">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">7.</span>
                 Local Storage for Everything
@@ -342,7 +514,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 8. Design System */}
-            <section>
+            <section id="design-system">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">8.</span>
                 Design System
@@ -388,7 +560,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 9. React Router DOM */}
-            <section>
+            <section id="react-router">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">9.</span>
                 React Router DOM
@@ -399,7 +571,7 @@ export default function HowBuiltPage() {
             </section>
 
             {/* 10. Folder Structure */}
-            <section>
+            <section id="folder-structure">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">10.</span>
                 Folder Structure
@@ -454,7 +626,7 @@ export default function HowBuiltPage() {
               </div>
             </section>
 {/* 11. Cursor rules*/}
-<section>
+<section id="cursor-rules">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">11.</span>
                 Cursor Rules
@@ -534,7 +706,7 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
             {/* 12. GitHub */}
-            <section>
+            <section id="github">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">12.</span>
                 GitHub
@@ -585,7 +757,7 @@ These rules ensure the codebase remains maintainable and consistent.`}
             </section>
 
             {/* 13. Domain */}
-            <section>
+            <section id="domain">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">13.</span>
                 Domain
@@ -596,7 +768,7 @@ These rules ensure the codebase remains maintainable and consistent.`}
             </section>
 
             {/* 14. Cloudflare Domain */}
-            <section>
+            <section id="cloudflare-domain">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">14.</span>
                 Cloudflare Domain Management
@@ -607,7 +779,7 @@ These rules ensure the codebase remains maintainable and consistent.`}
             </section>
 
             {/* 15. Cloudflare Pages */}
-            <section>
+            <section id="cloudflare-pages">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">15.</span>
                 Cloudflare Pages
@@ -624,7 +796,7 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
               {/* 16. Contact me */}
-            <section>
+            <section id="contact">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">16.</span>
                 Contact Me
