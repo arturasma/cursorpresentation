@@ -349,48 +349,58 @@ export default function HowBuiltPage() {
                 </a>, which adds powerful features like server-side rendering, built-in routing, and API endpoints. But for a simple clickable prototype, Next.js would be overkill—it's like using a semi-truck when you just need a bicycle. Vite gives us exactly what we need: a lightweight setup that loads instantly and lets us focus on building the interface, not configuring infrastructure.
               </p>
               
-              <div className="bg-muted/30 rounded-lg p-4 mb-4">
-                <h3 className="text-sm font-semibold mb-3 text-foreground">Create a Vite + React + TypeScript project:</h3>
-                <pre className="bg-background rounded p-3 overflow-x-auto">
-                  <code className="text-sm">npm create vite@latest my-app -- --template react-ts</code>
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">Then navigate into your project and install dependencies:</p>
-                <pre className="bg-background rounded p-3 overflow-x-auto mt-2">
-                  <code className="text-sm">cd my-app && npm install</code>
-                </pre>
-              </div>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Here are the essential commands to get started with Vite or Next.js (replace <code className="text-sm bg-muted px-1.5 py-0.5 rounded">my-app</code> with your project name):
+              </p>
 
-              <div className="bg-muted/30 rounded-lg p-4 mb-4">
-                <h3 className="text-sm font-semibold mb-3 text-foreground">Create a Next.js + TypeScript project:</h3>
-                <pre className="bg-background rounded p-3 overflow-x-auto">
-                  <code className="text-sm">npx create-next-app@latest my-app --typescript</code>
-                </pre>
-                <p className="text-xs text-muted-foreground mt-2">Next.js setup is interactive and will prompt you for configuration options.</p>
-              </div>
+              <ul className="space-y-3 text-muted-foreground mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">npm create vite@latest my-app -- --template react-ts</code>
+                    <span className="ml-2">- Create a new Vite + React + TypeScript project</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">npx create-next-app@latest my-app --typescript</code>
+                    <span className="ml-2">- Create a new Next.js + TypeScript project (interactive setup)</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">cd my-app && npm install</code>
+                    <span className="ml-2">- Navigate into your project and install dependencies</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">npm run dev</code>
+                    <span className="ml-2">- Start the development server with hot reload (localhost:5173 for Vite, localhost:3000 for Next.js)</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">npm run build</code>
+                    <span className="ml-2">- Create an optimized production build of your application</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <div>
+                    <code className="text-sm bg-muted px-1.5 py-0.5 rounded">npm run preview</code>
+                    <span className="ml-2">- Preview the production build locally before deploying (Vite only)</span>
+                  </div>
+                </li>
+              </ul>
 
-              <div className="bg-muted/30 rounded-lg p-4">
-                <h3 className="text-sm font-semibold mb-3 text-foreground">Common npm commands:</h3>
-                <div className="space-y-3">
-                  <div>
-                    <pre className="bg-background rounded p-3 overflow-x-auto">
-                      <code className="text-sm">npm run dev</code>
-                    </pre>
-                    <p className="text-xs text-muted-foreground mt-1">Starts the development server with hot reload (usually on <code className="text-xs bg-background px-1 rounded">http://localhost:5173</code> for Vite, <code className="text-xs bg-background px-1 rounded">http://localhost:3000</code> for Next.js)</p>
-                  </div>
-                  <div>
-                    <pre className="bg-background rounded p-3 overflow-x-auto">
-                      <code className="text-sm">npm run build</code>
-                    </pre>
-                    <p className="text-xs text-muted-foreground mt-1">Creates an optimized production build of your application</p>
-                  </div>
-                  <div>
-                    <pre className="bg-background rounded p-3 overflow-x-auto">
-                      <code className="text-sm">npm run preview</code>
-                    </pre>
-                    <p className="text-xs text-muted-foreground mt-1">(Vite only) Preview the production build locally before deploying</p>
-                  </div>
-                </div>
-              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                For more details on setting up a Vite project, check out <a href="https://vitejs.dev/guide/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Vite's official documentation <ArrowSquareOut size={16} weight="bold" /></a>.
+              </p>
             </section>
 
             {/* 3. PRD and Context Files */}
