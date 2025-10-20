@@ -527,7 +527,7 @@ export default function PresentationPage() {
                   <div className="bg-primary/10 border border-primary/30 p-6 rounded-lg">
                     <h3 className="font-semibold text-lg mb-3">What to consider</h3>
                     <p className="text-sm text-foreground/90 mb-4">
-                      Gornmental strict PC policy:
+                      Governmental strict PC policy:
                     </p>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start gap-2">
