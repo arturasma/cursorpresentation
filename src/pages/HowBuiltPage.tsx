@@ -224,34 +224,40 @@ export default function HowBuiltPage() {
                       11. Cursor Rules
                     </button>
                     <button
+                      onClick={() => scrollToSection('owasp-audit')}
+                      className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
+                    >
+                      12. OWASP Top 10 Security Audit
+                    </button>
+                    <button
                       onClick={() => scrollToSection('github')}
                       className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
                     >
-                      12. GitHub
+                      13. GitHub
                     </button>
                     <button
                       onClick={() => scrollToSection('domain')}
                       className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
                     >
-                      13. Domain
+                      14. Domain
                     </button>
                     <button
                       onClick={() => scrollToSection('cloudflare-domain')}
                       className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
                     >
-                      14. Cloudflare Domain Management
+                      15. Cloudflare Domain Management
                     </button>
                     <button
                       onClick={() => scrollToSection('cloudflare-pages')}
                       className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
                     >
-                      15. Cloudflare Pages
+                      16. Cloudflare Pages
                     </button>
                     <button
                       onClick={() => scrollToSection('contact')}
                       className="text-left text-sm text-muted-foreground hover:text-primary transition-colors py-1.5 px-2 rounded hover:bg-muted"
                     >
-                      16. Contact Me
+                      17. Contact Me
                     </button>
                   </nav>
                 </CardContent>
@@ -771,10 +777,89 @@ These rules ensure the codebase remains maintainable and consistent.`}
                 By setting these rules once, every AI-generated suggestion automatically follows your project's standards. This saves time reviewing code and prevents inconsistencies from creeping in as the project grows. The rules act as a contract between you and the AI, ensuring it understands not just what to build, but how to build it in a way that matches your existing codebase.
               </p>
             </section>
-            {/* 12. GitHub */}
-            <section id="github">
+
+            {/* 12. OWASP Top 10 Security Audit */}
+            <section id="owasp-audit">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
                 <span className="text-primary">12.</span>
+                OWASP Top 10 Security Audit
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Before deploying any application, it's crucial to understand its security posture. The <a 
+                  href="https://owasp.org/www-project-top-ten/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  OWASP Top 10 <ArrowSquareOut size={16} className="inline" />
+                </a> is a widely-recognized standard that identifies the most critical security risks to web applications. Even for prototypes, running a security audit helps you understand what would need to be fixed before production use.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                You can ask Cursor to perform this audit by simply prompting: <code className="text-sm bg-muted px-1.5 py-0.5 rounded">"Please conduct an OWASP Top 10 security assessment of this application and provide a detailed report with risk scores for each category."</code>
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Here's an example of what the output might look like:
+              </p>
+              
+              <div className="bg-muted/50 p-4 rounded-lg mb-4">
+                <h3 className="text-lg font-semibold mb-3">OWASP Top 10 Assessment Results</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left py-2 pr-4">Vulnerability</th>
+                        <th className="text-left py-2 pr-4">Risk Score</th>
+                        <th className="text-left py-2">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-muted-foreground">
+                      <tr className="border-b border-border/50">
+                        <td className="py-2 pr-4">Broken Access Control</td>
+                        <td className="py-2 pr-4">🔴 9.3/10</td>
+                        <td className="py-2">Critical</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-2 pr-4">Cryptographic Failures</td>
+                        <td className="py-2 pr-4">🔴 8.7/10</td>
+                        <td className="py-2">Critical</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-2 pr-4">Injection</td>
+                        <td className="py-2 pr-4">🟢 2.1/10</td>
+                        <td className="py-2">Safe</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-2 pr-4">Insecure Design</td>
+                        <td className="py-2 pr-4">🟡 7.8/10</td>
+                        <td className="py-2">Needs Work</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-2 pr-4">Security Misconfiguration</td>
+                        <td className="py-2 pr-4">🟡 5.4/10</td>
+                        <td className="py-2">Partial</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-semibold text-foreground">Average Risk</td>
+                        <td className="py-2 pr-4 font-semibold text-foreground" colSpan={2}>6.0/10 (Medium-High)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                This audit reveals that while the prototype is safe for demonstrations and internal testing, it has critical vulnerabilities that must be addressed before production use. The high scores in "Broken Access Control" and "Authentication Failures" indicate that anyone can access any exam without proper verification, which is acceptable for a clickable prototype but would be unacceptable for real student data.
+              </p>
+              
+              <p className="text-muted-foreground leading-relaxed">
+                The key takeaway: security audits help you make informed decisions. For a prototype meant to demonstrate user flows and interface design, these vulnerabilities are acceptable trade-offs for faster development. But the audit documentation ensures that when it's time to build the real system, you know exactly what security measures need to be implemented from day one.
+              </p>
+            </section>
+
+            {/* 13. GitHub */}
+            <section id="github">
+              <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
+                <span className="text-primary">13.</span>
                 GitHub
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -822,10 +907,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 13. Domain */}
+            {/* 14. Domain */}
             <section id="domain">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">13.</span>
+                <span className="text-primary">14.</span>
                 Domain
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -833,10 +918,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 14. Cloudflare Domain */}
+            {/* 15. Cloudflare Domain */}
             <section id="cloudflare-domain">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">14.</span>
+                <span className="text-primary">15.</span>
                 Cloudflare Domain Management
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -844,10 +929,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
               </p>
             </section>
 
-            {/* 15. Cloudflare Pages */}
+            {/* 16. Cloudflare Pages */}
             <section id="cloudflare-pages">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">15.</span>
+                <span className="text-primary">16.</span>
                 Cloudflare Pages
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -861,10 +946,10 @@ These rules ensure the codebase remains maintainable and consistent.`}
                 For a simple React + Vite prototype focused on demonstrating functionality quickly, Cloudflare Pages offers the perfect balance: professional hosting with zero complexity. You commit your code, and it's live globally within minutes - no DevOps knowledge required. The automatic GitHub integration means you can focus entirely on building features rather than managing infrastructure.
               </p>
             </section>
-              {/* 16. Contact me */}
+              {/* 17. Contact me */}
             <section id="contact">
               <h2 className="text-2xl font-semibold mb-3 flex items-baseline gap-3">
-                <span className="text-primary">16.</span>
+                <span className="text-primary">17.</span>
                 Contact Me
               </h2>
               <p className="text-muted-foreground leading-relaxed">
